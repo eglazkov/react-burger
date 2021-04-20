@@ -1,0 +1,24 @@
+.container {
+  margin: 0 auto;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 1280px;  
+}
+.navigation {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-start;
+  margin-right: auto;
+}
+.navigation > li:not(:last-child) {
+  margin-right: 8px;
+}
+.logo {
+  margin-left: 112px;
+  margin-right: auto;
+}
