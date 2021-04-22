@@ -12,17 +12,13 @@ class BurgerConstructor extends Component {
     this.state = {}
     this.myRef = React.createRef();
   }
-  getTotal = () => {
-    return this.props.addedIngredients.reduce((acc, cur) => acc + cur.price, 0);
-  }
 
   componentDidUpdate() {    
     this.myRef.current.scrollTop = this.myRef.current.scrollHeight;
   }
 
   render() { 
-    const {addedIngredients, removeIngredient} = this.props;
-    const total = this.getTotal();
+    const {addedIngredients, removeIngredient, total} = this.props;
     const firstIngredient = addedIngredients[0];
     let lastIngredient = null;
     if (addedIngredients.length > 1) {
@@ -111,7 +107,8 @@ BurgerConstructor.propTypes = {
     price: PropTypes.number.isRequired,
     count: PropTypes.number
   })),
-  removeIngredient: PropTypes.func.isRequired
+  removeIngredient: PropTypes.func.isRequired,
+  total: PropTypes.number
 };
  
 export default BurgerConstructor;

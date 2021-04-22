@@ -49,3 +49,11 @@
   margin-right: 40px;
   margin-left: 10px;
 }
+
+@media (max-width: 575px) {
+  .container {
+    max-width: 320px;
+    margin: 0 auto;
+    display: none;
+  }
+}

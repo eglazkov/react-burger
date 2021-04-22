@@ -1,7 +1,8 @@
 import React from 'react';
 import appHeaderStyles from './app-header.module.css';
-import {Logo, BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Logo, BurgerIcon, ListIcon, ProfileIcon, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import NavigationItem from '../navigation-item';
+import logoMobile from '../../images/logo-mobile.svg';
 
 const AppHeader = () => {
   return ( 
@@ -20,12 +21,27 @@ const AppHeader = () => {
           </li>
         </ul>
       </nav>      
-      <span className={appHeaderStyles.logo}>
-        <Logo/>
+      <span className={appHeaderStyles.logo} style={{backgroundImage: `url(${logoMobile})`}}>
+        <Logo />
       </span>
       <NavigationItem
+        className={appHeaderStyles.account}
         icon={<ProfileIcon type="secondary"/>}
-        caption="Личный кабинет"/>
+        caption="Личный кабинет"/>   
+      <div className={appHeaderStyles.menuIcon} onClick={(e) => {
+        const menu = e.target.childNodes[0];
+        if (menu.style) {          
+          e.target.style.position = 'relative';
+          menu.style.display = 'flex';
+        }
+      }}>
+        <div className={`pt-2 pb-2 pl-1 pr-1 ${appHeaderStyles.menu}`}>
+          <div className={`text text_type_main-medium ${appHeaderStyles.menuHeader}`}>
+            Меню
+            <CloseIcon/>
+          </div>
+        </div>  
+      </div>
     </header>
    );
 }

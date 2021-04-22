@@ -6,3 +6,9 @@
   align-items: flex-start;
   max-width: 1240px;
 }
+
+@media (max-width: 360px) {
+  .mainContainer {
+    flex-direction: column;
+  }
+}

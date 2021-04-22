@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import appStyles from './app.module.css';
 import AppHeader from './components/app-header';
+import AppFooter from './components/app-footer';
 import BurgerIngredients from './components/burger-ingredients';
 import BurgerConstructor from './components/burger-constructor';
 
@@ -46,8 +47,14 @@ class App extends Component {
     });
   }
 
+  
+  getTotal = () => {
+    return this.state.addedIngredients.reduce((acc, cur) => acc + cur.price, 0);
+  }
+
   render() {    
     const {addedIngredients} = this.state;
+    const total = this.getTotal();
 
     return (
       <>
@@ -57,9 +64,11 @@ class App extends Component {
             addIngredient={this.addIngredient}
             ingredients={ingredients}/>
           <BurgerConstructor
+            total={total}
             removeIngredient={this.removeIngredient}
             addedIngredients={addedIngredients}/>
         </main>
+        <AppFooter total={total}/>
       </>
     );
   }
