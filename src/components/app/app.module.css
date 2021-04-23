@@ -1,0 +1,14 @@
+.mainContainer {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-start;
+  max-width: 1240px;
+}
+
+@media (max-width: 360px) {
+  .mainContainer {
+    flex-direction: column;
+  }
+}
