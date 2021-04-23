@@ -2,7 +2,6 @@ import React from 'react';
 import appHeaderStyles from './app-header.module.css';
 import {Logo, BurgerIcon, ListIcon, ProfileIcon, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import NavigationItem from '../navigation-item';
-import logoMobile from '../../images/logo-mobile.svg';
 
 const AppHeader = () => {
   return ( 
@@ -21,7 +20,7 @@ const AppHeader = () => {
           </li>
         </ul>
       </nav>      
-      <span className={appHeaderStyles.logo} style={{backgroundImage: `url(${logoMobile})`}}>
+      <span className={appHeaderStyles.logo}>
         <Logo />
       </span>
       <NavigationItem

@@ -99,15 +99,12 @@
   .logo {
     width: 40px;
     height: 40px;
+    background-image: url('../../images/logo-mobile.svg');
     background-repeat: no-repeat;
     background-size: cover;
     margin: 0;
   }
   .menuIcon {
     display: inline-block;
-  }
-  .navigation {
-    /* max-width: 300px;
-    flex-direction: column; */
   }
 }

@@ -36,6 +36,9 @@
 .dragHandle {
   cursor: pointer;
 }
+.dragHandle[edge = true] {
+  visibility: hidden;
+}
 .footer {
   display: flex;
   flex-direction: row;
