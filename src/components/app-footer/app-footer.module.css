@@ -39,4 +39,7 @@
   .container > button {
     width: 196px;
   }
+  .container > button > div {
+    font-size: 14px;
+  }
 }

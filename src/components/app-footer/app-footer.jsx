@@ -15,7 +15,7 @@ const AppFooter = (props) => {
           <CurrencyIcon/> 
         </div>           
         <Button size="small">
-          <div style={{fontSize: '14px'}} className="text text_type_main-default">Смотреть заказ</div>
+          <div className="text text_type_main-default">Смотреть заказ</div>
         </Button>   
       </div>
     </footer>
