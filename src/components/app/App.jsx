@@ -4,20 +4,27 @@ import AppHeader from '../app-header';
 import AppFooter from '../app-footer';
 import BurgerIngredients from '../burger-ingredients';
 import BurgerConstructor from '../burger-constructor';
-
-import ingredientsData from '../../utils/data.json';
+import {API_URL} from '../../constants';
  
 const App = () => {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [addedIngredients, setAddedIngredients] = useState([]);
   
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIngredients(ingredientsData);
-      setIsLoading(false);
-    }, 1500);
+    fetch(API_URL)
+      .then(resp => resp.json())
+      .then(resp => {
+        setIngredients(resp.data);
+        setIsLoading(false);
+      }).catch(error => {
+        setIsLoading(false);
+        setIsError(true);
+        alert(`Во время запроса произошла ошибка:
+        ${error}`);
+      });    
   }, []);
   
   const changeCount = (ingredients, id, decrease) => {
