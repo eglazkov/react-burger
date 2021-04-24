@@ -4,11 +4,13 @@ import AppHeader from '../app-header';
 import AppFooter from '../app-footer';
 import BurgerIngredients from '../burger-ingredients';
 import BurgerConstructor from '../burger-constructor';
+import AppSpinner from '../app-spinner';
 import {API_URL} from '../../constants';
  
 const App = () => {
   const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOrderCreating, setIsOrderCreating] = useState(false);
   const [isError, setIsError] = useState(false);
   const [addedIngredients, setAddedIngredients] = useState([]);
   
@@ -73,10 +75,12 @@ const App = () => {
           ingredients={ingredients}/>
         <BurgerConstructor
           total={total}
+          setIsOrderCreating={setIsOrderCreating}
           removeIngredient={removeIngredient}
           addedIngredients={addedIngredients}/>
       </main>
       <AppFooter total={total}/>
+      {isOrderCreating && <AppSpinner />}
     </>
   );
 }

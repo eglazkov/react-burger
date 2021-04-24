@@ -3,27 +3,56 @@ import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../spinner';
+import IngredientDetails from '../ingredient-details';
 
-const BurgerIngredient = ({image, price, name, count}) => {
+const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...details}) => {
+  const [showDetails, setShowDetails] = useState(false);  
+  
+  const openDetails = () => {
+    setShowDetails(true);
+  }
+
+  const closeDetails = () => {
+    setShowDetails(false);
+  }
+  
+  const ingredientDetails = (
+    <IngredientDetails
+      caption="Детали ингредиента"
+      onClose={closeDetails}
+      name={name}
+      description={`API не возвращает описание ингредиента`}
+      {...details}
+    />
+  );
 
   return ( 
-    <div
-      className={`mb-4 ${burgerIngredientsStyles.ingredient}`}>
-      {count > 0 && <span className={burgerIngredientsStyles.counter}>
-        <Counter count={count}/>
-      </span>}
-      <img
-        className="pl-2 pr-2 mb-1"
-        src={image} alt={image}/>
+    <>
       <div
-        className={`mb-1 ${burgerIngredientsStyles.cost}`}>
-          {price}
-          <CurrencyIcon/>
+        onClick={(e) => {
+          if (e.target.tagName !== 'P' &&
+          (e.target.children[0] ? e.target.children[0].tagName !== 'P' : true)) {
+            openDetails();
+          }
+        }}
+        className={`mb-4 ${burgerIngredientsStyles.ingredient}`}>
+        {count >= 0 && <span className={burgerIngredientsStyles.counter} onClick={addToConstructor}>
+          <Counter count={count}/>
+        </span>}
+        <img
+          className="pl-2 pr-2 mb-1"
+          src={image} alt={image}/>
+        <div
+          className={`mb-1 ${burgerIngredientsStyles.cost}`}>
+            {price}
+            <CurrencyIcon/>
+        </div>
+        <div className="text text_type_main-default pb-3">
+          {name}
+        </div>
       </div>
-      <div className="text text_type_main-default pb-3">
-        {name}
-      </div>
-    </div>
+      {showDetails && ingredientDetails}
+    </>
     );
 }
  
@@ -60,6 +89,10 @@ const BurgerIngredients = ({ingredients, addIngredient, isLoading}) => {
     return names[currentTabName];
   }
 
+  const addToConstructor = (ingredient) => {                
+    addIngredient(ingredient);
+  }
+
   return ( 
     <section className={burgerIngredientsStyles.container}>
       <div className="mb-1 text text_type_main-large">
@@ -93,13 +126,13 @@ const BurgerIngredients = ({ingredients, addIngredient, isLoading}) => {
                       typedSet.data.map(ingredient => {
                         const {_id} = ingredient;
                         return (
-                          <div
-                            onClick={(e) => {                
-                              addIngredient(ingredient);
-                            }}          
+                          <div        
                             key={_id}>
                             <div>
-                              <BurgerIngredient {...ingredient}/>
+                              <BurgerIngredient
+                                {...ingredient}
+                                addToConstructor={() => addToConstructor(ingredient)}
+                              />
                             </div>
                           </div>
                         );
@@ -120,7 +153,8 @@ BurgerIngredient.propTypes = {
   name: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  count: PropTypes.number
+  count: PropTypes.number,
+  addToConstructor: PropTypes.func.isRequired
 };
 
 BurgerIngredients.propTypes = {
