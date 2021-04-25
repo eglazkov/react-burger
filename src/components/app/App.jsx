@@ -17,15 +17,20 @@ const App = () => {
   useEffect(() => {
     setIsLoading(true);
     fetch(API_URL)
-      .then(resp => resp.json())
+      .then(res => {
+        if (!res.ok) {
+          return Promise.reject(res.status);
+        } else {
+          return res.json();
+        }
+      })
       .then(resp => {
         setIngredients(resp.data);
         setIsLoading(false);
       }).catch(error => {
         setIsLoading(false);
         setIsError(true);
-        alert(`Во время запроса произошла ошибка:
-        ${error}`);
+        alert(`Во время запроса произошла ошибка: ${error}`);
       });    
   }, []);
   

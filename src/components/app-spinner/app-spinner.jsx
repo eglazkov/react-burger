@@ -11,7 +11,7 @@ const ApppSpinner = ({caption, onClose, orderID}) => {
     (
       <>
         <Spinner className={appSpinnerStyles.spinner} isLoading={true}/>
-        <ModalOverlay onClick={()=>{}}/>
+        <ModalOverlay onClick={function(){}}/>
       </>
     ), modalRoot
   );
