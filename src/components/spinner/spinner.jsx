@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import spinnerStyles from './spinner.module.css';
  
-const Spinner = ({isLoading = false}) => {
+const Spinner = ({isLoading = false, className, ...props}) => {
   return (
-    isLoading && <div className={spinnerStyles.loader}>
+    isLoading && <div className={`${className ? className : ''} ${spinnerStyles.loader}`} {...props}>
     </div>
   );
 }

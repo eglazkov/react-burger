@@ -27,7 +27,7 @@ const AppHeader = () => {
         className={appHeaderStyles.account}
         icon={<ProfileIcon type="secondary"/>}
         caption="Личный кабинет"/>   
-      <div className={appHeaderStyles.menuIcon} onClick={(e) => {
+      <div className={appHeaderStyles.menuIcon} onClick={function(e) {
         const menu = e.target.childNodes[0];
         if (menu.style) {          
           e.target.style.position = 'relative';
