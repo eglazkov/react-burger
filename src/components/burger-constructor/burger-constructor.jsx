@@ -106,7 +106,7 @@ const BurgerConstructor = ({addedIngredients, removeIngredient, total, setIsOrde
           <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
             {total}
             <CurrencyIcon/>            
-            <div onClick={() => {              
+            <div onClick={function() {              
               openOrderDetails();
             }}>
               <Button>Оформить заказ</Button>

@@ -5,9 +5,9 @@ import modalOverlayStyles from './modal-overlay.module.css';
 const ModalOverlay = ({onClick}) => {
   return (
     <div className={modalOverlayStyles.overlay}
-      onClick={e => {
+      onClick={function(e) {
         e.stopPropagation();
-        onClick && onClick()
+        onClick && onClick();
       }}>
     </div>
   );

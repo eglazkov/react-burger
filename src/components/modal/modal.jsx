@@ -18,14 +18,14 @@ const Modal = ({caption, children, onClose}) => {
   return (
     <>
       <div
-        onClick={e =>  {
+        onClick={function(e) {
           e.stopPropagation();
         }}
         className={modalStyles.container}>
         <div className={`pl-5 pt-5 pr-5 pb-5 ${modalStyles.modal}`}>
           <div className={modalStyles.modalHeader}>
             <span className="text text_type_main-large">{caption}</span>
-            <button className={modalStyles.closeButton} onClick={(e) => {
+            <button className={modalStyles.closeButton} onClick={function(e) {
               e.stopPropagation();
               onClose && onClose();
             }}>

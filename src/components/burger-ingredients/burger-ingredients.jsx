@@ -29,7 +29,7 @@ const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...det
   return ( 
     <>
       <div
-        onClick={(e) => {
+        onClick={function(e) {
           if (e.target.tagName !== 'P' &&
           (e.target.children[0] ? e.target.children[0].tagName !== 'P' : true)) {
             openDetails();
@@ -102,15 +102,15 @@ const BurgerIngredients = ({ingredients, addIngredient, isLoading}) => {
         <li><Tab
               value="bun"
               active={currentTab === "bun"}
-              onClick={(value) => changeCurrentTab(value)}>Булки</Tab></li>
+              onClick={changeCurrentTab}>Булки</Tab></li>
         <li><Tab
               value="sauce"
               active={currentTab === "sauce"}
-              onClick={(value) => changeCurrentTab(value)}>Соусы</Tab></li>
+              onClick={changeCurrentTab}>Соусы</Tab></li>
         <li><Tab
               value="main"
               active={currentTab === "main"}
-              onClick={(value) => changeCurrentTab(value)}>Начинки</Tab></li>
+              onClick={changeCurrentTab}>Начинки</Tab></li>
       </ul>
       <Spinner isLoading={isLoading} />
       <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}>
