@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../spinner';
 import IngredientDetails from '../ingredient-details';
+
+import {AppContext} from '../../services/app-context';
 
 const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...details}) => {
   const [showDetails, setShowDetails] = useState(false);  
@@ -56,9 +58,10 @@ const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...det
     );
 }
  
-const BurgerIngredients = ({ingredients, addIngredient, isLoading}) => {
+const BurgerIngredients = ({addIngredient, isLoading}) => {
   const [currentTab, setCurrentTab] = useState("");
   const [ingredientsOnTab, setIngredientsOnTab] = useState([]);
+  const {ingredients} = useContext(AppContext);
 
   useEffect(() => {
     const getIngredientsByType = (tabName) => {
@@ -158,12 +161,6 @@ BurgerIngredient.propTypes = {
 };
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired
-  })).isRequired,
   addIngredient: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired
 };

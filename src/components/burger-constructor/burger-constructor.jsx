@@ -1,16 +1,19 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details';
+import {AppContext} from '../../services/app-context';
+import {API_URL} from '../../constants';
  
 /*
   TODO: drag'n'drop
 */
-const BurgerConstructor = ({addedIngredients, removeIngredient, total, setIsOrderCreating}) => {
+const BurgerConstructor = ({removeIngredient}) => {
   const [showDetails, setShowDetails] = useState(false);
   const [orderData, setOrderData] = useState({});
   const myRef = useRef(null);
+  const {totalCost, addedIngredients, setIsOrderCreating} = useContext(AppContext);
   
   useEffect(() => {
     myRef.current.scrollTop = myRef.current.scrollHeight;
@@ -22,14 +25,32 @@ const BurgerConstructor = ({addedIngredients, removeIngredient, total, setIsOrde
     lastIngredient = addedIngredients[addedIngredients.length - 1];
   }
 
-  const openOrderDetails = () => {
+  const sendOrder = () => {
     setIsOrderCreating(true);
-    setTimeout(() => {
-      const randomId = Math.floor(100000 + Math.random() * 900000);
-      setOrderData({orderID: randomId});
-      setIsOrderCreating(false);
-      setShowDetails(true);
-    }, 1500);
+    fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ingredients: addedIngredients.map(item => item._id)
+      })
+    }).then(res => {
+        if (!res.ok) {
+          return Promise.reject(res.status);
+        } else {
+          return res.json();
+        }
+      })
+      .then(resp => {
+        setOrderData({orderID: resp.order.number});
+        setIsOrderCreating(false);
+        setShowDetails(true);
+      }).catch(error => {
+        setIsOrderCreating(false);        
+        alert(`Во время запроса произошла ошибка: ${error}`);
+      });
   }
 
   const closeOrderDetails = () => {
@@ -104,10 +125,10 @@ const BurgerConstructor = ({addedIngredients, removeIngredient, total, setIsOrde
         </div>
         {addedIngredients.length > 0 && <div>
           <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
-            {total}
+            {totalCost}
             <CurrencyIcon/>            
-            <div onClick={function() {              
-              openOrderDetails();
+            <div onClick={function() {
+              sendOrder();
             }}>
               <Button>Оформить заказ</Button>
             </div>
@@ -124,16 +145,7 @@ const BurgerConstructor = ({addedIngredients, removeIngredient, total, setIsOrde
 }
 
 BurgerConstructor.propTypes = {
-  addedIngredients: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    count: PropTypes.number
-  })),
-  removeIngredient: PropTypes.func.isRequired,
-  total: PropTypes.number,
-  setIsOrderCreating: PropTypes.func.isRequired
+  removeIngredient: PropTypes.func.isRequired
 };
  
 export default BurgerConstructor;
