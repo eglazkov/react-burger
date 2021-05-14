@@ -63,19 +63,31 @@ const App = () => {
   const addIngredient = (ingredient) => {    
     const length = addedIngredients.length;
     const index = length === 1 ? length : length - 1;
-    if (
-      ingredient.type !== "bun" &&
-      (length === 0 || length === 1)
-      ) {
-      alert(`Данный ингредиент не может лежать в основе бургера.
+    if (length === 0 || ingredient.type === "bun") {
+      if (ingredient.type !== "bun") {
+        alert(`Данный ингредиент не может лежать в основе бургера.
 Пожалуйста выберите ингрединт из раздела "Булки".`);
-      return;
+        return;
+      }
+
+      if (length > 0) {
+        removeIngredient(0);
+        removeIngredient(length - 2);
+      }
+      addedIngredients.splice(0, 0, ingredient);
+      addedIngredients.splice(length - 1, 0, ingredient);
+      changeCount(ingredients, ingredient["_id"]);
+      changeCount(ingredients, ingredient["_id"]);     
+      setIngredients([...ingredients]);
+      setAddedIngredients([...addedIngredients]);
+      dispatchTotalCost({type: 'increase', payload: ingredient.price * 2});
+    } else {
+      addedIngredients.splice(index, 0, ingredient);
+      changeCount(ingredients, ingredient["_id"]);    
+      setIngredients([...ingredients]);
+      setAddedIngredients([...addedIngredients]);
+      dispatchTotalCost({type: 'increase', payload: ingredient.price});
     }
-    addedIngredients.splice(index, 0, ingredient);
-    changeCount(ingredients, ingredient["_id"]);    
-    setIngredients([...ingredients]);
-    setAddedIngredients([...addedIngredients]);
-    dispatchTotalCost({type: 'increase', payload: ingredient.price});
   }
 
   const removeIngredient = (index) => {

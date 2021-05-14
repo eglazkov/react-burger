@@ -25,10 +25,14 @@ const BurgerConstructor = ({removeIngredient}) => {
     lastIngredient = addedIngredients[addedIngredients.length - 1];
   }
 
-  const openOrderDetails = () => {
+  const sendOrder = () => {
     setIsOrderCreating(true);
     fetch(`${API_URL}/orders`, {
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         ingredients: addedIngredients.map(item => item._id)
       })
@@ -123,8 +127,8 @@ const BurgerConstructor = ({removeIngredient}) => {
           <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
             {totalCost}
             <CurrencyIcon/>            
-            <div onClick={function() {              
-              openOrderDetails();
+            <div onClick={function() {
+              sendOrder();
             }}>
               <Button>Оформить заказ</Button>
             </div>
