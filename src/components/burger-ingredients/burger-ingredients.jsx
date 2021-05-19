@@ -1,64 +1,11 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {useDispatch} from 'react-redux';
+import React, {useState, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
-import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../spinner';
-import IngredientDetails from '../ingredient-details';
+import BurgerIngredient from '../burger-ingredient';
 
 import {useIngredeints} from '../../services';
-
-const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...details}) => {
-  const dispatch = useDispatch();
-  const [{showIngredientDetails, ingredientDetails},
-    {openDetailsAction, closeDetailsAction}] = useIngredeints();   
-  
-  const openDetails = useCallback(() => {
-    dispatch(openDetailsAction(details));
-  }, [openDetailsAction, dispatch, details]);
-
-  const closeDetails = useCallback(() => {
-    dispatch(closeDetailsAction());
-  }, [closeDetailsAction, dispatch]);
-
-  return ( 
-    <>
-      <div
-        onClick={function(e) {
-          if (e.target.tagName !== 'P' &&
-          (e.target.children[0] ? e.target.children[0].tagName !== 'P' : true)) {
-            openDetails();
-          }
-        }}
-        className={`mb-4 ${burgerIngredientsStyles.ingredient}`}>
-        {count >= 0 && <span className={burgerIngredientsStyles.counter} onClick={addToConstructor}>
-          <Counter count={count}/>
-        </span>}
-        <img
-          className="pl-2 pr-2 mb-1"
-          src={image} alt={image}/>
-        <div
-          className={`mb-1 ${burgerIngredientsStyles.cost}`}>
-            {price}
-            <CurrencyIcon/>
-        </div>
-        <div className="text text_type_main-default pb-3">
-          {name}
-        </div>
-      </div>
-      {
-        showIngredientDetails &&
-        <IngredientDetails
-          caption="Детали ингредиента"
-          onClose={closeDetails}
-          name={name}
-          description={`API не возвращает описание ингредиента`}
-          {...ingredientDetails}
-        />     
-      }
-    </>
-    );
-}
  
 const BurgerIngredients = ({addIngredient}) => {
   const [currentTab, setCurrentTab] = useState("");
@@ -70,16 +17,13 @@ const BurgerIngredients = ({addIngredient}) => {
       return [...ingredients.filter(ingredient => ingredient.type === tabName)];
     };
     
-    if (currentTab !== "") {
-      setIngredientsOnTab([{key: [currentTab], data: getIngredientsByType(currentTab)}]);
-    } else {
-      setIngredientsOnTab([
-          {key: "bun", data: getIngredientsByType("bun")},
-          {key: "sauce", data: getIngredientsByType("sauce")},
-          {key: "main", data: getIngredientsByType("main")}
-      ]);
-    }
-  }, [currentTab, ingredients]);
+    setIngredientsOnTab([
+      {key: "bun", data: getIngredientsByType("bun")},
+      {key: "sauce", data: getIngredientsByType("sauce")},
+      {key: "main", data: getIngredientsByType("main")}
+    ]);
+    
+  }, [ingredients]);
 
   const changeCurrentTab = (tabName) => {
     setCurrentTab(tabName);
@@ -128,7 +72,16 @@ const BurgerIngredients = ({addIngredient}) => {
               }}>Начинки</Tab></li>
       </ul>
       <Spinner isLoading={isIngredientsLoading} />
-      <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}>
+      <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}
+        onScroll={({target}) => {
+          const targetTop = target.getBoundingClientRect().y;
+          const bunElTop = document.getElementById('bun').getBoundingClientRect().y-targetTop;
+          const sauceTop = document.getElementById('sauce').getBoundingClientRect().y-targetTop;
+          const mainElTop = document.getElementById('main').getBoundingClientRect().y-targetTop;
+          const activeTab = mainElTop <= 24 ? 'main':
+          sauceTop <= 24 ? 'sauce' : bunElTop <=24 ? 'bun' : '';          
+          setCurrentTab(activeTab)             
+        }}>
           {ingredients.length > 0 && ingredientsOnTab.map(
             (typedSet, i) => {
               return (
@@ -162,15 +115,6 @@ const BurgerIngredients = ({addIngredient}) => {
     </section>
     );
 }
-
-BurgerIngredient.propTypes = {
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  count: PropTypes.number,
-  addToConstructor: PropTypes.func.isRequired
-};
 
 BurgerIngredients.propTypes = {
   addIngredient: PropTypes.func.isRequired

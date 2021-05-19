@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import appStyles from './app.module.css';
 import AppHeader from '../app-header';
@@ -16,39 +16,35 @@ const App = () => {
   const [{isSendingDataOrder}, {increaseTotalCostAction, decreaseTotalCostAction}] = useOrder();  
   const [{constructorIngredients},
     {addToConstructorAction, removeFromConstructorAction}] = useConstructor();  
-  
-  const getIngredientsFromServer = useCallback(() => {
-    dispatch(fetchIngredientsAction());
-  }, [fetchIngredientsAction, dispatch]);
 
-  const increaseTotalCost = useCallback(amount => {
+  const increaseTotalCost = amount => {
     dispatch(increaseTotalCostAction(amount));
-  }, [increaseTotalCostAction, dispatch]);
+  };
 
-  const decreaseTotalCost = useCallback(amount => {
+  const decreaseTotalCost = amount => {
     dispatch(decreaseTotalCostAction(amount));
-  }, [decreaseTotalCostAction, dispatch]);
+  };
 
-  const increaseCount = useCallback(id => {
+  const increaseCount = id => {
     dispatch(increaseCountAction(id));
-  }, [increaseCountAction, dispatch]);
+  };
 
-  const decreaseCount = useCallback(amount => {
+  const decreaseCount = amount => {
     dispatch(decreaseCountAction(amount));
-  }, [decreaseCountAction, dispatch]);
+  };
 
-  const addToConstructor = useCallback((index, item) => {
+  const addToConstructor = (index, item) => {
     dispatch(addToConstructorAction(index, item));
-  }, [addToConstructorAction, dispatch]);
+  };
 
-  const removeFromConstructor = useCallback(index => {
+  const removeFromConstructor = index => {
     dispatch(removeFromConstructorAction(index));
-  }, [removeFromConstructorAction, dispatch]);
+  };
   
   useEffect(() => {
-    getIngredientsFromServer();
+    dispatch(fetchIngredientsAction());
     errorMessage && alert(`Во время запроса произошла ошибка: ${errorMessage}`);
-  }, [errorMessage, getIngredientsFromServer]);
+  }, [errorMessage, fetchIngredientsAction, dispatch]);
 
   const addIngredient = (ingredient) => {    
     const length = constructorIngredients.length;

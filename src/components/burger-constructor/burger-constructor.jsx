@@ -28,19 +28,15 @@ const BurgerConstructor = ({removeIngredient}) => {
     lastIngredient = constructorIngredients[constructorIngredients.length - 1];
   }
 
-  const getIngredientsFromServer = useCallback(() => {
-    dispatch(fetchIngredientsAction());
-  }, [fetchIngredientsAction, dispatch]);
-
   const closeOrderDetails = useCallback(() => {
     dispatch(resetConstructorAction())
     dispatch(closeOrderDetailsAction());
-    getIngredientsFromServer();
-  }, [closeOrderDetailsAction, resetConstructorAction, getIngredientsFromServer, dispatch]);
+    dispatch(fetchIngredientsAction());
+  }, [closeOrderDetailsAction, resetConstructorAction, fetchIngredientsAction, dispatch]);
 
-  const sendOrder = useCallback(() => {
+  const sendOrder = () => {
     dispatch(fetchDataOrderAction(constructorIngredients.map(item => item._id)))
-  }, [constructorIngredients, fetchDataOrderAction, dispatch]);
+  };
   
   return (       
     <>
