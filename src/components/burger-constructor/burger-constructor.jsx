@@ -1,64 +1,46 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details';
-import {AppContext} from '../../services/app-context';
-import {API_URL} from '../../constants';
+import {useOrder, useConstructor, useIngredeints} from '../../services';
  
 /*
   TODO: drag'n'drop
 */
 const BurgerConstructor = ({removeIngredient}) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [orderData, setOrderData] = useState({});
-  const myRef = useRef(null);
-  const {totalCost, addedIngredients, setIsOrderCreating} = useContext(AppContext);
+  const dispatch = useDispatch();
+  const myRef = useRef(null);  
+
+  const [{totalCost, orderId, isShowOrderDetails},
+    {fetchDataOrderAction, closeOrderDetailsAction}] = useOrder();
+  const [{constructorIngredients}, {resetConstructorAction}] = useConstructor();
+  const [ , {fetchIngredientsAction}] = useIngredeints();
   
   useEffect(() => {
     myRef.current.scrollTop = myRef.current.scrollHeight;
   });
   
-  const firstIngredient = addedIngredients[0];
+  const firstIngredient = constructorIngredients[0];
   let lastIngredient = null;
-  if (addedIngredients.length > 1) {
-    lastIngredient = addedIngredients[addedIngredients.length - 1];
+  if (constructorIngredients.length > 1) {
+    lastIngredient = constructorIngredients[constructorIngredients.length - 1];
   }
 
-  const sendOrder = () => {
-    setIsOrderCreating(true);
-    fetch(`${API_URL}/orders`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ingredients: addedIngredients.map(item => item._id)
-      })
-    }).then(res => {
-        if (!res.ok) {
-          return Promise.reject(res.status);
-        } else {
-          return res.json();
-        }
-      })
-      .then(resp => {
-        setOrderData({orderID: resp.order.number});
-        setIsOrderCreating(false);
-        setShowDetails(true);
-      }).catch(error => {
-        setIsOrderCreating(false);        
-        alert(`Во время запроса произошла ошибка: ${error}`);
-      });
-  }
+  const getIngredientsFromServer = useCallback(() => {
+    dispatch(fetchIngredientsAction());
+  }, [fetchIngredientsAction, dispatch]);
 
-  const closeOrderDetails = () => {
-    [...addedIngredients].forEach(() => {      
-      removeIngredient(0);
-    });
-    setShowDetails(false);
-  }
+  const closeOrderDetails = useCallback(() => {
+    dispatch(resetConstructorAction())
+    dispatch(closeOrderDetailsAction());
+    getIngredientsFromServer();
+  }, [closeOrderDetailsAction, resetConstructorAction, getIngredientsFromServer, dispatch]);
+
+  const sendOrder = useCallback(() => {
+    dispatch(fetchDataOrderAction(constructorIngredients.map(item => item._id)))
+  }, [constructorIngredients, fetchDataOrderAction, dispatch]);
   
   return (       
     <>
@@ -83,7 +65,7 @@ const BurgerConstructor = ({removeIngredient}) => {
             </div>
           }
           <div className={`${burgerConstructorStyles.tableWrapper}`} ref={myRef}>
-            {addedIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
+            {constructorIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
               .map((addedIngredient, index, arr) => {
                 return (
                   <div 
@@ -123,22 +105,20 @@ const BurgerConstructor = ({removeIngredient}) => {
             </div>
           }
         </div>
-        {addedIngredients.length > 0 && <div>
+        {constructorIngredients.length > 0 && <div>
           <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
             {totalCost}
             <CurrencyIcon/>            
-            <div onClick={function() {
-              sendOrder();
-            }}>
+            <div onClick={sendOrder}>
               <Button>Оформить заказ</Button>
             </div>
           </div>
         </div>}
       </section>
-      {showDetails &&
+      {isShowOrderDetails &&
       <OrderDetails
         onClose={closeOrderDetails}
-        {...orderData}
+        orderId={orderId}
       />}
     </>
   );

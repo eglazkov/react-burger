@@ -1,32 +1,25 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab, Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../spinner';
 import IngredientDetails from '../ingredient-details';
 
-import {AppContext} from '../../services/app-context';
+import {useIngredeints} from '../../services';
 
 const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...details}) => {
-  const [showDetails, setShowDetails] = useState(false);  
+  const dispatch = useDispatch();
+  const [{showIngredientDetails, ingredientDetails},
+    {openDetailsAction, closeDetailsAction}] = useIngredeints();   
   
-  const openDetails = () => {
-    setShowDetails(true);
-  }
+  const openDetails = useCallback(() => {
+    dispatch(openDetailsAction(details));
+  }, [openDetailsAction, dispatch, details]);
 
-  const closeDetails = () => {
-    setShowDetails(false);
-  }
-  
-  const ingredientDetails = (
-    <IngredientDetails
-      caption="Детали ингредиента"
-      onClose={closeDetails}
-      name={name}
-      description={`API не возвращает описание ингредиента`}
-      {...details}
-    />
-  );
+  const closeDetails = useCallback(() => {
+    dispatch(closeDetailsAction());
+  }, [closeDetailsAction, dispatch]);
 
   return ( 
     <>
@@ -53,15 +46,24 @@ const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...det
           {name}
         </div>
       </div>
-      {showDetails && ingredientDetails}
+      {
+        showIngredientDetails &&
+        <IngredientDetails
+          caption="Детали ингредиента"
+          onClose={closeDetails}
+          name={name}
+          description={`API не возвращает описание ингредиента`}
+          {...ingredientDetails}
+        />     
+      }
     </>
     );
 }
  
-const BurgerIngredients = ({addIngredient, isLoading}) => {
+const BurgerIngredients = ({addIngredient}) => {
   const [currentTab, setCurrentTab] = useState("");
   const [ingredientsOnTab, setIngredientsOnTab] = useState([]);
-  const {ingredients} = useContext(AppContext);
+  const [{ingredients, isIngredientsLoading}] = useIngredeints();  
 
   useEffect(() => {
     const getIngredientsByType = (tabName) => {
@@ -103,25 +105,35 @@ const BurgerIngredients = ({addIngredient, isLoading}) => {
       </div>
       <ul className={`mb-3 ${burgerIngredientsStyles.tabs}`}>
         <li><Tab
-              value="bun"
+              value="bun"              
               active={currentTab === "bun"}
-              onClick={changeCurrentTab}>Булки</Tab></li>
+              onClick={() => {
+                document.location='#bun';
+                return false;
+              }}
+              >Булки</Tab></li>              
         <li><Tab
               value="sauce"
               active={currentTab === "sauce"}
-              onClick={changeCurrentTab}>Соусы</Tab></li>
+              onClick={() => {
+                document.location='#sauce';
+                return false;
+              }}>Соусы</Tab></li>
         <li><Tab
               value="main"
               active={currentTab === "main"}
-              onClick={changeCurrentTab}>Начинки</Tab></li>
+              onClick={() => {
+                document.location='#main';
+                return false;
+              }}>Начинки</Tab></li>
       </ul>
-      <Spinner isLoading={isLoading} />
+      <Spinner isLoading={isIngredientsLoading} />
       <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}>
           {ingredients.length > 0 && ingredientsOnTab.map(
             (typedSet, i) => {
               return (
                 <React.Fragment key={i}>
-                  <div className="text text_type_main-medium mb-3">
+                  <div id={typedSet.key} className="text text_type_main-medium mb-3">
                     {getHeader(typedSet.key)}
                   </div>        
                   <div className={burgerIngredientsStyles.table}>
@@ -161,8 +173,7 @@ BurgerIngredient.propTypes = {
 };
 
 BurgerIngredients.propTypes = {
-  addIngredient: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired
+  addIngredient: PropTypes.func.isRequired
 };
  
 export default BurgerIngredients;
