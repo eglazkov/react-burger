@@ -23,7 +23,8 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
       return {
         ...state,
         isIngredientsLoading: true,
-        ingredients: []
+        ingredients: [],
+        errorMessage: null
       };  
     case FETCH_INGREDIENTS_SUCCESS:
     case CHANGE_INGREDIENTS:

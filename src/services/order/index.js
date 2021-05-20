@@ -15,7 +15,8 @@ export const useOrder = () => (
       totalCost: orderReducer.totalCost,
       isSendingDataOrder: orderReducer.isSendingDataOrder,
       orderId: orderReducer.orderId,
-      isShowOrderDetails: orderReducer.isShowOrderDetails     
+      isShowOrderDetails: orderReducer.isShowOrderDetails,
+      errorMessage: orderReducer.errorMessage    
     })),
     {
       increaseTotalCostAction,

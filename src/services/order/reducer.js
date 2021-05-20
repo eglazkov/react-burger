@@ -13,7 +13,8 @@ const orderInitialState = {
   totalCost: 0,
   isSendingDataOrder: false,
   orderId: null,
-  isShowOrderDetails: false
+  isShowOrderDetails: false,
+  errorMessage: null
 };
 
 export const orderReducer = (state = orderInitialState, action) => {
@@ -36,7 +37,8 @@ export const orderReducer = (state = orderInitialState, action) => {
     case FETCH_DATA_ORDER_PENDING:
       return {
         ...state,
-        isSendingDataOrder: true
+        isSendingDataOrder: true,
+        errorMessage: null
       };          
     case FETCH_DATA_ORDER_SUCCESS:
       return {
@@ -47,7 +49,9 @@ export const orderReducer = (state = orderInitialState, action) => {
     case FETCH_DATA_ORDER_FAIL:
       return {
         ...state,
-        isSendingDataOrder: false
+        isSendingDataOrder: false,
+        errorMessage: action.payload.errorMessage,
+        orderId: null
       };          
     case SHOW_ORDER_DETAILS:
       return {

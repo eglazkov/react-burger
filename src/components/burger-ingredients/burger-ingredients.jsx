@@ -71,12 +71,18 @@ const BurgerIngredients = ({addIngredient}) => {
       <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}
         onScroll={({target}) => {
           const targetTop = target.getBoundingClientRect().y;
-          const bunElTop = document.getElementById('bun').getBoundingClientRect().y-targetTop;
-          const sauceTop = document.getElementById('sauce').getBoundingClientRect().y-targetTop;
-          const mainElTop = document.getElementById('main').getBoundingClientRect().y-targetTop;
-          const activeTab = mainElTop <= 24 ? 'main':
-          sauceTop <= 24 ? 'sauce' : bunElTop <=24 ? 'bun' : '';          
-          setCurrentTab(activeTab)             
+          if (
+            document.getElementById('bun') ||
+            document.getElementById('sauce') ||
+            document.getElementById('main')
+            ) {            
+            const bunElTop = document.getElementById('bun').getBoundingClientRect().y-targetTop;
+            const sauceTop = document.getElementById('sauce').getBoundingClientRect().y-targetTop;
+            const mainElTop = document.getElementById('main').getBoundingClientRect().y-targetTop;
+            const activeTab = mainElTop <= 24 ? 'main':
+            sauceTop <= 24 ? 'sauce' : bunElTop <=24 ? 'bun' : '';          
+            setCurrentTab(activeTab);
+          }
         }}>
           {ingredients.length > 0 && ingredientsOnTab.map(
             (typedSet, i) => {

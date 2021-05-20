@@ -10,7 +10,7 @@
   justify-content: space-between;
 }
 .tableWrapper {
-  max-height: calc(100vh - 280px);
+  max-height: calc(100vh - 100px);
   overflow-y: auto;
 }
 .tableWrapper::-webkit-scrollbar {
@@ -35,11 +35,14 @@
   padding-left: 26px;
   padding-right: 26px;
 }
-.ingredient {
+.ingredient {  
   position: relative;
   text-align: center;
   cursor: pointer;
   max-width: 272px;
+}
+.ingredient[isDrag = true] {
+ opacity: 0;
 }
 .counter, .cost{
   font-family: 'Iceland', Arial, sans-serif;

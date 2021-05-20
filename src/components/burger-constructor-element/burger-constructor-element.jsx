@@ -15,17 +15,18 @@ const BurgerConstructorElement = ({
   isLast = false,
   draggable = false,
   id,
+  index,
   className
 }) => {
   const dispatch = useDispatch();  
-  const [{constructorIngredients}, {dropConstructorItemAction}] = useConstructor();
+  const [, {dropConstructorItemAction}] = useConstructor();
   const onDropHandler = ({dragIndex, replaceToIndex}) => {
     dispatch(dropConstructorItemAction({dragIndex, replaceToIndex}));
   }
 
   const [{isDrag}, dragRef] = useDrag({
     type: "constructor-element",
-    item: {dragId: id},
+    item: {dragId: id, dragIndex: index},
     collect: monitor => ({
         isDrag: monitor.isDragging()
     })
@@ -33,10 +34,8 @@ const BurgerConstructorElement = ({
 
   const [{isHover}, dropTarget] = useDrop({
     accept: "constructor-element",
-    drop({dragId}) {
-      const dragIndex = constructorIngredients.findIndex((el) => el._id === dragId);
-      const replaceToIndex = constructorIngredients.findIndex((el) => el._id === id);
-      onDropHandler({dragIndex, replaceToIndex});        
+    drop({dragId, dragIndex}) {
+      onDropHandler({dragIndex, replaceToIndex: index});        
     },
     collect: monitor => ({
         isHover: monitor.isOver(),
@@ -77,7 +76,8 @@ BurgerConstructorElement.propTypes = {
   isLast: PropTypes.bool,
   draggable: PropTypes.bool,
   className: PropTypes.string,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  index: PropTypes.number
 };
  
 export default BurgerConstructorElement;

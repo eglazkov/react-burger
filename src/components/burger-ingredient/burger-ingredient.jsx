@@ -1,4 +1,5 @@
 import React, {useState, useCallback} from 'react';
+import {useDrag} from "react-dnd";
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredient.module.css';
@@ -7,11 +8,22 @@ import IngredientDetails from '../ingredient-details';
 
 import {useIngredeints} from '../../services';
 
-const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...details}) => {
+const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, ...details}) => {
   const dispatch = useDispatch();
   const [{showIngredientDetails, ingredientDetails},
     {openDetailsAction, closeDetailsAction}] = useIngredeints();
   const [renderDetails, setRenderDetails] = useState(false);
+
+  const [{isDrag}, dragRef] = useDrag({
+    type: "ingredient-constructor",
+    item: {ingredient: {
+      _id, image, price, name, count,
+      ...details
+    }},
+    collect: monitor => ({
+        isDrag: monitor.isDragging()
+    })
+  });
   
   const openDetails = useCallback(() => {
     dispatch(openDetailsAction(details));
@@ -26,12 +38,14 @@ const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...det
   return ( 
     <>
       <div
+        ref={dragRef}
         onClick={function(e) {
           if (e.target.tagName !== 'P' &&
           (e.target.children[0] ? e.target.children[0].tagName !== 'P' : true)) {
             openDetails();
           }
         }}
+        isdrag={String(isDrag)}
         className={`mb-4 ${burgerIngredientsStyles.ingredient}`}>
         {count >= 0 && <span className={burgerIngredientsStyles.counter} onClick={addToConstructor}>
           <Counter count={count}/>

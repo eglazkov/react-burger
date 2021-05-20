@@ -1,14 +1,27 @@
 .container {
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
   min-width: 600px;
+  min-height: calc(100vh - 300px);
+  position: relative;
+}
+.container[ishover = true]:after {
+  content: '';
+  width: 610px;
+  height: calc(100vh - 160px);
+  opacity: .5;
+  position: absolute;
+  background: white;  
+}
+.container[ishover = true] > div {
+  opacity: .5;
 }
 .tableWrapper {
-  max-height: calc(100vh - 498px);
+  max-height: calc(100vh - 458px);
   overflow-y: auto;
   overflow-x: hidden;
 }

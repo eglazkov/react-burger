@@ -30,12 +30,12 @@ export const constructorReducer = (state = constructorInitialState, action) => {
         return {
           ...state
         };
-      }      
+      }    
       const replacedArray = [...state.constructorIngredients];            
-      const dragItem = [...replacedArray][dragIndex];
-      const replaceToItem = [...replacedArray][replaceToIndex];      
-      replacedArray[dragIndex] = replaceToItem;
-      replacedArray[replaceToIndex] = dragItem;
+      const dragItem = [...replacedArray][dragIndex + 1];
+      const replaceToItem = [...replacedArray][replaceToIndex + 1];      
+      replacedArray[dragIndex + 1] = replaceToItem;
+      replacedArray[replaceToIndex + 1] = dragItem;
       return {
         ...state,
         constructorIngredients: replacedArray
