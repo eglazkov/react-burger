@@ -2,11 +2,14 @@ import {
   ADD_TO_CONSTRUCTOR,
   REMOVE_FROM_CONSTRUCTOR,
   DROP_CONSTRUCTOR_ITEM,
-  RESET_CONSTRUCTOR
+  RESET_CONSTRUCTOR,
+  HIDE_DROP_LOCATION,
+  SHOW_DROP_LOCATION
 } from './action-types';
 
 const constructorInitialState = {
-  constructorIngredients: []
+  constructorIngredients: [],
+  showDropLocation: false
 };
 
 export const constructorReducer = (state = constructorInitialState, action) => {
@@ -44,6 +47,16 @@ export const constructorReducer = (state = constructorInitialState, action) => {
       return {
         ...state ,
         constructorIngredients: constructorInitialState.constructorIngredients       
+      };         
+    case SHOW_DROP_LOCATION:
+      return {
+        ...state ,
+        showDropLocation: true       
+      };         
+    case HIDE_DROP_LOCATION:
+      return {
+        ...state ,
+        showDropLocation: false  
       };
     default:
       return {...state};

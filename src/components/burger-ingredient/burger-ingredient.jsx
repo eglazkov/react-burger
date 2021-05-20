@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {useDrag} from "react-dnd";
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,24 +6,30 @@ import burgerIngredientsStyles from './burger-ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../ingredient-details';
 
-import {useIngredeints} from '../../services';
+import {useIngredeints, useConstructor} from '../../services';
 
 const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, ...details}) => {
   const dispatch = useDispatch();
   const [{showIngredientDetails, ingredientDetails},
     {openDetailsAction, closeDetailsAction}] = useIngredeints();
+    const [,{toggleDropLoactionAction}] = useConstructor();
   const [renderDetails, setRenderDetails] = useState(false);
 
-  const [{isDrag}, dragRef] = useDrag({
+  const [{isDrag, didDrop}, dragRef] = useDrag({
     type: "ingredient-constructor",
     item: {ingredient: {
       _id, image, price, name, count,
       ...details
-    }},
+    }},    
     collect: monitor => ({
-        isDrag: monitor.isDragging()
+        isDrag: monitor.isDragging(),
+        didDrop: monitor.didDrop()
     })
   });
+
+  useEffect(() => {
+    (isDrag || (!didDrop && !isDrag)) && dispatch(toggleDropLoactionAction(isDrag));
+  }, [toggleDropLoactionAction, isDrag, dispatch]);
   
   const openDetails = useCallback(() => {
     dispatch(openDetailsAction(details));

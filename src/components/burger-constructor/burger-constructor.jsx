@@ -14,7 +14,7 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
 
   const [{totalCost, orderId, isShowOrderDetails, errorMessage},
     {fetchDataOrderAction, closeOrderDetailsAction}] = useOrder();
-  const [{constructorIngredients}, {resetConstructorAction}] = useConstructor();
+  const [{constructorIngredients, showDropLocation},{resetConstructorAction}] = useConstructor();
   const [ , {fetchIngredientsAction}] = useIngredeints();
 
   const [{isHover}, dropTarget] = useDrop({
@@ -50,8 +50,8 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
   return (       
     <>
     <section
-    ishover={String(isHover)}    
-    className={`pl-4 ${burgerConstructorStyles.container}`}
+    ishover={String(isHover || showDropLocation)}    
+    className={`pl-4 text text_type_main-medium text_color_inactive ${burgerConstructorStyles.container}`}
     ref={dropTarget}>
         <div className={`mb-3 pr-1`}>
           {

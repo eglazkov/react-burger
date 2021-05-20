@@ -4,19 +4,22 @@ import {
   addToConstructorAction,
   removeFromConstructorAction,
   dropConstructorItemAction,
-  resetConstructorAction
+  resetConstructorAction,
+  toggleDropLoactionAction
 } from './action-creators';
 
 export const useConstructor = () => (
   [
     useSelector(({constructorReducer}) => ({
-      constructorIngredients: constructorReducer.constructorIngredients     
+      constructorIngredients: constructorReducer.constructorIngredients,
+      showDropLocation: constructorReducer.showDropLocation
     })),
     {
       addToConstructorAction,
       removeFromConstructorAction,
       dropConstructorItemAction,
-      resetConstructorAction
+      resetConstructorAction,
+      toggleDropLoactionAction
     }
   ]
 );
