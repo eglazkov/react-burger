@@ -1,7 +1,7 @@
 import {
   ADD_TO_CONSTRUCTOR,
   REMOVE_FROM_CONSTRUCTOR,
-  DRAG_CONSTRUCTOR_ITEM,
+  DROP_CONSTRUCTOR_ITEM,
   RESET_CONSTRUCTOR
 } from './action-types';
 
@@ -24,9 +24,21 @@ export const constructorReducer = (state = constructorInitialState, action) => {
         ...state,
         constructorIngredients
       };          
-    case DRAG_CONSTRUCTOR_ITEM:
+    case DROP_CONSTRUCTOR_ITEM:
+      const {dragIndex, replaceToIndex} = action.payload;  
+      if (dragIndex === replaceToIndex) {
+        return {
+          ...state
+        };
+      }      
+      const replacedArray = [...state.constructorIngredients];            
+      const dragItem = [...replacedArray][dragIndex];
+      const replaceToItem = [...replacedArray][replaceToIndex];      
+      replacedArray[dragIndex] = replaceToItem;
+      replacedArray[replaceToIndex] = dragItem;
       return {
-        ...state        
+        ...state,
+        constructorIngredients: replacedArray
       };         
     case RESET_CONSTRUCTOR:
       return {

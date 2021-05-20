@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -24,10 +24,6 @@ const BurgerIngredients = ({addIngredient}) => {
     ]);
     
   }, [ingredients]);
-
-  const changeCurrentTab = (tabName) => {
-    setCurrentTab(tabName);
-  }
   
   const getHeader = (currentTabName) => {
     const names = {

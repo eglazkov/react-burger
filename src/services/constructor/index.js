@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {
   addToConstructorAction,
   removeFromConstructorAction,
-  dragConstructorItemAction,
+  dropConstructorItemAction,
   resetConstructorAction
 } from './action-creators';
 
@@ -15,7 +15,7 @@ export const useConstructor = () => (
     {
       addToConstructorAction,
       removeFromConstructorAction,
-      dragConstructorItemAction,
+      dropConstructorItemAction,
       resetConstructorAction
     }
   ]

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredient.module.css';
@@ -10,14 +10,17 @@ import {useIngredeints} from '../../services';
 const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...details}) => {
   const dispatch = useDispatch();
   const [{showIngredientDetails, ingredientDetails},
-    {openDetailsAction, closeDetailsAction}] = useIngredeints();   
+    {openDetailsAction, closeDetailsAction}] = useIngredeints();
+  const [renderDetails, setRenderDetails] = useState(false);
   
-  const openDetails = () => {
+  const openDetails = useCallback(() => {
     dispatch(openDetailsAction(details));
-  };
+    setRenderDetails(true);
+  }, [dispatch, openDetailsAction, details]);
 
   const closeDetails = useCallback(() => {
     dispatch(closeDetailsAction());
+    setRenderDetails(false);
   }, [closeDetailsAction, dispatch]);
 
   return ( 
@@ -46,7 +49,7 @@ const BurgerIngredient = ({image, price, name, count=0, addToConstructor, ...det
         </div>
       </div>
       {
-        showIngredientDetails &&
+        showIngredientDetails && renderDetails &&
         <IngredientDetails
           caption="Детали ингредиента"
           onClose={closeDetails}

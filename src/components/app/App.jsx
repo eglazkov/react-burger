@@ -86,7 +86,7 @@ const App = () => {
         <BurgerIngredients
           addIngredient={addIngredient}/>
         <BurgerConstructor
-          removeIngredient={removeIngredient}/>
+            removeIngredient={removeIngredient}/>
       </main>
       <AppFooter />
       {isSendingDataOrder && <AppSpinner />}

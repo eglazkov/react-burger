@@ -28,13 +28,28 @@
 }
 .ingredientWrapper {
   display: flex;
-  align-items: center;
+  align-items: center;  
+}
+.ingredientWrapper[isdrag = true], .ingredientWrapper[ishover = true] {
+  opacity: .5;
+}
+.ingredientWrapper[isdraggable = true]:hover > div:nth-child(2) {
+  cursor: grab;
+}
+.ingredientWrapper[isdraggable = true]:active > div:nth-child(2) {
+  cursor: grabbing;
+}
+.ingredientWrapper[ishover = true] > div:nth-child(2) {
+  background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
 }
 .ingredientWrapper > div:nth-child(2) > span > img {
   width: auto;
 }
-.dragHandle {
-  cursor: pointer;
+.dragHandle:hover {
+  cursor: grab;
+}
+.dragHandle:active {
+  cursor: grabbing;
 }
 .dragHandle[edge = true] {
   visibility: hidden;

@@ -1,7 +1,7 @@
 import {
   ADD_TO_CONSTRUCTOR,
   REMOVE_FROM_CONSTRUCTOR,
-  DRAG_CONSTRUCTOR_ITEM,
+  DROP_CONSTRUCTOR_ITEM,
   RESET_CONSTRUCTOR
 } from './action-types';
 
@@ -13,8 +13,8 @@ export const removeFromConstructorAction = (index) => dispatch => {
   dispatch({type: REMOVE_FROM_CONSTRUCTOR, payload: {index}})
 };
 
-export const dragConstructorItemAction = item => dispatch => {
-  dispatch({type: DRAG_CONSTRUCTOR_ITEM, payload: {item}})
+export const dropConstructorItemAction = ({dragIndex, replaceToIndex}) => dispatch => {
+  dispatch({type: DROP_CONSTRUCTOR_ITEM, payload: {dragIndex, replaceToIndex}})
 };
 
 export const resetConstructorAction = () => dispatch => {
