@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
+import {DndProvider, useDrag} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details';
+import BurgerConstructorElement from '../burger-constructor-element';
 import {useOrder, useConstructor, useIngredeints} from '../../services';
  
-/*
-  TODO: drag'n'drop
-*/
 const BurgerConstructor = ({removeIngredient}) => {
   const dispatch = useDispatch();
   const myRef = useRef(null);  
@@ -44,61 +44,43 @@ const BurgerConstructor = ({removeIngredient}) => {
         <div className={`mb-3 pr-1`}>
           {
             firstIngredient &&
-            <div 
-                key={`${firstIngredient._id}-first`}
-                className={`mb-2 text text_type_main-default ${burgerConstructorStyles.ingredientWrapper}`}>
-                <div
-                  edge="true"
-                  className={`mr-2 ${burgerConstructorStyles.dragHandle}`}>
-                  <DragIcon />
-                </div>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  price={firstIngredient.price}
-                  text={`${firstIngredient.name} (верх)`}
-                  thumbnail={firstIngredient["image_mobile"]}/>
-            </div>
+            <BurgerConstructorElement
+              className="mb-2"
+              isFirst
+              price={firstIngredient.price}
+              text={`${firstIngredient.name} (верх)`}
+              thumbnail={firstIngredient["image_mobile"]}
+            />
           }
-          <div className={`${burgerConstructorStyles.tableWrapper}`} ref={myRef}>
-            {constructorIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
-              .map((addedIngredient, index, arr) => {
-                return (
-                  <div 
-                    key={`${addedIngredient._id}-${index}`}
-                    className={`mt-2 text text_type_main-default ${burgerConstructorStyles.ingredientWrapper}`}>
-                    <div
-                      className={`mr-2 ${burgerConstructorStyles.dragHandle}`}>                    
-                      <DragIcon />
-                    </div>
-                    <ConstructorElement
+          {/* drop target */}
+          <DndProvider backend={HTML5Backend}>
+            <div className={`${burgerConstructorStyles.tableWrapper}`} ref={myRef}>
+              {constructorIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
+                .map((addedIngredient, index, arr) => {
+                  return (
+                    // drag item
+                    <BurgerConstructorElement
+                      draggable
+                      className={arr.length - 1 !== index ? 'mb-2' : null}
                       handleClose={() => removeIngredient(index + 1)}
                       price={addedIngredient.price}
-                      text={addedIngredient.name}
-                      thumbnail={addedIngredient["image_mobile"]}/>
-                  </div>
-                );
-              })
-            }            
-          </div>
+                      text={`${addedIngredient.name} (верх)`}
+                      thumbnail={addedIngredient["image_mobile"]}
+                    />
+                  );
+                })
+              }            
+            </div>
+          </DndProvider>
           {
             lastIngredient &&
-            <div 
-                key={`${firstIngredient._id}-last`}
-                className={`mt-2 text text_type_main-default ${burgerConstructorStyles.ingredientWrapper}`}>
-                <div
-                  edge="true"
-                  className={`mr-2 ${burgerConstructorStyles.dragHandle}`}>
-                  <DragIcon />
-                </div>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  price={lastIngredient.price}
-                  text={`${lastIngredient.name} (низ)`}
-                  thumbnail={lastIngredient["image_mobile"]}/>
-
-            </div>
+            <BurgerConstructorElement
+              className="mt-2"
+              isLast
+              price={lastIngredient.price}
+              text={`${lastIngredient.name} (низ)`}
+              thumbnail={lastIngredient["image_mobile"]}
+            />
           }
         </div>
         {constructorIngredients.length > 0 && <div>

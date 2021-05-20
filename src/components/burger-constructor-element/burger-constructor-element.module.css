@@ -1,0 +1,62 @@
+.container {
+  margin: 0 auto;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-width: 600px;
+}
+.tableWrapper {
+  max-height: calc(100vh - 498px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.tableWrapper::-webkit-scrollbar {
+	width: 12px;
+}
+.tableWrapper::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+.tableWrapper::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
+.tableWrapper > .ingredientWrapper:first-child {
+  margin-top: 0;
+}
+.ingredientWrapper {
+  display: flex;
+  align-items: center;
+}
+.ingredientWrapper > div:nth-child(2) > span > img {
+  width: auto;
+}
+.dragHandle {
+  cursor: pointer;
+}
+.dragHandle[edge = true] {
+  visibility: hidden;
+}
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  font-family: 'Iceland';
+  font-size: 48px;
+  line-height: 36px;
+}
+.footer > svg {
+  margin-right: 40px;
+  margin-left: 10px;
+}
+
+@media (max-width: 575px) {
+  .container {
+    max-width: 320px;
+    margin: 0 auto;
+    display: none;
+  }
+}
