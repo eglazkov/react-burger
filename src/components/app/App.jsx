@@ -31,8 +31,8 @@ const App = () => {
     dispatch(increaseCountAction(id));
   };
 
-  const decreaseCount = amount => {
-    dispatch(decreaseCountAction(amount));
+  const decreaseCount = id => {
+    dispatch(decreaseCountAction(id));
   };
 
   const addToConstructor = (index, item) => {
@@ -58,12 +58,15 @@ const App = () => {
         return;
       }
 
-      if (length > 0) {
+      if (length === 2) { 
+        removeIngredient(length-2);     
         removeIngredient(0);
-        removeIngredient(length - 2);
+      } else if (length > 2) { 
+        removeIngredient(length-1);     
+        removeIngredient(0);
       }
       addToConstructor(0, ingredient);
-      addToConstructor(length - 1, ingredient);
+      addToConstructor(length, ingredient);
       increaseCount(ingredient["_id"]);
       increaseCount(ingredient["_id"]);
       increaseTotalCost(ingredient.price * 2);
