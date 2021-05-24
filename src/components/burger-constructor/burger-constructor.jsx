@@ -13,7 +13,7 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
   const myRef = useRef(null);  
 
   const [{totalCost, orderId, isShowOrderDetails, errorMessage},
-    {fetchDataOrderAction, closeOrderDetailsAction}] = useOrder();
+    {fetchDataOrderAction, closeOrderDetailsAction, resetTotalCostAction}] = useOrder();
   const [{constructorIngredients, showDropLocation},{resetConstructorAction}] = useConstructor();
   const [ , {fetchIngredientsAction}] = useIngredeints();
 
@@ -34,13 +34,14 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
   }
 
   const closeOrderDetails = useCallback(() => {
-    dispatch(resetConstructorAction())
+    dispatch(resetConstructorAction());
+    dispatch(resetTotalCostAction());
     dispatch(closeOrderDetailsAction());
     dispatch(fetchIngredientsAction());
-  }, [closeOrderDetailsAction, resetConstructorAction, fetchIngredientsAction, dispatch]);
+  }, [closeOrderDetailsAction, resetConstructorAction, fetchIngredientsAction, resetTotalCostAction, dispatch]);
 
   const sendOrder = () => {
-    dispatch(fetchDataOrderAction(constructorIngredients.map(item => item._id)))
+    dispatch(fetchDataOrderAction(constructorIngredients.map(item => item._id)));
   };
   
   useEffect(() => {
