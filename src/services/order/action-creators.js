@@ -10,24 +10,30 @@ import {
 } from './action-types';
 import {API_URL} from '../../constants';
 
-export const increaseTotalCostAction = (amount) => dispatch => {
-  dispatch({type: INCREASE_TOTALCOST, payload: {amount}});
+export const increaseTotalCostAction = (amount) => {
+  return {
+    type: INCREASE_TOTALCOST, 
+    payload: {amount}
+  };
 };
 
-export const decreaseTotalCostAction = (amount) => dispatch => {
-  dispatch({type: DECREASE_TOTALCOST, payload: {amount}});
+export const decreaseTotalCostAction = (amount) => {
+  return {
+    type: DECREASE_TOTALCOST, 
+    payload: {amount}
+  };
 };
 
-export const resetTotalCostAction = () => dispatch => {
-  dispatch({type: RESET_TOTALCOST});
+export const resetTotalCostAction = () => {
+  return {type: RESET_TOTALCOST};
 };
 
-export const showOrderDetailsAction = () => dispatch => {
-  dispatch({type: SHOW_ORDER_DETAILS});
+export const showOrderDetailsAction = () => {
+  return {type: SHOW_ORDER_DETAILS};
 };
 
-export const closeOrderDetailsAction = () => dispatch => {
-  dispatch({type: CLOSE_ORDER_DETAILS});
+export const closeOrderDetailsAction = () => {
+  return {type: CLOSE_ORDER_DETAILS};
 };
 
 export const fetchDataOrderAction = orderlist => dispatch => {

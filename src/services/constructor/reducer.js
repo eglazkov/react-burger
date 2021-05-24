@@ -12,6 +12,17 @@ const constructorInitialState = {
   showDropLocation: false
 };
 
+const array_move = function(arr, old_index, new_index) {
+  if (new_index >= arr.length) {
+      var k = new_index - arr.length + 1;
+      while (k--) {
+          arr.push(undefined);
+      }
+  }
+  arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+  return arr;
+};
+
 export const constructorReducer = (state = constructorInitialState, action) => {
   const constructorIngredients = [...state.constructorIngredients];
   switch (action.type) {    
@@ -26,7 +37,7 @@ export const constructorReducer = (state = constructorInitialState, action) => {
       return {
         ...state,
         constructorIngredients
-      };          
+      };        
     case DROP_CONSTRUCTOR_ITEM:
       const {dragIndex, replaceToIndex} = action.payload;  
       if (dragIndex === replaceToIndex) {
@@ -34,14 +45,13 @@ export const constructorReducer = (state = constructorInitialState, action) => {
           ...state
         };
       }    
-      const replacedArray = [...state.constructorIngredients];            
-      const dragItem = [...replacedArray][dragIndex + 1];
-      const replaceToItem = [...replacedArray][replaceToIndex + 1];      
-      replacedArray[dragIndex + 1] = replaceToItem;
-      replacedArray[replaceToIndex + 1] = dragItem;
       return {
         ...state,
-        constructorIngredients: replacedArray
+        constructorIngredients: array_move(
+          [...state.constructorIngredients],
+          dragIndex + 1,
+          replaceToIndex + 1
+        )
       };         
     case RESET_CONSTRUCTOR:
       return {
