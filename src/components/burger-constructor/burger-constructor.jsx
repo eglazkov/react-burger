@@ -77,7 +77,7 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
                     className={arr.length - 1 !== index ? 'mb-2' : null}
                     handleClose={() => removeIngredient(index + 1)}
                     price={addedIngredient.price}
-                    text={`${addedIngredient.name} (верх)`}
+                    text={`${addedIngredient.name}`}
                     thumbnail={addedIngredient["image_mobile"]}
                   />
                 );
