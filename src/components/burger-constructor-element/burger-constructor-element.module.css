@@ -1,42 +1,14 @@
 .container {
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
   min-width: 600px;
-  min-height: calc(100vh - 300px);
-  position: relative;
-}
-.container[ishover = true]:before {
-  content: 'Перетащите сюда ингредиент!';
-  position: absolute;
-  width: 610px;
-  z-index: 1000;
-  opacity: 1;
-  text-align: center;
-  line-height: calc(100vh - 160px);
-  height: calc(100vh - 160px);
-}
-.container[ishover = true]:after {
-  content: '';
-  width: 610px;
-  height: calc(100vh - 160px);
-  opacity: .7;
-  position: absolute;
-  border-radius: 30px;
-  background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  -o-border-radius: 30px;
-}
-.container[ishover = true] > div {
-  opacity: .5;
 }
 .tableWrapper {
-  max-height: calc(100vh - 458px);
+  max-height: calc(100vh - 498px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -56,13 +28,30 @@
 }
 .ingredientWrapper {
   display: flex;
-  align-items: center;
+  align-items: center;  
+}
+.ingredientWrapper[isdrag = true] {
+  opacity: 0;
+}
+.ingredientWrapper[ishover = true] > div:nth-child(2) {
+  opacity: .5;
+  background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
+  outline: #4C4CFF;
+}
+.ingredientWrapper[isdraggable = true]:hover > div:nth-child(2) {
+  cursor: grab;
+}
+.ingredientWrapper[isdraggable = true]:active > div:nth-child(2) {
+  cursor: grabbing;
 }
 .ingredientWrapper > div:nth-child(2) > span > img {
   width: auto;
 }
-.dragHandle {
-  cursor: pointer;
+.dragHandle:hover {
+  cursor: grab;
+}
+.dragHandle:active {
+  cursor: grabbing;
 }
 .dragHandle[edge = true] {
   visibility: hidden;

@@ -1,67 +1,55 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useEffect} from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {useDispatch} from 'react-redux';
 import appStyles from './app.module.css';
 import AppHeader from '../app-header';
 import AppFooter from '../app-footer';
 import BurgerIngredients from '../burger-ingredients';
 import BurgerConstructor from '../burger-constructor';
 import AppSpinner from '../app-spinner';
-import {API_URL} from '../../constants';
 
-import {AppContext} from '../../services/app-context';
-
-function totalCostReducer (state, action) {
-  switch (action.type) {
-    case 'increase':
-      return state + action.payload      
-    case 'decrease':
-      return state - action.payload
-    case 'reset':
-      return 0;  
-    default:
-      return state;
-  }
-}
+import {useIngredeints, useOrder, useConstructor} from '../../services';
  
 const App = () => {
-  const [ingredients, setIngredients] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOrderCreating, setIsOrderCreating] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [addedIngredients, setAddedIngredients] = useState([]);
-  const [totalCost, dispatchTotalCost] = useReducer(totalCostReducer, 0) 
+  const dispatch = useDispatch();
+  const [{errorMessage},
+    {fetchIngredientsAction, increaseCountAction, decreaseCountAction}] = useIngredeints();
+  const [{isSendingDataOrder}, {increaseTotalCostAction, decreaseTotalCostAction}] = useOrder();  
+  const [{constructorIngredients},
+    {addToConstructorAction, removeFromConstructorAction}] = useConstructor();  
+
+  const increaseTotalCost = amount => {
+    dispatch(increaseTotalCostAction(amount));
+  };
+
+  const decreaseTotalCost = amount => {
+    dispatch(decreaseTotalCostAction(amount));
+  };
+
+  const increaseCount = id => {
+    dispatch(increaseCountAction(id));
+  };
+
+  const decreaseCount = id => {
+    dispatch(decreaseCountAction(id));
+  };
+
+  const addToConstructor = (index, item) => {
+    dispatch(addToConstructorAction(index, item));
+  };
+
+  const removeFromConstructor = index => {
+    dispatch(removeFromConstructorAction(index));
+  };
   
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${API_URL}/ingredients`)
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res.status);
-        } else {
-          return res.json();
-        }
-      })
-      .then(resp => {
-        setIngredients(resp.data);
-        setIsLoading(false);
-      }).catch(error => {
-        setIsLoading(false);
-        setIsError(true);
-        alert(`Во время запроса произошла ошибка: ${error}`);
-      });    
-  }, []);
-  
-  const changeCount = (ingredients, id, decrease) => {
-    ingredients.forEach(item => {
-      if (item["_id"] === id) {
-        item.count = decrease ?
-        Number(item.count || 0) - 1 :
-        Number(item.count || 0) + 1;
-      }
-    });
-  }
+    dispatch(fetchIngredientsAction());
+    errorMessage && alert(`Во время запроса произошла ошибка: ${errorMessage}`);
+  }, [errorMessage, fetchIngredientsAction, dispatch]);
 
   const addIngredient = (ingredient) => {    
-    const length = addedIngredients.length;
+    const length = constructorIngredients.length;
     const index = length === 1 ? length : length - 1;
     if (length === 0 || ingredient.type === "bun") {
       if (ingredient.type !== "bun") {
@@ -70,53 +58,47 @@ const App = () => {
         return;
       }
 
-      if (length > 0) {
+      if (length === 2) { 
+        removeIngredient(length-2);     
         removeIngredient(0);
-        removeIngredient(length - 2);
+      } else if (length > 2) { 
+        removeIngredient(length-1);     
+        removeIngredient(0);
       }
-      addedIngredients.splice(0, 0, ingredient);
-      addedIngredients.splice(length - 1, 0, ingredient);
-      changeCount(ingredients, ingredient["_id"]);
-      changeCount(ingredients, ingredient["_id"]);     
-      setIngredients([...ingredients]);
-      setAddedIngredients([...addedIngredients]);
-      dispatchTotalCost({type: 'increase', payload: ingredient.price * 2});
+      addToConstructor(0, ingredient);
+      addToConstructor(length, ingredient);
+      increaseCount(ingredient["_id"]);
+      increaseCount(ingredient["_id"]);
+      increaseTotalCost(ingredient.price * 2);
     } else {
-      addedIngredients.splice(index, 0, ingredient);
-      changeCount(ingredients, ingredient["_id"]);    
-      setIngredients([...ingredients]);
-      setAddedIngredients([...addedIngredients]);
-      dispatchTotalCost({type: 'increase', payload: ingredient.price});
+      addToConstructor(index, ingredient);
+      increaseCount(ingredient["_id"]);
+      increaseTotalCost(ingredient.price);
     }
   }
 
   const removeIngredient = (index) => {
-    const removedIngredient = addedIngredients.splice(index, 1);
-    changeCount(ingredients, removedIngredient[0]["_id"], true);
-    setIngredients([...ingredients]);
-    setAddedIngredients([...addedIngredients]);
-    dispatchTotalCost({type: 'decrease', payload: removedIngredient[0].price});
+    const removedIngredient = constructorIngredients[index];
+    decreaseCount(removedIngredient["_id"]);
+    decreaseTotalCost(removedIngredient.price);
+    removeFromConstructor(index);
   }
   
   return (
-    <AppContext.Provider value={{
-      ingredients,
-      addedIngredients,
-      totalCost,
-      dispatchTotalCost,
-      setIsOrderCreating
-    }}>
+    <>
       <AppHeader />
-      <main className={`mb-5 ${appStyles.mainContainer}`}>          
-        <BurgerIngredients
-          isLoading={isLoading}
-          addIngredient={addIngredient}/>
-        <BurgerConstructor
-          removeIngredient={removeIngredient}/>
-      </main>
+      <DndProvider backend={HTML5Backend}>
+        <main className={`pb-5 ${appStyles.mainContainer}`}>          
+          <BurgerIngredients
+            addIngredient={addIngredient}/>
+          <BurgerConstructor
+              addIngredient={addIngredient}
+              removeIngredient={removeIngredient}/>
+        </main>
+      </DndProvider>
       <AppFooter />
-      {isOrderCreating && <AppSpinner />}
-    </AppContext.Provider>
+      {isSendingDataOrder && <AppSpinner />}
+    </>
   );
 }
  

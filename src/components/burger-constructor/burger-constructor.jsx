@@ -1,151 +1,124 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useRef, useCallback, useEffect} from 'react';
+import {useDrop} from "react-dnd";
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import {ConstructorElement, Button, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details';
-import {AppContext} from '../../services/app-context';
-import {API_URL} from '../../constants';
+import BurgerConstructorElement from '../burger-constructor-element';
+import {useOrder, useConstructor, useIngredeints} from '../../services';
  
-/*
-  TODO: drag'n'drop
-*/
-const BurgerConstructor = ({removeIngredient}) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [orderData, setOrderData] = useState({});
-  const myRef = useRef(null);
-  const {totalCost, addedIngredients, setIsOrderCreating} = useContext(AppContext);
-  
-  useEffect(() => {
-    myRef.current.scrollTop = myRef.current.scrollHeight;
+const BurgerConstructor = ({removeIngredient, addIngredient}) => {
+  const dispatch = useDispatch();
+  const myRef = useRef(null);  
+
+  const [{totalCost, orderId, isShowOrderDetails, errorMessage},
+    {fetchDataOrderAction, closeOrderDetailsAction, resetTotalCostAction}] = useOrder();
+  const [{constructorIngredients, showDropLocation},{resetConstructorAction}] = useConstructor();
+  const [ , {fetchIngredientsAction}] = useIngredeints();
+
+  const [{isHover}, dropTarget] = useDrop({
+    accept: "ingredient-constructor",
+    drop({ingredient}) {
+      addIngredient(ingredient);
+    },
+    collect: monitor => ({
+        isHover: monitor.isOver(),
+    })
   });
   
-  const firstIngredient = addedIngredients[0];
+  const firstIngredient = constructorIngredients[0];
   let lastIngredient = null;
-  if (addedIngredients.length > 1) {
-    lastIngredient = addedIngredients[addedIngredients.length - 1];
+  if (constructorIngredients.length > 1) {
+    lastIngredient = constructorIngredients[constructorIngredients.length - 1];
   }
+
+  const closeOrderDetails = useCallback(() => {
+    dispatch(resetConstructorAction());
+    dispatch(resetTotalCostAction());
+    dispatch(closeOrderDetailsAction());
+    dispatch(fetchIngredientsAction());
+  }, [closeOrderDetailsAction, resetConstructorAction, fetchIngredientsAction, resetTotalCostAction, dispatch]);
 
   const sendOrder = () => {
-    setIsOrderCreating(true);
-    fetch(`${API_URL}/orders`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ingredients: addedIngredients.map(item => item._id)
-      })
-    }).then(res => {
-        if (!res.ok) {
-          return Promise.reject(res.status);
-        } else {
-          return res.json();
-        }
-      })
-      .then(resp => {
-        setOrderData({orderID: resp.order.number});
-        setIsOrderCreating(false);
-        setShowDetails(true);
-      }).catch(error => {
-        setIsOrderCreating(false);        
-        alert(`Во время запроса произошла ошибка: ${error}`);
-      });
-  }
-
-  const closeOrderDetails = () => {
-    [...addedIngredients].forEach(() => {      
-      removeIngredient(0);
-    });
-    setShowDetails(false);
-  }
+    dispatch(fetchDataOrderAction(constructorIngredients.map(item => item._id)));
+  };
+  
+  useEffect(() => {
+    errorMessage && alert(`Во время запроса произошла ошибка: ${errorMessage}`);
+  }, [errorMessage]);
   
   return (       
     <>
-      <section className={`pl-4 ${burgerConstructorStyles.container}`}>
+    <section
+    ishover={String(isHover || showDropLocation)}    
+    className={`pl-4 text text_type_main-medium text_color_inactive ${burgerConstructorStyles.container}`}
+    ref={dropTarget}>
         <div className={`mb-3 pr-1`}>
           {
             firstIngredient &&
-            <div 
-                key={`${firstIngredient._id}-first`}
-                className={`mb-2 text text_type_main-default ${burgerConstructorStyles.ingredientWrapper}`}>
-                <div
-                  edge="true"
-                  className={`mr-2 ${burgerConstructorStyles.dragHandle}`}>
-                  <DragIcon />
-                </div>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  price={firstIngredient.price}
-                  text={`${firstIngredient.name} (верх)`}
-                  thumbnail={firstIngredient["image_mobile"]}/>
-            </div>
+            <BurgerConstructorElement
+              className="mb-2"
+              isFirst
+              id={firstIngredient._id}
+              price={firstIngredient.price}
+              text={`${firstIngredient.name} (верх)`}
+              thumbnail={firstIngredient["image_mobile"]}
+            />
           }
           <div className={`${burgerConstructorStyles.tableWrapper}`} ref={myRef}>
-            {addedIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
+            {constructorIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
               .map((addedIngredient, index, arr) => {
                 return (
-                  <div 
+                  <BurgerConstructorElement
+                    draggable
+                    index={index}
+                    id={addedIngredient._id}
                     key={`${addedIngredient._id}-${index}`}
-                    className={`mt-2 text text_type_main-default ${burgerConstructorStyles.ingredientWrapper}`}>
-                    <div
-                      className={`mr-2 ${burgerConstructorStyles.dragHandle}`}>                    
-                      <DragIcon />
-                    </div>
-                    <ConstructorElement
-                      handleClose={() => removeIngredient(index + 1)}
-                      price={addedIngredient.price}
-                      text={addedIngredient.name}
-                      thumbnail={addedIngredient["image_mobile"]}/>
-                  </div>
+                    className={arr.length - 1 !== index ? 'mb-2' : null}
+                    handleClose={() => removeIngredient(index + 1)}
+                    price={addedIngredient.price}
+                    text={`${addedIngredient.name}`}
+                    thumbnail={addedIngredient["image_mobile"]}
+                  />
                 );
               })
             }            
           </div>
           {
             lastIngredient &&
-            <div 
-                key={`${firstIngredient._id}-last`}
-                className={`mt-2 text text_type_main-default ${burgerConstructorStyles.ingredientWrapper}`}>
-                <div
-                  edge="true"
-                  className={`mr-2 ${burgerConstructorStyles.dragHandle}`}>
-                  <DragIcon />
-                </div>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  price={lastIngredient.price}
-                  text={`${lastIngredient.name} (низ)`}
-                  thumbnail={lastIngredient["image_mobile"]}/>
-
-            </div>
+            <BurgerConstructorElement
+              className="mt-2"
+              id={lastIngredient._id}
+              isLast
+              price={lastIngredient.price}
+              text={`${lastIngredient.name} (низ)`}
+              thumbnail={lastIngredient["image_mobile"]}
+            />
           }
         </div>
-        {addedIngredients.length > 0 && <div>
+        {constructorIngredients.length > 0 && <div>
           <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
             {totalCost}
             <CurrencyIcon/>            
-            <div onClick={function() {
-              sendOrder();
-            }}>
+            <div onClick={sendOrder}>
               <Button>Оформить заказ</Button>
             </div>
           </div>
         </div>}
       </section>
-      {showDetails &&
+      {isShowOrderDetails &&
       <OrderDetails
         onClose={closeOrderDetails}
-        {...orderData}
-      />}
+        orderId={orderId}
+      />}    
     </>
   );
 }
 
 BurgerConstructor.propTypes = {
-  removeIngredient: PropTypes.func.isRequired
+  removeIngredient: PropTypes.func.isRequired,
+  addIngredient: PropTypes.func.isRequired
 };
  
 export default BurgerConstructor;

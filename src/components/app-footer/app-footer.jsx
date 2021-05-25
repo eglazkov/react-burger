@@ -1,13 +1,13 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import appFooterStyles from './app-footer.module.css';
 import {CurrencyIcon, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import {AppContext} from '../../services/app-context';
+import {useOrder} from '../../services';
 
 
 // TODO: add route to page of order
 
 const AppFooter = (props) => {
-  const {totalCost} = useContext(AppContext);
+  const [{totalCost}] = useOrder();
   return ( 
     <footer>
       <div className={`text text_type_main-default mb-2 mt-2 ${appFooterStyles.container}`}>
