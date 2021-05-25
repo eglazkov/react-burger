@@ -27,22 +27,34 @@ export const fetchIngredientsAction = () => dispatch => {
     });
 };
 
-export const changeIngredientsAction = ingredients => dispatch => {
-  dispatch({type: CHANGE_INGREDIENTS, payload: {ingredients}});  
+export const changeIngredientsAction = ingredients => {
+ return {
+   type: CHANGE_INGREDIENTS,
+    payload: {ingredients}
+  };  
 };
 
-export const increaseCountAction = (id) => dispatch => {
-  dispatch({type: INCREASE_INGREDIENT_COUNT, payload: {id}});  
+export const increaseCountAction = (id) => {
+  return {
+    type: INCREASE_INGREDIENT_COUNT, 
+    payload: {id}
+  };  
 };
 
-export const decreaseCountAction = (id) => dispatch => {
-  dispatch({type: DECREASE_INGREDIENT_COUNT, payload: {id}});  
+export const decreaseCountAction = (id) => {
+  return {
+    type: DECREASE_INGREDIENT_COUNT, 
+    payload: {id}
+  };  
 };
 
-export const openDetailsAction = details => dispatch => {
-  dispatch({type: OPEN_INGREDIENT_DETAILS, payload: {details}});  
+export const openDetailsAction = details => {
+  return {
+    type: OPEN_INGREDIENT_DETAILS,
+    payload: {details}
+  };  
 };
 
-export const closeDetailsAction = () => dispatch => {
-  dispatch({type: CLOSE_INGREDIENT_DETAILS});  
+export const closeDetailsAction = () => {
+  return {type: CLOSE_INGREDIENT_DETAILS};  
 };
