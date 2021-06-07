@@ -1,32 +1,40 @@
-import React, {useRef, useCallback, useEffect} from 'react';
-import {useDrop} from "react-dnd";
-import {useDispatch} from 'react-redux';
-import PropTypes from 'prop-types';
-import burgerConstructorStyles from './burger-constructor.module.css';
-import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderDetails from '../order-details';
-import BurgerConstructorElement from '../burger-constructor-element';
-import {useOrder, useConstructor, useIngredeints} from '../../services';
- 
-const BurgerConstructor = ({removeIngredient, addIngredient}) => {
+import React, { useRef, useCallback, useEffect } from "react";
+import { useDrop } from "react-dnd";
+import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import burgerConstructorStyles from "./burger-constructor.module.css";
+import {
+  Button,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import OrderDetails from "../order-details";
+import BurgerConstructorElement from "../burger-constructor-element";
+import { useOrder, useConstructor, useIngredeints } from "../../services";
+
+const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
   const dispatch = useDispatch();
-  const myRef = useRef(null);  
+  const myRef = useRef(null);
 
-  const [{totalCost, orderId, isShowOrderDetails, errorMessage},
-    {fetchDataOrderAction, closeOrderDetailsAction, resetTotalCostAction}] = useOrder();
-  const [{constructorIngredients, showDropLocation},{resetConstructorAction}] = useConstructor();
-  const [ , {fetchIngredientsAction}] = useIngredeints();
+  const [
+    { totalCost, orderId, isShowOrderDetails, errorMessage },
+    { fetchDataOrderAction, closeOrderDetailsAction, resetTotalCostAction },
+  ] = useOrder();
+  const [
+    { constructorIngredients, showDropLocation },
+    { resetConstructorAction },
+  ] = useConstructor();
+  const [, { fetchIngredientsAction }] = useIngredeints();
 
-  const [{isHover}, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient-constructor",
-    drop({ingredient}) {
+    drop({ ingredient }) {
       addIngredient(ingredient);
     },
-    collect: monitor => ({
-        isHover: monitor.isOver(),
-    })
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
   });
-  
+
   const firstIngredient = constructorIngredients[0];
   let lastIngredient = null;
   if (constructorIngredients.length > 1) {
@@ -38,25 +46,33 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
     dispatch(resetTotalCostAction());
     dispatch(closeOrderDetailsAction());
     dispatch(fetchIngredientsAction());
-  }, [closeOrderDetailsAction, resetConstructorAction, fetchIngredientsAction, resetTotalCostAction, dispatch]);
+  }, [
+    closeOrderDetailsAction,
+    resetConstructorAction,
+    fetchIngredientsAction,
+    resetTotalCostAction,
+    dispatch,
+  ]);
 
   const sendOrder = () => {
-    dispatch(fetchDataOrderAction(constructorIngredients.map(item => item._id)));
+    dispatch(
+      fetchDataOrderAction(constructorIngredients.map((item) => item._id))
+    );
   };
-  
+
   useEffect(() => {
     errorMessage && alert(`Во время запроса произошла ошибка: ${errorMessage}`);
   }, [errorMessage]);
-  
-  return (       
+
+  return (
     <>
-    <section
-    ishover={String(isHover || showDropLocation)}    
-    className={`pl-4 text text_type_main-medium text_color_inactive ${burgerConstructorStyles.container}`}
-    ref={dropTarget}>
+      <section
+        ishover={String(isHover || showDropLocation)}
+        className={`pl-4 text text_type_main-medium text_color_inactive ${burgerConstructorStyles.container}`}
+        ref={dropTarget}
+      >
         <div className={`mb-3 pr-1`}>
-          {
-            firstIngredient &&
+          {firstIngredient && (
             <BurgerConstructorElement
               className="mb-2"
               isFirst
@@ -65,28 +81,33 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
               text={`${firstIngredient.name} (верх)`}
               thumbnail={firstIngredient["image_mobile"]}
             />
-          }
-          <div className={`${burgerConstructorStyles.tableWrapper}`} ref={myRef}>
-            {constructorIngredients.filter((item, index, array) => index !== 0 && index !== array.length - 1)
+          )}
+          <div
+            className={`${burgerConstructorStyles.tableWrapper}`}
+            ref={myRef}
+          >
+            {constructorIngredients
+              .filter(
+                (item, index, array) =>
+                  index !== 0 && index !== array.length - 1
+              )
               .map((addedIngredient, index, arr) => {
                 return (
                   <BurgerConstructorElement
                     draggable
                     index={index}
                     id={addedIngredient._id}
-                    key={`${addedIngredient._id}-${index}`}
-                    className={arr.length - 1 !== index ? 'mb-2' : null}
+                    key={`${addedIngredient.constructorId}`}
+                    className={arr.length - 1 !== index ? "mb-2" : null}
                     handleClose={() => removeIngredient(index + 1)}
                     price={addedIngredient.price}
                     text={`${addedIngredient.name}`}
                     thumbnail={addedIngredient["image_mobile"]}
                   />
                 );
-              })
-            }            
+              })}
           </div>
-          {
-            lastIngredient &&
+          {lastIngredient && (
             <BurgerConstructorElement
               className="mt-2"
               id={lastIngredient._id}
@@ -95,30 +116,30 @@ const BurgerConstructor = ({removeIngredient, addIngredient}) => {
               text={`${lastIngredient.name} (низ)`}
               thumbnail={lastIngredient["image_mobile"]}
             />
-          }
+          )}
         </div>
-        {constructorIngredients.length > 0 && <div>
-          <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
-            {totalCost}
-            <CurrencyIcon/>            
-            <div onClick={sendOrder}>
-              <Button>Оформить заказ</Button>
+        {constructorIngredients.length > 0 && (
+          <div>
+            <div className={`mt-1 ${burgerConstructorStyles.footer}`}>
+              {totalCost}
+              <CurrencyIcon />
+              <div onClick={sendOrder}>
+                <Button>Оформить заказ</Button>
+              </div>
             </div>
           </div>
-        </div>}
+        )}
       </section>
-      {isShowOrderDetails &&
-      <OrderDetails
-        onClose={closeOrderDetails}
-        orderId={orderId}
-      />}    
+      {isShowOrderDetails && (
+        <OrderDetails onClose={closeOrderDetails} orderId={orderId} />
+      )}
     </>
   );
-}
+};
 
 BurgerConstructor.propTypes = {
   removeIngredient: PropTypes.func.isRequired,
-  addIngredient: PropTypes.func.isRequired
+  addIngredient: PropTypes.func.isRequired,
 };
- 
+
 export default BurgerConstructor;

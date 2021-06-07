@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -44,28 +45,36 @@ const BurgerIngredients = ({addIngredient}) => {
         Соберите бургер
       </div>
       <ul className={`mb-3 ${burgerIngredientsStyles.tabs}`}>
-        <li><Tab
+        <li>
+          <Link to="#bun">
+            <Tab
               value="bun"              
-              active={currentTab === "bun"}
-              onClick={() => {
-                document.location='#bun';
-                return false;
-              }}
-              >Булки</Tab></li>              
-        <li><Tab
+              active={currentTab === "bun"}              
+              onClick={() => setCurrentTab("bun")}>
+                Булки
+            </Tab>
+          </Link>
+        </li>              
+        <li>
+          <Link to="#sauce">
+            <Tab
               value="sauce"
               active={currentTab === "sauce"}
-              onClick={() => {
-                document.location='#sauce';
-                return false;
-              }}>Соусы</Tab></li>
-        <li><Tab
+              onClick={() => setCurrentTab("sauce")}>
+                Соусы                
+            </Tab>
+          </Link>
+        </li>
+        <li>
+          <Link to="#main">
+            <Tab
               value="main"
               active={currentTab === "main"}
-              onClick={() => {
-                document.location='#main';
-                return false;
-              }}>Начинки</Tab></li>
+              onClick={() => setCurrentTab("main")}>                
+                Начинки
+            </Tab>
+          </Link>
+          </li>
       </ul>
       <Spinner isLoading={isIngredientsLoading} />
       <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}

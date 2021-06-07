@@ -1,21 +1,16 @@
 import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import {useDispatch} from 'react-redux';
-import appStyles from './app.module.css';
-import AppHeader from '../app-header';
-import AppFooter from '../app-footer';
-import BurgerIngredients from '../burger-ingredients';
-import BurgerConstructor from '../burger-constructor';
-import AppSpinner from '../app-spinner';
-
+import BurgerIngredients from '../../components/burger-ingredients';
+import BurgerConstructor from '../../components/burger-constructor';
 import {useIngredeints, useOrder, useConstructor} from '../../services';
- 
-const App = () => {
+
+export default function Constructor() {
   const dispatch = useDispatch();
   const [{errorMessage},
     {fetchIngredientsAction, increaseCountAction, decreaseCountAction}] = useIngredeints();
-  const [{isSendingDataOrder}, {increaseTotalCostAction, decreaseTotalCostAction}] = useOrder();  
+  const [, {increaseTotalCostAction, decreaseTotalCostAction}] = useOrder();  
   const [{constructorIngredients},
     {addToConstructorAction, removeFromConstructorAction}] = useConstructor();  
 
@@ -83,23 +78,14 @@ const App = () => {
     decreaseTotalCost(removedIngredient.price);
     removeFromConstructor(index);
   }
-  
+
   return (
-    <>
-      <AppHeader />
-      <DndProvider backend={HTML5Backend}>
-        <main className={`pb-5 ${appStyles.mainContainer}`}>          
-          <BurgerIngredients
-            addIngredient={addIngredient}/>
-          <BurgerConstructor
-              addIngredient={addIngredient}
-              removeIngredient={removeIngredient}/>
-        </main>
-      </DndProvider>
-      <AppFooter />
-      {isSendingDataOrder && <AppSpinner />}
-    </>
-  );
-}
- 
-export default App;
+    <DndProvider backend={HTML5Backend}>
+      <BurgerIngredients
+        addIngredient={addIngredient}/>
+      <BurgerConstructor
+        addIngredient={addIngredient}
+        removeIngredient={removeIngredient}/>
+    </DndProvider>
+  )
+};
