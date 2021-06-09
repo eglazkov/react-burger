@@ -22,6 +22,20 @@ const RegisterPageLazy = (props) => (
   </Suspense>
 );
 
+const ForgotPasswordPage = lazy(() => import('../pages/forgot-password'));
+const ForgotPasswordPageLazy = (props) => (
+  <Suspense fallback={<AppSpinner />}>
+    <ForgotPasswordPage {...props} />
+  </Suspense>
+);
+
+const ResetPasswordPage = lazy(() => import('../pages/reset-password'));
+const ResetPasswordPageLazy = (props) => (
+  <Suspense fallback={<AppSpinner />}>
+    <ResetPasswordPage {...props} />
+  </Suspense>
+);
+
 const NotFoundPage = lazy(() => import('../pages/not-found'));
 const NotFoundPageLazy = (props) => (
   <Suspense fallback={<AppSpinner />}>
@@ -44,6 +58,16 @@ export const routes = [
     path: '/register',
     exact: true,
     component: RegisterPageLazy
+  },
+  {
+    path: '/forgot-password',
+    exact: true,
+    component: ForgotPasswordPageLazy
+  },
+  {
+    path: '/reset-password',
+    exact: true,
+    component: ResetPasswordPageLazy
   },
   {
     path: '/',

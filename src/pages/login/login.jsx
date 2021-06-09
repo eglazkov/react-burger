@@ -36,11 +36,11 @@ export default function Login() {
       </div>
       <div className="mt-5 text text_type_main-default">
         <span className={loginStyles.label}>Вы — новый пользователь? </span>
-        <Link className={loginStyles.link} to="/register">Зарегистрироваться</Link>
+        <Link to="/register">Зарегистрироваться</Link>
       </div>
       <div className="mt-1 text text_type_main-default">
         <span className={loginStyles.label}>Забыли пароль? </span>
-        <Link className={loginStyles.link} to="/forgot-password">Восстановить пароль</Link>
+        <Link to="/forgot-password">Восстановить пароль</Link>
       </div>
     </form>
   )

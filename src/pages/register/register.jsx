@@ -5,7 +5,7 @@ import {
   PasswordInput, 
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import registerStyles from './login.module.css';
+import registerStyles from './register.module.css';
 import Link from '../../components/link';
 
 export default function Register() {
@@ -19,7 +19,7 @@ export default function Register() {
     <form onSubmit={formSubmit} className={registerStyles.container}>
       <span className="text text_type_main-medium">Регистрация</span>
       <div
-        className="pt-3">        
+        className="mt-3">        
         <Input
           placeholder="Имя"        
           value={name}
@@ -27,26 +27,26 @@ export default function Register() {
         />
       </div>
       <div
-        className="pt-3">        
+        className="mt-3">        
         <EmailInput        
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div 
-        className="pt-3">
+        className="mt-3">
         <PasswordInput      
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <div
-        className="pt-3">
+        className="mt-3 mb-5">
         <Button>Зарегистрироваться</Button>
       </div>
       <div className="mt-5 text text_type_main-default">
         <span className={registerStyles.label}>Уже зарегистрированы? </span>
-        <Link className={registerStyles.link} to="/login">Войти</Link>
+        <Link to="/login">Войти</Link>
       </div>
     </form>
   )
