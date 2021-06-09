@@ -5,7 +5,7 @@ import NavigationItem from '../navigation-item';
 
 const AppHeader = () => {
   return ( 
-    <header className={`mb-5 ${appHeaderStyles.container}`}>      
+    <header className={`${appHeaderStyles.container}`}>      
       <nav>
         <ul className={appHeaderStyles.navigation}>
           <li>

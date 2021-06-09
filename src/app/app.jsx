@@ -4,7 +4,6 @@ import {
   Route
 } from 'react-router-dom';
 import {ConnectedRouter} from 'connected-react-router';
-// import history from '../services/history';
 import appStyles from './app.module.css';
 import AppHeader from '../components/app-header';
 import AppFooter from '../components/app-footer';

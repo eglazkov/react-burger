@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { HashLink as Link } from 'react-router-hash-link';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../spinner';
 import BurgerIngredient from '../burger-ingredient';
+import Link from '../link';
 
 import {useIngredeints} from '../../services';
  
@@ -46,7 +46,7 @@ const BurgerIngredients = ({addIngredient}) => {
       </div>
       <ul className={`mb-3 ${burgerIngredientsStyles.tabs}`}>
         <li>
-          <Link to="#bun">
+          <Link isHashLink to="#bun">
             <Tab
               value="bun"              
               active={currentTab === "bun"}              
@@ -56,7 +56,7 @@ const BurgerIngredients = ({addIngredient}) => {
           </Link>
         </li>              
         <li>
-          <Link to="#sauce">
+          <Link isHashLink to="#sauce">
             <Tab
               value="sauce"
               active={currentTab === "sauce"}
@@ -66,7 +66,7 @@ const BurgerIngredients = ({addIngredient}) => {
           </Link>
         </li>
         <li>
-          <Link to="#main">
+          <Link isHashLink to="#main">
             <Tab
               value="main"
               active={currentTab === "main"}

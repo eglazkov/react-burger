@@ -29,7 +29,7 @@ const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, .
 
   useEffect(() => {
     (isDrag || (!didDrop && !isDrag)) && dispatch(toggleDropLoactionAction(isDrag));
-  }, [toggleDropLoactionAction, isDrag, dispatch]);
+  }, [toggleDropLoactionAction, isDrag, didDrop, dispatch]);
   
   const openDetails = useCallback(() => {
     dispatch(openDetailsAction(details));

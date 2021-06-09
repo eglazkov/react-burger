@@ -15,6 +15,13 @@ const LoginPageLazy = (props) => (
   </Suspense>
 );
 
+const RegisterPage = lazy(() => import('../pages/register'));
+const RegisterPageLazy = (props) => (
+  <Suspense fallback={<AppSpinner />}>
+    <RegisterPage {...props} />
+  </Suspense>
+);
+
 const NotFoundPage = lazy(() => import('../pages/not-found'));
 const NotFoundPageLazy = (props) => (
   <Suspense fallback={<AppSpinner />}>
@@ -32,6 +39,11 @@ export const routes = [
     path: '/login',
     exact: true,
     component: LoginPageLazy
+  },
+  {
+    path: '/register',
+    exact: true,
+    component: RegisterPageLazy
   },
   {
     path: '/',

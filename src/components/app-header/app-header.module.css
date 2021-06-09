@@ -1,11 +1,14 @@
 .container {
   margin: 0 auto;
-  padding: 16px 0;
+  padding: 24px 0;
+  margin-top: 20px;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 1280px;  
+  width: 1280px;
+  background-color: #1C1C21;  
 }
 .navigation {
   margin: 0;

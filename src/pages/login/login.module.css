@@ -1,0 +1,27 @@
+.container {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto; 
+  margin-top: 140px; 
+}
+
+.container div {
+  width: 100%;
+}
+
+.container div div {
+  width: auto;
+}
+
+.label {
+  color: #8585AD;
+}
+
+.link {
+  color: #4C4CFF;
+  text-decoration: none;
+}
