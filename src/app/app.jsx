@@ -14,29 +14,29 @@ import {useOrder, history, routes} from '../services';
 const App = () => {
   const [{isSendingDataOrder}] = useOrder();
   return (
-    <>
-      <AppHeader />
-        <main
-          className={`pb-5 ${appStyles.mainContainer}`}>          
-          <ConnectedRouter history={history}>
-            <Switch>
-              {
-                routes.map((route, i) => (
-                  <Route
-                    key={i}
-                    exact={route.exact}
-                    path={`${route.path}`}
-                    render={(props) => (
-                      <route.component {...props} />
-                    )}
-                  />
-                ))
-              }
-            </Switch>
-          </ConnectedRouter>
-        </main>
-      <AppFooter />
-      {isSendingDataOrder && <AppSpinner />}
+    <>          
+      <ConnectedRouter history={history}>
+        <AppHeader />
+          <main
+            className={`pb-5 ${appStyles.mainContainer}`}>
+              <Switch>
+                {
+                  routes.map((route, i) => (
+                    <Route
+                      key={i}
+                      exact={route.exact}
+                      path={`${route.path}`}
+                      render={(props) => (
+                        <route.component {...props} />
+                      )}
+                    />
+                  ))
+                }
+              </Switch>
+          </main>
+        <AppFooter />
+        {isSendingDataOrder && <AppSpinner />}
+      </ConnectedRouter>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React, {useCallback} from 'react';
-import {useHistory} from 'react-router-dom'; 
 import * as moment from 'moment';
 import 'moment/locale/ru';
 import PropTypes from 'prop-types';
@@ -14,14 +13,14 @@ const OrderCard = ({
   orderName,
   orderCost,
   orderIngredients,
+  changeLocation,
   id
 }) => {
-  const history = useHistory();
   const goToOrder = useCallback(
     () => {
-      history.push({pathname: `/feed/${id}`});
+      changeLocation({id});
     },
-    [id, history]
+    [id, changeLocation]
   );
   return (
     <div className={`mb-4 p-3 ${orderCardStyles.wrapper}`} onClick={goToOrder}>
@@ -65,7 +64,8 @@ OrderCard.propTypes = {
   orderIngredients: PropTypes.arrayOf(PropTypes.shape({
     image_mobile: PropTypes.string
   })).isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  changeLocation: PropTypes.func.isRequired
 };
  
 export default OrderCard;

@@ -4,13 +4,14 @@ import {Link as RouterLink} from 'react-router-dom';
 import {HashLink} from 'react-router-hash-link';
 import linkStyles from './link.module.css';
  
-const Link = ({isHashLink, to, children}) => {
+const Link = ({isHashLink, to, children, active = false, isNavLink = false}) => {
+  const className = active ? linkStyles.active : isNavLink ? linkStyles.navLink : linkStyles.link
   return (
     <>
       {
         isHashLink ?
-        <HashLink to={to} className={linkStyles.link}>{children}</HashLink> :
-        <RouterLink to={to} className={linkStyles.link}>{children}</RouterLink>
+        <HashLink to={to} className={className}>{children}</HashLink> :
+        <RouterLink to={to} className={className}>{children}</RouterLink>
       }
     </>
   );
@@ -18,8 +19,10 @@ const Link = ({isHashLink, to, children}) => {
 
 Link.propTypes = {
   isHashLink: PropTypes.bool,
+  isNavLink: PropTypes.bool,
   to: PropTypes.string.isRequired,
-  children: PropTypes.any
+  children: PropTypes.any,
+  active: PropTypes.bool
 };
  
 export default Link;

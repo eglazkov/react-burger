@@ -50,6 +50,13 @@ const OrderPageLazy = (props) => (
   </Suspense>
 );
 
+const ProfilePage = lazy(() => import('../pages/profile'));
+const ProfilePageLazy = (props) => (
+  <Suspense fallback={<AppSpinner />}>
+    <ProfilePage {...props} />
+  </Suspense>
+);
+
 const NotFoundPage = lazy(() => import('../pages/not-found'));
 const NotFoundPageLazy = (props) => (
   <Suspense fallback={<AppSpinner />}>
@@ -93,6 +100,16 @@ export const routes = [
     exact: true,
     component: OrderPageLazy
   },
+  {
+    path: '/profile',
+    exact: false,
+    component: ProfilePageLazy
+  },
+  // {
+  //   path: '/profile/orders/:id',
+  //   exact: false,
+  //   component: OrderPageLazy
+  // },
   {
     path: '/',
     exact: false,
