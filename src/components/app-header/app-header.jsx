@@ -22,9 +22,9 @@ const AppHeader = () => {
             </Link>
           </li>
           <li>
-            <Link isNavLink to="/feed" active={pathname === '/feed'}>
+            <Link isNavLink to="/feed" active={pathname.indexOf('/feed') >= 0}>
               <NavigationItem
-                icon={<ListIcon type={pathname === '/feed' ? 'primary' : 'secondary'}/>}
+                icon={<ListIcon type={pathname.indexOf('/feed') >= 0 ? 'primary' : 'secondary'}/>}
                 caption="Лента заказов"/>
             </Link>
           </li>
@@ -33,10 +33,10 @@ const AppHeader = () => {
       <span className={appHeaderStyles.logo}>
         <Logo />
       </span>
-      <Link isNavLink to="/profile" active={pathname === '/profile'}>
+      <Link isNavLink to="/profile" active={pathname.indexOf('/profile') >= 0}>
         <NavigationItem
           className={appHeaderStyles.account}
-          icon={<ProfileIcon type={pathname === '/profile' ? 'primary' : 'secondary'}/>}
+          icon={<ProfileIcon type={pathname.indexOf('/profile') >= 0 ? 'primary' : 'secondary'}/>}
           caption="Личный кабинет"/> 
       </Link>  
       <div className={appHeaderStyles.menuIcon} onClick={function(e) {

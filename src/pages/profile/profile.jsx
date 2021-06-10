@@ -26,7 +26,7 @@ function Profile() {
   const formSubmit = () => {
     alert('form action');
   };
-  let {path} = useRouteMatch();
+  const {path} = useRouteMatch();
   const history = useHistory();
   return (
     <div className={`${profileStyles.container} ${pathname.indexOf(`${path}/orders/`) >= 0 ?
