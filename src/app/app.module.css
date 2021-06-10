@@ -4,7 +4,7 @@
   justify-content: space-between;
   flex-direction: row;
   align-items: flex-start;
-  max-width: 1240px;
+  max-width: 1280px;
 }
 
 @media (max-width: 360px) {

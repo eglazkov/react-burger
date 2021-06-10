@@ -36,6 +36,20 @@ const ResetPasswordPageLazy = (props) => (
   </Suspense>
 );
 
+const FeedPage = lazy(() => import('../pages/feed'));
+const FeedPageLazy = (props) => (
+  <Suspense fallback={<AppSpinner />}>
+    <FeedPage {...props} />
+  </Suspense>
+);
+
+const OrderPage = lazy(() => import('../pages/order'));
+const OrderPageLazy = (props) => (
+  <Suspense fallback={<AppSpinner />}>
+    <OrderPage {...props} />
+  </Suspense>
+);
+
 const NotFoundPage = lazy(() => import('../pages/not-found'));
 const NotFoundPageLazy = (props) => (
   <Suspense fallback={<AppSpinner />}>
@@ -68,6 +82,16 @@ export const routes = [
     path: '/reset-password',
     exact: true,
     component: ResetPasswordPageLazy
+  },
+  {
+    path: '/feed',
+    exact: true,
+    component: FeedPageLazy
+  },
+  {
+    path: '/feed/:id',
+    exact: true,
+    component: OrderPageLazy
   },
   {
     path: '/',
