@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {v4 as uuidv4} from 'uuid';
 import {  
   Switch,
   Route,
@@ -98,12 +99,12 @@ function Profile() {
           path={`${path}/orders`}>
             <div className={`${profileStyles.orderList} pr-1`}>
             {
-              orderList.map((order, i) => (
+              orderList.map((order) => (
                 <OrderCard
                   changeLocation={({id}) => {                  
                     history.push({pathname: `${path}/orders/${id}`});
                   }}
-                  key={i}
+                  key={uuidv4()}
                   {...order}
                 />
               ))

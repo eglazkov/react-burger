@@ -1,4 +1,5 @@
 import React from 'react';
+import {v4 as uuidv4} from 'uuid';
 import {useHistory} from 'react-router-dom';
 import * as moment from 'moment';
 import 'moment/locale/ru';
@@ -65,12 +66,12 @@ export default function Feed() {
         <div className="mb-4 text text_type_main-large">Лента заказов</div>
         <div className={`${feedStyles.feedList}`}>
           {
-            orderList.map((order, i) => (
+            orderList.map((order) => (
               <OrderCard
                 changeLocation={({id}) => {                  
                   history.push({pathname: `/feed/${id}`});
                 }}
-                key={i}
+                key={uuidv4()}
                 {...order} 
               />
             ))
@@ -83,8 +84,8 @@ export default function Feed() {
             <div className="text text_type_main-medium mt-3 mr-4">Готовы:</div>
             <ul className={`${feedStyles.readyOrders}`}>
               {
-                readyOrders.map(({id}, i) => (
-                  <li key={i} className="text text_type_digits-default mt-2">{id}</li>
+                readyOrders.map(({id}) => (
+                  <li key={uuidv4()} className="text text_type_digits-default mt-2">{id}</li>
                 ))
               }
             </ul>
@@ -93,8 +94,8 @@ export default function Feed() {
             <div className="text text_type_main-medium mt-3">В работе:</div>
             <ul className={`${feedStyles.currentOrders}`}>
               {
-                currentOrders.map(({id}, i) => (
-                  <li key={i} className="text text_type_digits-default mt-2">{id}</li>
+                currentOrders.map(({id}) => (
+                  <li key={uuidv4()} className="text text_type_digits-default mt-2">{id}</li>
                 ))
               }
             </ul>

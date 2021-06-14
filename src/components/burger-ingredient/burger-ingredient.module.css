@@ -47,9 +47,6 @@
 .counter, .cost{
   font-family: 'Iceland', Arial, sans-serif;
 }
-.counter > div{
-  padding: 0;
-}
 .cost {
   font-size: 28px;
   line-height: 24px;
