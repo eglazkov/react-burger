@@ -30,6 +30,18 @@
   display: flex;
   align-items: center;  
 }
+.ingredientWrapper > div:nth-child(2) {
+  width: 100%;
+}
+.ingredientWrapper > div:nth-child(2) > span {
+  display: flex;
+  justify-content: space-between;
+}
+.ingredientWrapper > div:nth-child(2) > span > span:nth-last-child(-2n + 2) {
+  justify-content: flex-end;
+  margin-right: 0;
+  margin-left: auto;
+}
 .ingredientWrapper[isdrag = true] {
   opacity: 0;
 }
