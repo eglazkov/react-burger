@@ -1,4 +1,5 @@
 import React, {useCallback} from 'react';
+import {v4 as uuidv4} from 'uuid';
 import * as moment from 'moment';
 import 'moment/locale/ru';
 import PropTypes from 'prop-types';
@@ -23,7 +24,7 @@ const OrderCard = ({
     [id, changeLocation]
   );
   return (
-    <div className={`mb-4 p-3 ${orderCardStyles.wrapper}`} onClick={goToOrder}>
+    <div className={`mb-4 p-6 ${orderCardStyles.wrapper}`} onClick={goToOrder}>
       <div className={`${orderCardStyles.orderTitle}`}>        
         <span className={`text text_type_digits-default`}>{`#${id}`}</span>
         <span className={`text text_type_main-default ${orderCardStyles.inactive}`}>
@@ -42,7 +43,7 @@ const OrderCard = ({
         <div>
           {orderIngredients.map((ingredient, i) => (
             i <= 5 ? <IngredientIcon
-              key={i}
+              key={uuidv4()}
               count={i === 5 ? `+${orderIngredients.length - 5}` : null}
               src={ingredient.image_mobile} alt={ingredient.name}
             /> : null

@@ -35,11 +35,7 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
     }),
   });
 
-  const firstIngredient = constructorIngredients[0];
-  let lastIngredient = null;
-  if (constructorIngredients.length > 1) {
-    lastIngredient = constructorIngredients[constructorIngredients.length - 1];
-  }
+  const bun = constructorIngredients.find(item => item.type === 'bun');
 
   const closeOrderDetails = useCallback(() => {
     dispatch(resetConstructorAction());
@@ -72,14 +68,14 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
         ref={dropTarget}
       >
         <div className={`mb-3 pr-1`}>
-          {firstIngredient && (
+          {bun && (
             <BurgerConstructorElement
               className="mb-2"
               isFirst
-              id={firstIngredient._id}
-              price={firstIngredient.price}
-              text={`${firstIngredient.name} (верх)`}
-              thumbnail={firstIngredient["image_mobile"]}
+              id={bun._id}
+              price={bun.price}
+              text={`${bun.name} (верх)`}
+              thumbnail={bun["image_mobile"]}
             />
           )}
           <div
@@ -87,10 +83,7 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
             ref={myRef}
           >
             {constructorIngredients
-              .filter(
-                (item, index, array) =>
-                  index !== 0 && index !== array.length - 1
-              )
+              .filter((item) => item.type !== 'bun')
               .map((addedIngredient, index, arr) => {
                 return (
                   <BurgerConstructorElement
@@ -107,14 +100,14 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
                 );
               })}
           </div>
-          {lastIngredient && (
+          {bun && (
             <BurgerConstructorElement
               className="mt-2"
-              id={lastIngredient._id}
+              id={bun._id}
               isLast
-              price={lastIngredient.price}
-              text={`${lastIngredient.name} (низ)`}
-              thumbnail={lastIngredient["image_mobile"]}
+              price={bun.price}
+              text={`${bun.name} (низ)`}
+              thumbnail={bun["image_mobile"]}
             />
           )}
         </div>

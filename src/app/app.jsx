@@ -21,16 +21,18 @@ const App = () => {
             className={`pb-5 ${appStyles.mainContainer}`}>
               <Switch>
                 {
-                  routes.map((route, i) => (
-                    <Route
-                      key={i}
-                      exact={route.exact}
-                      path={`${route.path}`}
-                      render={(props) => (
-                        <route.component {...props} />
-                      )}
-                    />
-                  ))
+                  routes.map(({exact, path, component: Component}, i) => {
+                    return (                      
+                      <Route
+                        key={i}
+                        exact={exact}
+                        path={`${path}`}
+                        render={(props) => (
+                          <Component {...props} />
+                        )}
+                      />
+                    );
+                  })
                 }
               </Switch>
           </main>

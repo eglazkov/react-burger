@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'; 
+import {v4 as uuidv4} from 'uuid';
 import * as moment from 'moment';
 import 'moment/locale/ru';
 import {useParams} from 'react-router-dom';
@@ -29,8 +30,8 @@ export default function Order() {
       <div className={`${orderStyles.contains}`}>
         <ul>
           {
-            orderData.orderIngredients.map((ingredient, i) => (
-              <li key={i} className="pr-3 pt-1 pb-1">
+            orderData.orderIngredients.map((ingredient) => (
+              <li key={uuidv4()} className="pr-3 pt-1 pb-1">
                 <div className={`${orderStyles.ingredientTitle}`}>
                   <IngredientIcon
                     src={ingredient.image_mobile}
