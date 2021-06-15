@@ -1,32 +1,44 @@
 import React from 'react';
+import {useLocation} from 'react-router-dom';
 import appHeaderStyles from './app-header.module.css';
 import {Logo, BurgerIcon, ListIcon, ProfileIcon, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import NavigationItem from '../navigation-item';
+import Link from '../link';
 
 const AppHeader = () => {
+  const {pathname} = useLocation();
   return ( 
-    <header className={`mb-5 ${appHeaderStyles.container}`}>      
+    <header className={`${appHeaderStyles.container}`}>      
       <nav>
         <ul className={appHeaderStyles.navigation}>
           <li>
-            <NavigationItem
-              icon={<BurgerIcon type="primary"/>}
-              caption="Конструктор"/>
+            <Link
+              isNavLink
+              to="/"              
+              active={pathname === '/'}>
+              <NavigationItem
+                icon={<BurgerIcon type={pathname === '/' ? 'primary' : 'secondary'}/>}
+                caption="Конструктор"/>
+            </Link>
           </li>
           <li>
-            <NavigationItem
-              icon={<ListIcon type="secondary"/>}
-              caption="Лента заказов"/>
+            <Link isNavLink to="/feed" active={pathname.indexOf('/feed') >= 0}>
+              <NavigationItem
+                icon={<ListIcon type={pathname.indexOf('/feed') >= 0 ? 'primary' : 'secondary'}/>}
+                caption="Лента заказов"/>
+            </Link>
           </li>
         </ul>
       </nav>      
       <span className={appHeaderStyles.logo}>
         <Logo />
       </span>
-      <NavigationItem
-        className={appHeaderStyles.account}
-        icon={<ProfileIcon type="secondary"/>}
-        caption="Личный кабинет"/>   
+      <Link isNavLink to="/profile" active={pathname.indexOf('/profile') >= 0}>
+        <NavigationItem
+          className={appHeaderStyles.account}
+          icon={<ProfileIcon type={pathname.indexOf('/profile') >= 0 ? 'primary' : 'secondary'}/>}
+          caption="Личный кабинет"/> 
+      </Link>  
       <div className={appHeaderStyles.menuIcon} onClick={function(e) {
         const menu = e.target.childNodes[0];
         if (menu.style) {          

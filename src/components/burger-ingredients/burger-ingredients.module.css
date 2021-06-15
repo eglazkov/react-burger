@@ -31,9 +31,8 @@
   margin-top: 0;
   padding-left: 0;
 }
-.tabs > li > div{
-  padding-left: 26px;
-  padding-right: 26px;
+.tabs > li > a {
+  text-decoration: none;  
 }
 .ingredient {
   position: relative;

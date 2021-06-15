@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import {
   ADD_TO_CONSTRUCTOR,
   REMOVE_FROM_CONSTRUCTOR,
@@ -8,9 +9,10 @@ import {
 } from './action-types';
 
 export const addToConstructorAction = (index, item) => {
- return {
+  const constructorId = uuidv4();
+  return {
    type: ADD_TO_CONSTRUCTOR,
-   payload: {index, item}
+   payload: {index, item: {constructorId, ...item}}
   };
 };
 

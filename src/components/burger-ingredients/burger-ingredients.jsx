@@ -4,6 +4,7 @@ import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../spinner';
 import BurgerIngredient from '../burger-ingredient';
+import Link from '../link';
 
 import {useIngredeints} from '../../services';
  
@@ -44,28 +45,36 @@ const BurgerIngredients = ({addIngredient}) => {
         Соберите бургер
       </div>
       <ul className={`mb-3 ${burgerIngredientsStyles.tabs}`}>
-        <li><Tab
+        <li>
+          <Link isHashLink to="#bun">
+            <Tab
               value="bun"              
-              active={currentTab === "bun"}
-              onClick={() => {
-                document.location='#bun';
-                return false;
-              }}
-              >Булки</Tab></li>              
-        <li><Tab
+              active={currentTab === "bun"}              
+              onClick={() => setCurrentTab("bun")}>
+                Булки
+            </Tab>
+          </Link>
+        </li>              
+        <li>
+          <Link isHashLink to="#sauce">
+            <Tab
               value="sauce"
               active={currentTab === "sauce"}
-              onClick={() => {
-                document.location='#sauce';
-                return false;
-              }}>Соусы</Tab></li>
-        <li><Tab
+              onClick={() => setCurrentTab("sauce")}>
+                Соусы                
+            </Tab>
+          </Link>
+        </li>
+        <li>
+          <Link isHashLink to="#main">
+            <Tab
               value="main"
               active={currentTab === "main"}
-              onClick={() => {
-                document.location='#main';
-                return false;
-              }}>Начинки</Tab></li>
+              onClick={() => setCurrentTab("main")}>                
+                Начинки
+            </Tab>
+          </Link>
+          </li>
       </ul>
       <Spinner isLoading={isIngredientsLoading} />
       <div className={`pr-1 ${burgerIngredientsStyles.tableWrapper}`}

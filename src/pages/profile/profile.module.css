@@ -1,0 +1,73 @@
+.container {
+  width: 1280px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 auto; 
+  margin-top: 80px; 
+}
+
+.noMargin {
+  margin: 0;
+}
+
+.container form {
+  width: 480px;
+  text-align: center;
+  margin: auto;
+  margin-left: 0;
+}
+
+.container form div div {
+  width: auto;
+}
+.orderList > div {
+  width: auto;
+}
+
+.label {
+  color: #8585AD;
+}
+
+.navigation {
+  margin-right: 100px;
+  margin-bottom: 80px;
+}
+
+.navigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: start;
+  width: 320px;
+}
+
+.navigation ul li {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  cursor: pointer;
+  color: #8585AD;
+}
+
+
+.orderList {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 844px;  
+}
+.orderList::-webkit-scrollbar {
+	width: 12px;
+}
+.orderList::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+.orderList::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
+
+.hide {
+  display: none;
+}
