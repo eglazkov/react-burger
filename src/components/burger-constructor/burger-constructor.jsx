@@ -9,7 +9,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderDetails from "../order-details";
 import BurgerConstructorElement from "../burger-constructor-element";
-import { useOrder, useConstructor, useIngredeints } from "../../services";
+import {useOrder, useConstructor, useIngredeints, useAuth, history} from "../../services";
 
 const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
   const dispatch = useDispatch();
@@ -24,6 +24,9 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
     { resetConstructorAction },
   ] = useConstructor();
   const [, { fetchIngredientsAction }] = useIngredeints();
+  const [
+    {user}
+  ] = useAuth();
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient-constructor",
@@ -51,6 +54,10 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
   ]);
 
   const sendOrder = () => {
+    if (!user) {
+      history.push({pathname: '/login'});
+      return;
+    }
     dispatch(
       fetchDataOrderAction(constructorIngredients.map((item) => item._id))
     );

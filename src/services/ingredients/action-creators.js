@@ -10,7 +10,7 @@ import {
 } from './action-types';
 import {API_URL} from '../../constants';
 
-export const fetchIngredientsAction = () => dispatch => {
+export const fetchIngredientsAction = () => async dispatch => {
   dispatch({type: FETCH_INGREDIENTS_PENDING});
   fetch(`${API_URL}/ingredients`)
     .then(res => {

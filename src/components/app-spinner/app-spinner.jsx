@@ -6,7 +6,7 @@ import Spinner from '../spinner';
 
 const modalRoot = document.getElementById("modals");
  
-const ApppSpinner = ({caption, onClose, orderID}) => {
+const ApppSpinner = () => {
   return ReactDOM.createPortal(
     (
       <>

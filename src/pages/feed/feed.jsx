@@ -1,10 +1,12 @@
 import React from 'react';
 import {v4 as uuidv4} from 'uuid';
-import {useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import * as moment from 'moment';
 import 'moment/locale/ru';
 import feedStyles from './feed.module.css';
 import OrderCard from '../../components/order-card';
+import {history} from '../../services';
+
 const ingredeintsData = require('../../utils/data.json').data;
 
 export const orderList = [
@@ -59,7 +61,7 @@ export default function Feed() {
   const formatAmount = new Intl.NumberFormat('ru-RU', {
     minimumFractionDigits: 0      
   }).format;
-  const history = useHistory();
+  const location = useLocation();
   return (
     <div className={feedStyles.container}>
       <div>
@@ -69,7 +71,7 @@ export default function Feed() {
             orderList.map((order) => (
               <OrderCard
                 changeLocation={({id}) => {                  
-                  history.push({pathname: `/feed/${id}`});
+                  history.push({pathname: `/feed/${id}`, state: {background: location}});
                 }}
                 key={uuidv4()}
                 {...order} 

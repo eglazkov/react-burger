@@ -8,4 +8,5 @@
   bottom: 0;
   background-color: #000000;
   opacity: .6;
+  z-index: 50;
 }

@@ -15,9 +15,10 @@ const AppHeader = () => {
             <Link
               isNavLink
               to="/"              
-              active={pathname === '/'}>
+              active={pathname === '/' || pathname.indexOf('/ingredients/') >= 0}>
               <NavigationItem
-                icon={<BurgerIcon type={pathname === '/' ? 'primary' : 'secondary'}/>}
+                icon={<BurgerIcon type={pathname === '/'|| pathname.indexOf('/ingredients/') >= 0
+                ? 'primary' : 'secondary'}/>}
                 caption="Конструктор"/>
             </Link>
           </li>

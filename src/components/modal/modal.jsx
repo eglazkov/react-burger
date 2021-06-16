@@ -22,7 +22,7 @@ const Modal = ({caption, children, onClose}) => {
           e.stopPropagation();
         }}
         className={modalStyles.container}>
-        <div className={`pl-5 pt-5 pr-5 pb-5 ${modalStyles.modal}`}>
+        <div className={`pl-10 pt-10 pr-10 pb-10 ${modalStyles.modal}`}>
           <div className={modalStyles.modalHeader}>
             <span className="text text_type_main-large">{caption}</span>
             <button className={modalStyles.closeButton} onClick={function(e) {

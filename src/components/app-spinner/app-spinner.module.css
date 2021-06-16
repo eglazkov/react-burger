@@ -5,3 +5,7 @@
   top: calc(45% - 50px);
   transform: translate(-50%, -50%);
 }
+
+.spinner > div {
+  position: absolute;
+}
