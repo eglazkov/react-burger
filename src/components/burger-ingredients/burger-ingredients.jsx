@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
-import Spinner from '../spinner';
-import BurgerIngredient from '../burger-ingredient';
-import Link from '../link';
+import Spinner from '../spinner/spinner';
+import BurgerIngredient from '../burger-ingredient/burger-ingredient';
+import Link from '../link/link';
 
 import {useIngredeints} from '../../services';
  

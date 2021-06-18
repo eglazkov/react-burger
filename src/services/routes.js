@@ -1,97 +1,28 @@
-import React, {lazy, Suspense, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {  
   Switch,
   Route,
   useLocation
 } from 'react-router-dom';
-import ProtectedRoute from '../components/protected-route';
-import UserProtectedRoute from '../components/user-protected-route';
+import {
+  ProtectedRoute,
+  UserProtectedRoute
+} from '../components';
 import {history} from '../services';
-import AppSpinner from '../components/app-spinner';
-
-const MainPage = lazy(() => import('../pages/main'));
-const MainPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <MainPage {...props} />
-  </Suspense>
-);
-
-const LoginPage = lazy(() => import('../pages/login'));
-const LoginPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <LoginPage {...props} />
-  </Suspense>
-);
-
-const RegisterPage = lazy(() => import('../pages/register'));
-const RegisterPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <RegisterPage {...props} />
-  </Suspense>
-);
-
-const ForgotPasswordPage = lazy(() => import('../pages/forgot-password'));
-const ForgotPasswordPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <ForgotPasswordPage {...props} />
-  </Suspense>
-);
-
-const ResetPasswordPage = lazy(() => import('../pages/reset-password'));
-const ResetPasswordPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <ResetPasswordPage {...props} />
-  </Suspense>
-);
-
-const FeedPage = lazy(() => import('../pages/feed'));
-const FeedPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <FeedPage {...props} />
-  </Suspense>
-);
-
-const IngredientPage = lazy(() => import('../pages/ingredient-details'));
-const IngredientPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <IngredientPage {...props} />
-  </Suspense>
-);
-
-const IngredientModalPage = lazy(() => import('../pages/ingredient-details-modal'));
-const IngredientModalPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <IngredientModalPage {...props} />
-  </Suspense>
-);
-
-const OrderPage = lazy(() => import('../pages/order'));
-const OrderPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <OrderPage {...props} />
-  </Suspense>
-);
-
-const OrderModalPage = lazy(() => import('../pages/order-modal'));
-const OrderModalPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <OrderModalPage {...props} />
-  </Suspense>
-);
-
-const ProfilePage = lazy(() => import('../pages/profile'));
-const ProfilePageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <ProfilePage {...props} />
-  </Suspense>
-);
-
-const NotFoundPage = lazy(() => import('../pages/not-found'));
-const NotFoundPageLazy = (props) => (
-  <Suspense fallback={<AppSpinner />}>
-    <NotFoundPage {...props} />
-  </Suspense>
-);
+import {
+  MainPage,
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  FeedPage,
+  IngredientPage,
+  IngredientModalPage,
+  OrderPage,
+  OrderModalPage,
+  ProfilePage,
+  NotFoundPage
+} from '../pages';
 
 export function MainRouter() {
   const location = useLocation();
@@ -106,63 +37,63 @@ export function MainRouter() {
           exact
           path="/"
           render={() => (
-            <MainPageLazy />
+            <MainPage />
           )}
         />
         <Route
           exact
           path="/ingredients/:id"
           render={() => (
-            <IngredientPageLazy />
+            <IngredientPage />
           )}
         />
         <UserProtectedRoute
           exact
           path="/login" 
         >
-          <LoginPageLazy />
+          <LoginPage />
         </UserProtectedRoute>
         <UserProtectedRoute
           exact
           path="/register" 
         >
-          <RegisterPageLazy />
+          <RegisterPage />
         </UserProtectedRoute>
         <UserProtectedRoute
           exact
           path="/forgot-password" 
         >
-          <ForgotPasswordPageLazy />
+          <ForgotPasswordPage />
         </UserProtectedRoute>
         <UserProtectedRoute
           exact
           path="/reset-password" 
         >
-          <ResetPasswordPageLazy />
+          <ResetPasswordPage />
         </UserProtectedRoute>
         <Route
           exact
           path="/feed"
           render={() => (
-            <FeedPageLazy />
+            <FeedPage />
           )}
         />
         <Route
           exact
           path="/feed/:id"
           render={() => (
-            <OrderPageLazy />
+            <OrderPage />
           )}
         />
         <ProtectedRoute
           path="/profile"                        
         >
-          <ProfilePageLazy />
+          <ProfilePage />
         </ProtectedRoute>
         <Route
           path="/"
           render={() => (
-            <NotFoundPageLazy />
+            <NotFoundPage />
           )}
         />
       </Switch>
@@ -172,7 +103,7 @@ export function MainRouter() {
           exact
           path="/feed/:id"
           render={() => (
-            <OrderModalPageLazy onClose={history.goBack} />
+            <OrderModalPage onClose={history.goBack} />
           )}
         />
       }
@@ -181,7 +112,7 @@ export function MainRouter() {
         <Route
           exact
           path="/profile/orders/:id">
-            <OrderModalPageLazy onClose={history.goBack} />
+            <OrderModalPage onClose={history.goBack} />
         </Route>
       }
       {
@@ -189,7 +120,7 @@ export function MainRouter() {
         <Route
           exact
           path="/ingredients/:id">
-            <IngredientModalPageLazy caption="Детали ингредиента" onClose={history.goBack} />
+            <IngredientModalPage caption="Детали ингредиента" onClose={history.goBack} />
         </Route>
       }  
     </>

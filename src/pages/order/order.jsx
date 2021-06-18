@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react'; 
 import {v4 as uuidv4} from 'uuid';
-import * as moment from 'moment';
-import 'moment/locale/ru';
+import {formatRelative} from 'date-fns'
+import ruLocale from "date-fns/locale/ru";
 import {useParams} from 'react-router-dom';
 import orderStyles from './order.module.css';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {getOrderById} from '../feed';
-import IngredientIcon from '../../components/ingredient-icon';
+import {IngredientIcon} from '../../components';
 
 export default function Order() {
   const {id} = useParams();
@@ -49,14 +49,9 @@ export default function Order() {
         </ul>
       </div>
       <div className={`text text_type_main-default ${orderStyles.inactive}`}>
-        {moment().calendar((orderData.orderDate), {
-              sameDay: '[Сегодня], HH:mm Z',
-              nextDay: '[Вчера], HH:mm Z',
-              nextWeek: 'dddd, HH:mm Z',
-              lastDay: '[Yesterday]',
-              lastWeek: '[Last] dddd',
-              sameElse: 'DD.MM.YYYY, HH:mm Z'
-        })}
+        {
+          formatRelative(new Date(orderData.orderDate), new Date(), { addSuffix: true, locale: ruLocale})
+        }
       </div>
     </div>
   )

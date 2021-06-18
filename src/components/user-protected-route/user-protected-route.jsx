@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useAuth} from '../../services';
 import {useDispatch} from 'react-redux';
 import {Redirect, Route} from 'react-router-dom';
-import Spinner from '../spinner';
+import Spinner from '../spinner/spinner';
 
 export default function UserProtectedRoute({ children, ...rest }) {
   const dispatch = useDispatch();

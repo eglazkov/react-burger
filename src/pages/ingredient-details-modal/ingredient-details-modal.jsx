@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Modal from '../../components/modal';
-import IngredientDetails from '../ingredient-details';
+import {Modal} from '../../components';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 const modalRoot = document.getElementById("modals");
  

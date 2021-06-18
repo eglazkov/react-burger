@@ -1,15 +1,17 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
+import {useLocation} from 'react-router-dom';
 import {
   EmailInput,
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import forgotPasswordStyles from './forgot-password.module.css';
-import Link from '../../components/link';
+import {Link} from '../../components';
 import {useForgotPasswordForm, useAuth, history} from "../../services";
 
 export default function ForgotPassword() {
   const dispatch = useDispatch();
+  const {pathname} = useLocation();
   const [
     {email},
     {setForgotPasswordFormValue},
@@ -22,7 +24,11 @@ export default function ForgotPassword() {
     e.preventDefault();
     dispatch(fetchUserResetPasswordRequestAction({
       email
-    })).then(({success}) => success && history.replace({pathname: `/reset-password`}));
+    })).then(({success}) => success &&
+    history.replace({
+      pathname: `/reset-password`,
+      state: {from: pathname}
+    }));
   };
   return (
     <form onSubmit={formSubmit} className={forgotPasswordStyles.container}>

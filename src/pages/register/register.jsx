@@ -7,8 +7,10 @@ import {
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import registerStyles from './register.module.css';
-import Link from '../../components/link';
-import AppSpinner from '../../components/app-spinner';
+import {
+  AppSpinner,
+  Link
+} from '../../components';
 import {useRegisterForm, useAuth, history} from "../../services";
 
 export default function Register() {
