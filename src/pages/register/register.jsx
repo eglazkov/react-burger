@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {useDispatch} from "react-redux";
 import {
   Input,
   EmailInput, 
@@ -6,38 +7,67 @@ import {
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import registerStyles from './register.module.css';
-import Link from '../../components/link';
+import {
+  AppSpinner,
+  Link
+} from '../../components';
+import {useRegisterForm, useAuth, history} from "../../services";
 
 export default function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const formSubmit = () => {
-    alert('form action');
+  const dispatch = useDispatch();
+  const [
+    {name, email, password},
+    {setRegisterFormValue},
+  ] = useRegisterForm();
+  const [
+    {userActionPending},
+    {fetchUserRegisterAction}
+  ] = useAuth();
+
+  const onFormChange = (e) => {
+    dispatch(setRegisterFormValue(e.target.name, e.target.value));
+  }
+  const formSubmit = (e) => {
+    e.preventDefault();
+    dispatch(fetchUserRegisterAction({
+      email,
+      password,
+      name
+    })).then(({success, errorMessage}) => {
+      if (success) {
+        history.replace({pathname: `/login`});
+      } else {
+        errorMessage && alert(`Во время запроса произошла ошибка: ${errorMessage}`);
+      }
+    });
   };
   return (
+    !userActionPending ?
     <form onSubmit={formSubmit} className={registerStyles.container}>
       <span className="text text_type_main-medium">Регистрация</span>
       <div
         className="mt-3">        
         <Input
-          placeholder="Имя"        
+          placeholder="Имя"
+          name="name"        
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={onFormChange}
         />
       </div>
       <div
         className="mt-3">        
-        <EmailInput        
+        <EmailInput
+          name="email"        
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={onFormChange}
         />
       </div>
       <div 
         className="mt-3">
-        <PasswordInput      
+        <PasswordInput
+          name="password"      
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={onFormChange}
         />
       </div>
       <div
@@ -48,6 +78,7 @@ export default function Register() {
         <span className={registerStyles.label}>Уже зарегистрированы? </span>
         <Link to="/login">Войти</Link>
       </div>
-    </form>
+    </form> :
+    <AppSpinner />
   )
 }

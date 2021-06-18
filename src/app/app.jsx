@@ -1,15 +1,12 @@
 import React from 'react';
-import {  
-  Switch,
-  Route
-} from 'react-router-dom';
 import {ConnectedRouter} from 'connected-react-router';
 import appStyles from './app.module.css';
-import AppHeader from '../components/app-header';
-import AppFooter from '../components/app-footer';
-import AppSpinner from '../components/app-spinner';
-import {useOrder, history, routes} from '../services';
-
+import {
+  AppHeader,
+  AppFooter,
+  AppSpinner
+} from '../components';
+import {useOrder, history, MainRouter} from '../services';
  
 const App = () => {
   const [{isSendingDataOrder}] = useOrder();
@@ -19,22 +16,7 @@ const App = () => {
         <AppHeader />
           <main
             className={`pb-5 ${appStyles.mainContainer}`}>
-              <Switch>
-                {
-                  routes.map(({exact, path, component: Component}, i) => {
-                    return (                      
-                      <Route
-                        key={i}
-                        exact={exact}
-                        path={`${path}`}
-                        render={(props) => (
-                          <Component {...props} />
-                        )}
-                      />
-                    );
-                  })
-                }
-              </Switch>
+              <MainRouter/>
           </main>
         <AppFooter />
         {isSendingDataOrder && <AppSpinner />}

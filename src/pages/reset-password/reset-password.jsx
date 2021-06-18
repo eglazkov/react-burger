@@ -1,34 +1,58 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {useDispatch} from "react-redux";
+import {Redirect, useLocation} from 'react-router-dom';
 import {
   Input,
-  EmailInput,
+  PasswordInput, 
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import resetPasswordStyles from './reset-password.module.css';
-import Link from '../../components/link';
+import {
+  Link
+} from '../../components';
+import {useResetPasswordForm, useAuth, history} from "../../services";
 
 export default function ResetPassword() {
-  const [email, setEmail] = useState('');
-  const [verifyCode, setVerifyCode] = useState('');
-  const formSubmit = () => {
-    alert('form action');
-  };
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const [
+    {password, token},
+    {setResetPasswordFormValue},
+  ] = useResetPasswordForm();
+  const [ , {fetchUserResetPasswordAction}] = useAuth();
+  const onFormChange = (e) => {
+    dispatch(setResetPasswordFormValue(e.target.name, e.target.value));
+  }
+  const formSubmit = (e) => {
+    e.preventDefault();
+    dispatch(fetchUserResetPasswordAction({
+      password,
+      token
+    })).then(({success}) => success && history.replace({pathname: `/login`}));
+  }; 
+  if (!(location.state && location.state.from === '/forgot-password')) {
+    return <Redirect to="/forgot-password" />
+  }
+
   return (
     <form onSubmit={formSubmit} className={resetPasswordStyles.container}>
       <span className="text text_type_main-medium">Восстановление пароля</span>
-      <div
-        className="mt-3">        
-        <EmailInput        
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+      <div 
+        className="mt-3">
+        <PasswordInput
+          name="password"      
+          value={password}
+          placeholder="Введите новый пароль"
+          onChange={onFormChange}
         />
       </div>
       <div
         className="mt-3">        
         <Input
           placeholder="Введите код из письма"        
-          value={verifyCode}
-          onChange={(e) => setVerifyCode(e.target.value)}
+          value={token}
+          name="token"
+          onChange={onFormChange}
         />
       </div>
       <div

@@ -1,13 +1,13 @@
 import React, {useCallback} from 'react';
 import {v4 as uuidv4} from 'uuid';
-import * as moment from 'moment';
-import 'moment/locale/ru';
+import {formatRelative} from 'date-fns'
+import ruLocale from "date-fns/locale/ru";
 import PropTypes from 'prop-types';
 import orderCardStyles from './order-card.module.css';
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import IngredientIcon from '../ingredient-icon';
+import IngredientIcon from '../ingredient-icon/ingredient-icon';
  
 const OrderCard = ({
   orderDate,
@@ -28,14 +28,9 @@ const OrderCard = ({
       <div className={`${orderCardStyles.orderTitle}`}>        
         <span className={`text text_type_digits-default`}>{`#${id}`}</span>
         <span className={`text text_type_main-default ${orderCardStyles.inactive}`}>
-          {moment().calendar((orderDate), {
-              sameDay: '[Сегодня], HH:mm Z',
-              nextDay: '[Вчера], HH:mm Z',
-              nextWeek: 'dddd, HH:mm Z',
-              lastDay: '[Yesterday]',
-              lastWeek: '[Last] dddd',
-              sameElse: 'DD.MM.YYYY, HH:mm Z'
-          })}
+          {
+            formatRelative(new Date(orderDate), new Date(), { addSuffix: true, locale: ruLocale})
+          }
         </span>
       </div>
       <span className={`mt-3 text text_type_main-medium`}>{orderName}</span>
@@ -59,7 +54,7 @@ const OrderCard = ({
 }
 
 OrderCard.propTypes = {
-  orderDate: PropTypes.instanceOf(moment).isRequired,
+  orderDate: PropTypes.instanceOf(Date).isRequired,
   orderName: PropTypes.string.isRequired,
   orderCost: PropTypes.number.isRequired,
   orderIngredients: PropTypes.arrayOf(PropTypes.shape({

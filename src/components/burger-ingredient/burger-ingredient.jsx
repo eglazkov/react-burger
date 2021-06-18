@@ -1,19 +1,16 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
+import {useLocation} from 'react-router-dom';
 import {useDrag} from "react-dnd";
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredient.module.css';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientDetails from '../ingredient-details';
-
-import {useIngredeints, useConstructor} from '../../services';
+import {useConstructor, history} from '../../services';
 
 const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, ...details}) => {
   const dispatch = useDispatch();
-  const [{showIngredientDetails, ingredientDetails},
-    {openDetailsAction, closeDetailsAction}] = useIngredeints();
-    const [,{toggleDropLoactionAction}] = useConstructor();
-  const [renderDetails, setRenderDetails] = useState(false);
+  const location = useLocation();
+  const [,{toggleDropLoactionAction}] = useConstructor();
 
   const [{isDrag, didDrop}, dragRef] = useDrag({
     type: "ingredient-constructor",
@@ -31,15 +28,6 @@ const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, .
     (isDrag || (!didDrop && !isDrag)) && dispatch(toggleDropLoactionAction(isDrag));
   }, [toggleDropLoactionAction, isDrag, didDrop, dispatch]);
   
-  const openDetails = useCallback(() => {
-    dispatch(openDetailsAction(details));
-    setRenderDetails(true);
-  }, [dispatch, openDetailsAction, details]);
-
-  const closeDetails = useCallback(() => {
-    dispatch(closeDetailsAction());
-    setRenderDetails(false);
-  }, [closeDetailsAction, dispatch]);
 
   return ( 
     <>
@@ -48,7 +36,7 @@ const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, .
         onClick={function(e) {
           if (e.target.tagName !== 'P' &&
           (e.target.children[0] ? e.target.children[0].tagName !== 'P' : true)) {
-            openDetails();
+            history.push({pathname: `/ingredients/${_id}`, state: {background: location}});
           }
         }}
         isdrag={String(isDrag)}
@@ -68,16 +56,6 @@ const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, .
           {name}
         </div>
       </div>
-      {
-        showIngredientDetails && renderDetails &&
-        <IngredientDetails
-          caption="Детали ингредиента"
-          onClose={closeDetails}
-          name={name}
-          description={`API не возвращает описание ингредиента`}
-          {...ingredientDetails}
-        />     
-      }
     </>
     );
 }
