@@ -2,8 +2,8 @@ import React from 'react';
 import {useLocation} from 'react-router-dom';
 import appHeaderStyles from './app-header.module.css';
 import {Logo, BurgerIcon, ListIcon, ProfileIcon, CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import NavigationItem from '../navigation-item';
-import Link from '../link';
+import NavigationItem from '../navigation-item/navigation-item';
+import Link from '../link/link';
 
 const AppHeader = () => {
   const {pathname} = useLocation();

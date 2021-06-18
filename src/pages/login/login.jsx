@@ -6,8 +6,10 @@ import {
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import loginStyles from './login.module.css';
-import Link from '../../components/link';
-import Spinner from '../../components/spinner';
+import {
+  Link,
+  Spinner
+} from '../../components';
 import {useLoginForm, useAuth} from "../../services";
 
 export default function Login() {

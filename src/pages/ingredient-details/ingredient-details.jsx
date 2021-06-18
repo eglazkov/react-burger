@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import ingredientDetailsStyles from './ingredient-details.module.css';
-import Spinner from '../../components/spinner';
+import {Spinner} from '../../components';
 import {useIngredeints, history} from '../../services';
  
 const IngredientDetails = ({caption, onClose}) => {

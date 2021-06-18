@@ -2,11 +2,13 @@ import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import BurgerIngredients from '../../components/burger-ingredients';
-import BurgerConstructor from '../../components/burger-constructor';
+import {
+  BurgerConstructor,
+  BurgerIngredients
+} from '../../components';
 import {useIngredeints, useOrder, useConstructor} from '../../services';
 
-export default function Constructor() {
+export default function MainPage() {
   const dispatch = useDispatch();
   const [{errorMessage},
     {fetchIngredientsAction, increaseCountAction, decreaseCountAction}] = useIngredeints();

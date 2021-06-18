@@ -14,11 +14,13 @@ import {
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import profileStyles from './profile.module.css';
-import Link from '../../components/link';
-import OrderCard from '../../components/order-card';
-import AppSpinner from '../../components/app-spinner';
+import {
+  AppSpinner,
+  Link,
+  OrderCard
+} from '../../components';
 import {orderList} from '../feed';
-import OrderPage from '../order';
+import OrderPage from '../order/order';
 import {useAuth, history} from '../../services';
 
 function Profile({
@@ -152,8 +154,8 @@ Profile.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string,
     name: PropTypes.string
-  }).isRequired,
-  fetchUserLogoutAction: PropTypes.func.isRequired
+  }),
+  fetchUserLogoutAction: PropTypes.func
 };
 
 export default Profile;

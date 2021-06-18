@@ -7,8 +7,8 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import OrderDetails from "../order-details";
-import BurgerConstructorElement from "../burger-constructor-element";
+import OrderDetails from "../order-details/order-details";
+import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import {useOrder, useConstructor, useIngredeints, useAuth, history} from "../../services";
 
 const BurgerConstructor = ({ removeIngredient, addIngredient }) => {

@@ -1,10 +1,9 @@
 import React from 'react';
 import {v4 as uuidv4} from 'uuid';
+import {subDays} from 'date-fns'
 import {useLocation} from 'react-router-dom';
-import * as moment from 'moment';
-import 'moment/locale/ru';
 import feedStyles from './feed.module.css';
-import OrderCard from '../../components/order-card';
+import {OrderCard} from '../../components';
 import {history} from '../../services';
 
 const ingredeintsData = require('../../utils/data.json').data;
@@ -12,7 +11,7 @@ const ingredeintsData = require('../../utils/data.json').data;
 export const orderList = [
   {
     id: '034535',
-    orderDate:  moment(),
+    orderDate: new Date(),
     orderName: 'Death Star Starship Main бургер',
     orderCost: 480,
     orderIngredients: ingredeintsData.filter((item, i) => i < 5),
@@ -20,7 +19,7 @@ export const orderList = [
   },  
   {
     id: '034534',
-    orderDate: moment().add(-1,'days'),
+    orderDate: subDays(new Date(), 1),
     orderName: 'Interstellar бургер',
     orderCost: 560,
     orderIngredients: ingredeintsData.filter((item, i) => i < 8),
@@ -28,7 +27,7 @@ export const orderList = [
   },  
   {
     id: '034533',
-    orderDate: moment().add(-8, 'days'),
+    orderDate: subDays(new Date(), 8),
     orderName: 'Black Hole Singularity острый бургер',
     orderCost: 510,
     orderIngredients: ingredeintsData.filter((item, i) => i < 5),

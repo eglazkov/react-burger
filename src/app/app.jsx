@@ -1,9 +1,11 @@
 import React from 'react';
 import {ConnectedRouter} from 'connected-react-router';
 import appStyles from './app.module.css';
-import AppHeader from '../components/app-header';
-import AppFooter from '../components/app-footer';
-import AppSpinner from '../components/app-spinner';
+import {
+  AppHeader,
+  AppFooter,
+  AppSpinner
+} from '../components';
 import {useOrder, history, MainRouter} from '../services';
  
 const App = () => {

@@ -1,16 +1,20 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
+import {Redirect, useLocation} from 'react-router-dom';
 import {
   Input,
   PasswordInput, 
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import resetPasswordStyles from './reset-password.module.css';
-import Link from '../../components/link';
+import {
+  Link
+} from '../../components';
 import {useResetPasswordForm, useAuth, history} from "../../services";
 
 export default function ResetPassword() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [
     {password, token},
     {setResetPasswordFormValue},
@@ -25,7 +29,11 @@ export default function ResetPassword() {
       password,
       token
     })).then(({success}) => success && history.replace({pathname: `/login`}));
-  };
+  }; 
+  if (!(location.state && location.state.from === '/forgot-password')) {
+    return <Redirect to="/forgot-password" />
+  }
+
   return (
     <form onSubmit={formSubmit} className={resetPasswordStyles.container}>
       <span className="text text_type_main-medium">Восстановление пароля</span>

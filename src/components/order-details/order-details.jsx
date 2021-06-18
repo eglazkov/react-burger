@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import orderDetailsStyles from './order-details.module.css';
-import Modal from '../modal';
+import Modal from '../modal/modal';
 import done from '../../images/done.svg';
 
 const modalRoot = document.getElementById("modals");
