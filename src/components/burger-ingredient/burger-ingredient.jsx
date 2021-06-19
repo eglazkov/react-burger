@@ -32,6 +32,7 @@ const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, .
   return ( 
     <>
       <div
+        data-testid={`ingredient-${_id}`}
         ref={dragRef}
         onClick={function(e) {
           if (e.target.tagName !== 'P' &&
@@ -41,8 +42,11 @@ const BurgerIngredient = ({_id, image, price, name, count=0, addToConstructor, .
         }}
         isdrag={String(isDrag)}
         className={`mb-4 ${burgerIngredientsStyles.ingredient}`}>
-        {count >= 0 && <span className={burgerIngredientsStyles.counter} onClick={addToConstructor}>
-          <Counter count={count}/>
+        {count >= 0 && <span
+          data-testid="counter"
+          className={burgerIngredientsStyles.counter}
+          onClick={addToConstructor}>
+            <Counter count={count}/>
         </span>}
         <img
           className="pl-2 pr-2 mb-1"

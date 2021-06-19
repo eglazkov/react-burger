@@ -12,7 +12,7 @@ const constructorInitialState = {
   showDropLocation: false
 };
 
-const array_move = function(arr, old_index, new_index) {
+export const array_move = function(arr, old_index, new_index) {
   if (new_index >= arr.length) {
       let k = new_index - arr.length + 1;
       while (k--) {

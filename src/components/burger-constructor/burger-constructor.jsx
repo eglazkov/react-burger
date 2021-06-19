@@ -70,6 +70,7 @@ const BurgerConstructor = ({ removeIngredient, addIngredient }) => {
   return (
     <>
       <section
+        data-testid="constructor-drop-location"
         ishover={String(isHover || showDropLocation)}
         className={`pl-4 text text_type_main-medium text_color_inactive ${burgerConstructorStyles.container}`}
         ref={dropTarget}
