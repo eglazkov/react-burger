@@ -170,17 +170,17 @@ describe('user reducer', () => {
     });
   });
 
-  it('should set isUserLoaded to true and change user to null', () => {
+  it('should set isUserLoaded to true', () => {
     expect(
       userReducer({
-        isUserLoaded: true,
+        isUserLoaded: false,
         user: {name: 'userName'}
       }, {
         type: ActionTypes.GET_USER_FAIL
       })
     ).toEqual({
       isUserLoaded: true,
-      user: null
+      user: {name: 'userName'}
     });
   });
 });
