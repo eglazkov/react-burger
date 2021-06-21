@@ -70,12 +70,12 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
         showIngredientDetails: true,
         ingredientDetails: action.payload.details
       };        
-      case CLOSE_INGREDIENT_DETAILS:
-        return {
-          ...state,        
-          showIngredientDetails: false,
-          ingredientDetails: {}
-        };
+    case CLOSE_INGREDIENT_DETAILS:
+      return {
+        ...state,        
+        showIngredientDetails: false,
+        ingredientDetails: {}
+      };
     default:
       return {...state};
   }

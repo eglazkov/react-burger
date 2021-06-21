@@ -43,9 +43,11 @@ const BurgerConstructorElement = ({
   });
   
   return (       
-    <div ref={draggable ? dropTarget : null}>
+    <div ref={draggable ? dropTarget : null}
+      data-test-id="constructor-element">
       <div    
         ref={draggable ? dragRef : null}
+        data-testid={`constructor-element-${id}`}
         ishover={String(isHover)}
         isdrag={String(isDrag)}
         isdraggable={String(draggable)}

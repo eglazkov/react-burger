@@ -71,8 +71,7 @@ export const userReducer = (state = userInitialState, action) => {
       }
     case ActionTypes.GET_USER_FAIL:
       return {
-        ...state,
-        user: null,
+        ...state,        
         isUserLoaded: true
       }  
     default:

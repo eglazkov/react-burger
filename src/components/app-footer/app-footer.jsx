@@ -11,7 +11,9 @@ const AppFooter = (props) => {
   return ( 
     <footer>
       <div className={`text text_type_main-default mb-2 mt-2 ${appFooterStyles.container}`}>
-        <div className={`${appFooterStyles.footer}`}>
+        <div
+          className={`${appFooterStyles.footer}`}
+          data-testid="price">
           {totalCost}
           <CurrencyIcon/> 
         </div>           

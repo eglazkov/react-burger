@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {useAuth} from '../../services';
 import {useDispatch} from 'react-redux';
-import {Redirect, Route} from 'react-router-dom';
+import {Redirect, Route, useLocation} from 'react-router-dom';
 import Spinner from '../spinner/spinner';
 
 export default function UserProtectedRoute({ children, ...rest }) {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [
     {user, isUserLoaded},
     {fetchGetUserAction}
@@ -28,7 +29,11 @@ export default function UserProtectedRoute({ children, ...rest }) {
       render={() =>                
         !user ? (
           children
-        ) : <Redirect to="/"/>
+        ) : <Redirect to={{
+          pathname: location.state?.from?.pathname ?
+            location.state?.from?.pathname :
+            '/'
+        }}/>
       }
     />
   );
