@@ -27,6 +27,7 @@ describe('constructor test', () => {
     cy.getDropLocation()
       .contains(dragItemMain.name)
       .should('not.exist');
+      cy.wait(200);
   });
   
   it('drag bun first to constructor and have it in drop location', () => {  
@@ -38,6 +39,10 @@ describe('constructor test', () => {
       .find('[data-testid=counter]')
       .contains('2')
       .should('exist');
+    cy.get('[data-testid=price]')
+      .contains('2510')
+      .should('exist');
+    cy.wait(200);
   });
 
   it('drag main to constructor and have it in drop location', () => {  
@@ -50,6 +55,10 @@ describe('constructor test', () => {
       .find('[data-testid=counter]')
       .contains('1')
       .should('exist');
+    cy.get('[data-testid=price]')
+      .contains('3847')
+      .should('exist');
+    cy.wait(200);
   });
 
   it('drag sauce to constructor and have it in drop location', () => {
@@ -61,7 +70,11 @@ describe('constructor test', () => {
     cy.getIngredientById(dragItemSauce._id)
       .find('[data-testid=counter]')
       .contains('1')
-      .should('exist');
+      .should('exist');    
+    cy.get('[data-testid=price]')
+      .contains('3937')
+      .should('exist');  
+    cy.wait(200);
   });
 
   it('drag some main to constructor and have it in drop location', () => { 
@@ -73,7 +86,11 @@ describe('constructor test', () => {
     cy.getIngredientById(dragItemSecondMain._id)
       .find('[data-testid=counter]')
       .contains('1')
-      .should('exist');
+      .should('exist');    
+    cy.get('[data-testid=price]')
+      .contains('6937')
+      .should('exist');  
+    cy.wait(200);
   });
 
   it('drag some main to constructor second time and have it in drop location', () => { 
@@ -84,12 +101,17 @@ describe('constructor test', () => {
       .should('exist');
     cy.getIngredientById(dragItemSecondMain._id).find('[data-testid=counter]')
       .contains('2')
-      .should('exist');
+      .should('exist');    
+    cy.get('[data-testid=price]')
+      .contains('9937')
+      .should('exist');  
+    cy.wait(200);
   });
 
   it('checks what ingredients locate in second place is correct', () => {     
-    cy.getDropLocation().find('[data-test=constructor-element]').eq(2).contains('Spicy-X')
+    cy.getDropLocation().find('[data-test-id=constructor-element]').eq(2).contains('Spicy-X')
       .should('exist');
+    cy.wait(200);
   });
   
   it('drag ingredient inside constructor (second main)', () => {
@@ -98,9 +120,10 @@ describe('constructor test', () => {
     
     /** Check how changes ingredient locate in second place */
     cy.getDropLocation()
-      .find('[data-test=constructor-element]')
+      .find('[data-test-id=constructor-element]')
       .eq(2).contains('Protostomia')
-      .should('exist');
+      .should('exist');      
+    cy.wait(200);
   });
 
   it('removes element from constructor', () => {
@@ -114,12 +137,14 @@ describe('constructor test', () => {
     cy.getDropLocation()
       .contains('6937')
       .should('exist');
+    cy.wait(200);
   });
 
   it('make action "Оформить заказ" by not signed in user', () => {
     cy.contains('Оформить заказ')
       .click();
     cy.location('pathname').should('eq', '/login');
+    cy.wait(200);
   });
 
   it('sign in', () => {
@@ -148,6 +173,7 @@ describe('constructor test', () => {
     cy.contains('Войти')
       .click();
     cy.location('pathname').should('eq', '/');
+    cy.wait(200);
   });
 
   it('make action "Оформить заказ" by signed in user', () => {
@@ -165,6 +191,7 @@ describe('constructor test', () => {
       .should('exist');
     cy.contains('Ваш заказ начали готовить')
       .should('exist');
+    cy.wait(200);
   });
 
   it('close order dialog', () => {
@@ -172,7 +199,7 @@ describe('constructor test', () => {
       .find('button')
       .click();
     cy.getDropLocation()
-      .find('[data-test=constructor-element]')
+      .find('[data-test-id=constructor-element]')
       .should('not.exist');
   });
 });

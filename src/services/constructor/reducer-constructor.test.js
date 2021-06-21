@@ -1,6 +1,11 @@
 import {constructorReducer} from './reducer';
 import * as ActionTypes from './action-types';
 
+const successResult = {
+  showDropLocation: false,
+  constructorIngredients: []
+};
+
 describe('constructor reducer', () => {
   it('should return the initial state', () => {
     expect(constructorReducer(undefined, {})).toEqual({
@@ -36,15 +41,12 @@ describe('constructor reducer', () => {
       payload: {
         index: 0
       }
-    })).toEqual({
-      showDropLocation: false,
-      constructorIngredients: []
-    });
+    })).toEqual(successResult);
   });
 
   it(`should change location from dragIndex to replaceToIndex of
       item inside constructorIngredients array`, () => {
-    const intitalState = {
+    const intitialState = {
       constructorIngredients: [
         {constructorId: 0},
         {constructorId: 1},
@@ -53,14 +55,14 @@ describe('constructor reducer', () => {
       ],
       showDropLocation: false
     };
-    expect(constructorReducer(intitalState, {
+    expect(constructorReducer(intitialState, {
       type: ActionTypes.DROP_CONSTRUCTOR_ITEM,
       payload: {
         dragIndex: 0,
         replaceToIndex: 2
       }
     })).toEqual({
-      ...intitalState,
+      ...intitialState,
       constructorIngredients: [       
         {constructorId: 0},        
         {constructorId: 2},
@@ -72,7 +74,7 @@ describe('constructor reducer', () => {
   });
 
   it('should clear of constructorIngredients array in state', () => {
-    const intitalState = {
+    const intitialState = {
       constructorIngredients: [
         {constructorId: 0},
         {constructorId: 1},
@@ -81,10 +83,10 @@ describe('constructor reducer', () => {
       ],
       showDropLocation: false
     };
-    expect(constructorReducer(intitalState, {
+    expect(constructorReducer(intitialState, {
       type: ActionTypes.RESET_CONSTRUCTOR
     })).toEqual({
-      ...intitalState,
+      ...intitialState,
       constructorIngredients: [],
       showDropLocation: false
     });
@@ -110,10 +112,7 @@ describe('constructor reducer', () => {
     };
     expect(constructorReducer(initialState, {
       type: ActionTypes.HIDE_DROP_LOCATION
-    })).toEqual({
-      showDropLocation: false,
-      constructorIngredients: []
-    });
+    })).toEqual(successResult);
   });
 
 });

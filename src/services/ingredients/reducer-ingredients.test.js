@@ -1,6 +1,14 @@
 import {ingredientsReducer} from './reducer';
 import * as ActionTypes from './action-types';
 
+const successResult = {
+  isIngredientsLoading: false,
+  ingredients: [{_id: 1}],
+  errorMessage: null,
+  ingredientDetails: {},
+  showIngredientDetails: false
+};
+
 describe('ingredients reducer', () => {
   it('should return the initial state', () => {
     expect(ingredientsReducer(undefined, {})).toEqual({
@@ -31,13 +39,7 @@ describe('ingredients reducer', () => {
       payload: {
         ingredients: [{_id: 1}]
       }
-    })).toEqual({
-      isIngredientsLoading: false,
-      ingredients: [{_id: 1}],
-      errorMessage: null,
-      ingredientDetails: {},
-      showIngredientDetails: false
-    });
+    })).toEqual(successResult);
   });
 
   it(`should return ingredeints from payload 
@@ -47,13 +49,7 @@ describe('ingredients reducer', () => {
       payload: {
         ingredients: [{_id: 1}]
       }
-    })).toEqual({
-      isIngredientsLoading: false,
-      ingredients: [{_id: 1}],
-      errorMessage: null,
-      ingredientDetails: {},
-      showIngredientDetails: false
-    });
+    })).toEqual(successResult);
   });
   
   it(`should change isIngredientsLoading to false, ingredients to empty array and
@@ -76,7 +72,7 @@ describe('ingredients reducer', () => {
 
   it(`should increase by one "count" property in ingredients
       array by id from payload`, () => {
-    const intitalState = {
+    const intitialState = {
       ingredients: [
         {count:0, _id: 0},
         {count: 4, _id: 1},
@@ -84,7 +80,7 @@ describe('ingredients reducer', () => {
         {count: 2, _id: 3}
       ]
     };
-    expect(ingredientsReducer(intitalState, {
+    expect(ingredientsReducer(intitialState, {
       type: ActionTypes.INCREASE_INGREDIENT_COUNT,
       payload: {
         id: 1
@@ -101,7 +97,7 @@ describe('ingredients reducer', () => {
 
   it(`should decrease by one "count" property in ingredients
       array by id from payload`, () => {
-    const intitalState = {
+    const intitialState = {
       ingredients: [
         {count:0, _id: 0},
         {count: 4, _id: 1},
@@ -109,7 +105,7 @@ describe('ingredients reducer', () => {
         {count: 2, _id: 3}
       ]
     };
-    expect(ingredientsReducer(intitalState, {
+    expect(ingredientsReducer(intitialState, {
       type: ActionTypes.DECREASE_INGREDIENT_COUNT,
       payload: {
         id: 3
