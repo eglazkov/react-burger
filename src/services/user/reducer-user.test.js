@@ -1,6 +1,13 @@
 import {userReducer} from './reducer';
 import * as ActionTypes from './action-types';
 
+const successResult = {
+  isUserLoaded: true,
+  user: {name: 'userName'}
+};
+const accessToken = '215423t6345r35';
+const refreshToken = 'adf23gf4g4g';
+
 describe('user reducer', () => {
   it('should return the initial state', () => {
     expect(userReducer(undefined, {})).toEqual({
@@ -38,8 +45,8 @@ describe('user reducer', () => {
       }, {
         type: ActionTypes.USER_LOGIN_SUCCESS,
         payload: {
-          accessToken: '215423t6345r35',
-          refreshToken: 'adf23gf4g4g',
+          accessToken,
+          refreshToken,
           user: {name: 'userName'}
         }
       }) ||
@@ -48,15 +55,15 @@ describe('user reducer', () => {
       }, {
         type: ActionTypes.USER_REGISTER_SUCCESS,
         payload: {
-          accessToken: '215423t6345r35',
-          refreshToken: 'adf23gf4g4g',
+          accessToken,
+          refreshToken,
           user: {name: 'userName'}
         }
       })
     ).toEqual({
       userActionPending: false,
-      accessToken: '215423t6345r35',
-      refreshToken: 'adf23gf4g4g',
+      accessToken,
+      refreshToken,
       user: {name: 'userName'}
     });
   });
@@ -65,12 +72,12 @@ describe('user reducer', () => {
     expect(userReducer(undefined, {
       type: ActionTypes.USER_REFRESH_TOKEN_SUCCESS,
       payload: {
-        accessToken: '215423t6345r35',
-        refreshToken: 'adf23gf4g4g'
+        accessToken,
+        refreshToken
       }
     })).toEqual({
-      accessToken: '215423t6345r35',
-      refreshToken: 'adf23gf4g4g',
+      accessToken,
+      refreshToken,
       user: null,
       userActionPending: false,
       isUserLoaded: false,
@@ -80,8 +87,8 @@ describe('user reducer', () => {
   
   it(`should change accessToken, refreshTokent and user to null`, () => {
     expect(userReducer({
-      accessToken: '215423t6345r35',
-      refreshToken: 'adf23gf4g4g',
+      accessToken,
+      refreshToken,
       user: {name: 'userName'}
     }, {
       type: ActionTypes.USER_LOGOUT_SUCCESS
@@ -164,10 +171,7 @@ describe('user reducer', () => {
         type: ActionTypes.GET_USER_SUCCESS,
         payload: {user: {name: 'userName'}}
       })
-    ).toEqual({
-      isUserLoaded: true,
-      user: {name: 'userName'}
-    });
+    ).toEqual(successResult);
   });
 
   it('should set isUserLoaded to true', () => {
@@ -178,9 +182,6 @@ describe('user reducer', () => {
       }, {
         type: ActionTypes.GET_USER_FAIL
       })
-    ).toEqual({
-      isUserLoaded: true,
-      user: {name: 'userName'}
-    });
+    ).toEqual(successResult);
   });
 });

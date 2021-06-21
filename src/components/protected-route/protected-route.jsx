@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useAuth, history} from '../../services';
+import {useAuth} from '../../services';
 import {useDispatch} from 'react-redux';
 import {Redirect, Route, useLocation} from 'react-router-dom';
 import Spinner from '../spinner/spinner';

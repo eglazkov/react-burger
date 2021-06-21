@@ -1,6 +1,8 @@
 import {orderReducer} from './reducer';
 import * as ActionTypes from './action-types';
 
+const orderId = '023859827';
+
 describe('order reducer', () => {
   it('should return the initial state', () => {
     expect(orderReducer(undefined, {})).toEqual({
@@ -77,12 +79,12 @@ describe('order reducer', () => {
     }, {
       type: ActionTypes.FETCH_DATA_ORDER_SUCCESS,
       payload: {
-        orderId: '023859827'
+        orderId
       }
     })).toEqual({
       totalCost: 0,
       isSendingDataOrder: false,
-      orderId: '023859827',
+      orderId,
       isShowOrderDetails: false,
       errorMessage: null
     });
