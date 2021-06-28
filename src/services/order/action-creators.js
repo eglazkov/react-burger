@@ -42,7 +42,8 @@ export const fetchDataOrderAction = orderlist => dispatch => {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
     body: JSON.stringify({
       ingredients: orderlist

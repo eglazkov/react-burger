@@ -9,10 +9,10 @@ const modalRoot = document.getElementById("modals");
 const AppSpinner = () => {
   return ReactDOM.createPortal(
     (
-      <>
-        <Spinner className={appSpinnerStyles.spinner} isLoading={true}/>
+      <div className={appSpinnerStyles.spinner}>
+        <Spinner isLoading={true}/>
         <ModalOverlay onClick={function(){}}/>
-      </>
+      </div>
     ), modalRoot
   );
 }

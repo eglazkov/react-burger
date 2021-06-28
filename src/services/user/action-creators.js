@@ -27,7 +27,10 @@ export const fetchUserLoginAction = ({
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.USER_LOGIN_SUCCESS, payload: resp});
+      dispatch({type: ActionTypes.USER_LOGIN_SUCCESS, payload: {
+        ...resp,
+        token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
+      }});
       if (resp.accessToken) {
         // TODO: почему то в куках происходит дубликация данных, поэтому localStorage
         // setCookie('token', resp.accessToken.split('Bearer ')[1]);
@@ -64,7 +67,10 @@ export const fetchUserRegisterAction = ({
       throw new Error(response.status);
     } else {
       const resp = response.json();
-      dispatch({type: ActionTypes.USER_REGISTER_SUCCESS, payload: resp.data});
+      dispatch({type: ActionTypes.USER_REGISTER_SUCCESS, payload: {
+        ...resp,
+        token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
+      }});
       return resp;      
     }
   } catch (error) {
@@ -125,7 +131,7 @@ export const fetchGetUserAction = () => dispatch => {
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.GET_USER_SUCCESS, payload: resp});
+      dispatch({type: ActionTypes.GET_USER_SUCCESS, payload: {...resp, token: localStorage.getItem('token')}});
     }).catch(errorMessage => {
       dispatch({type: ActionTypes.GET_USER_FAIL, payload: {errorMessage}});
     });
@@ -151,7 +157,10 @@ export const fetchUserRefreshTokenAction = () => dispatch => {
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.USER_REFRESH_TOKEN_SUCCESS, payload: resp.data});
+      dispatch({type: ActionTypes.USER_REFRESH_TOKEN_SUCCESS, payload: {
+        ...resp,
+        token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
+      }});
       localStorage.setItem('token', resp.accessToken.split('Bearer ')[1]);        
       localStorage.setItem('refreshToken', resp.refreshToken);
     }).catch(errorMessage => {

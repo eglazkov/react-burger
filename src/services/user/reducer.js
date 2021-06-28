@@ -23,14 +23,16 @@ export const userReducer = (state = userInitialState, action) => {
         ...state,
         userActionPending: false,
         accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
+        refreshToken: action.payload.refreshToken,  
+        token: action.payload.token,
         user: action.payload.user
       }
     case ActionTypes.USER_REFRESH_TOKEN_SUCCESS:
       return {
         ...state,       
         accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken        
+        refreshToken: action.payload.refreshToken,  
+        token: action.payload.token
       }
     case ActionTypes.USER_LOGOUT_SUCCESS:
       return {
@@ -67,6 +69,7 @@ export const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         user: action.payload.user,
+        token: action.payload.token,
         isUserLoaded: true
       }
     case ActionTypes.GET_USER_FAIL:

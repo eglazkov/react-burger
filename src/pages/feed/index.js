@@ -1,1 +1,1 @@
-export {default, getOrderById, orderList} from './feed';
+export {default} from './feed';
