@@ -44,6 +44,7 @@ export const socketMiddleware = (wsUrl, wsActions, withAuth) => {
         }
         if (type === wsEnd || type === wsEndUser) {
           socket.close();
+          socket = undefined;
         }
         if (type === wsPing) {          
           socket.send('pong');
