@@ -18,8 +18,8 @@ const IngredientIcon = ({
 }
 
 IngredientIcon.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
+  src: PropTypes.string,
+  alt: PropTypes.string,
   count: PropTypes.string
 };
  

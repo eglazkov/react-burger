@@ -1,11 +1,5 @@
 .spinner {
-  position: fixed;
-  z-index: 100;  
+  position: absolute; 
   left: calc(50% - 50px);
-  top: calc(45% - 50px);
-  transform: translate(-50%, -50%);
-}
-
-.spinner > div {
-  position: absolute;
+  top: calc(45% - 50px);  
 }

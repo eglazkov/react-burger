@@ -27,7 +27,10 @@ export const fetchUserLoginAction = ({
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.USER_LOGIN_SUCCESS, payload: resp});
+      dispatch({type: ActionTypes.USER_LOGIN_SUCCESS, payload: {
+        ...resp,
+        token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
+      }});
       if (resp.accessToken) {
         // TODO: почему то в куках происходит дубликация данных, поэтому localStorage
         // setCookie('token', resp.accessToken.split('Bearer ')[1]);
@@ -64,7 +67,10 @@ export const fetchUserRegisterAction = ({
       throw new Error(response.status);
     } else {
       const resp = response.json();
-      dispatch({type: ActionTypes.USER_REGISTER_SUCCESS, payload: resp.data});
+      dispatch({type: ActionTypes.USER_REGISTER_SUCCESS, payload: {
+        ...resp,
+        token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
+      }});
       return resp;      
     }
   } catch (error) {
@@ -116,16 +122,19 @@ export const fetchGetUserAction = () => dispatch => {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
   })
-    .then(res => {
-      if (!res.ok) {
-        dispatch(fetchUserRefreshTokenAction());
+    .then(async res => {
+      if (!res.ok && res.status !== 401) {
+        dispatch(fetchUserRefreshTokenAction())
+        .then((resp) => {
+          dispatch(fetchGetUserAction());
+        });
         return Promise.reject(res.status);
       } else {
         return res.json();
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.GET_USER_SUCCESS, payload: resp});
+      dispatch({type: ActionTypes.GET_USER_SUCCESS, payload: {...resp, token: localStorage.getItem('token')}});
     }).catch(errorMessage => {
       dispatch({type: ActionTypes.GET_USER_FAIL, payload: {errorMessage}});
     });
@@ -133,7 +142,7 @@ export const fetchGetUserAction = () => dispatch => {
 
 export const fetchUserRefreshTokenAction = () => dispatch => {
   dispatch({type: ActionTypes.USER_REFRESH_TOKEN_PENDING});
-  fetch(`${API_URL}/auth/token`, {
+  return fetch(`${API_URL}/auth/token`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -151,7 +160,10 @@ export const fetchUserRefreshTokenAction = () => dispatch => {
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.USER_REFRESH_TOKEN_SUCCESS, payload: resp.data});
+      dispatch({type: ActionTypes.USER_REFRESH_TOKEN_SUCCESS, payload: {
+        ...resp,
+        token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
+      }});
       localStorage.setItem('token', resp.accessToken.split('Bearer ')[1]);        
       localStorage.setItem('refreshToken', resp.refreshToken);
     }).catch(errorMessage => {

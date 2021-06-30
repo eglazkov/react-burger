@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {v4 as uuidv4} from 'uuid';
@@ -19,9 +19,14 @@ import {
   Link,
   OrderCard
 } from '../../components';
-import {orderList} from '../feed';
 import OrderPage from '../order/order';
-import {useAuth, history} from '../../services';
+import {useAuth, useWebsocket, useIngredeints, history} from '../../services';
+import {
+  WS_CONNECTION_USER_START,
+  WS_CONNECTION_USER_END,
+  WS_SEND_PONG_MESSAGE
+} from '../../services/websocket/action-types';
+const _ = require('lodash');
 
 function Profile({
   user,
@@ -29,6 +34,11 @@ function Profile({
 }) {
   const dispatch = useDispatch();
   const [{isUserUpdates}, {fetchUserUpdateAction}] = useAuth();
+  const [{historyData, wsConnected}] = useWebsocket();
+  const {orders} = historyData;
+  const [{ingredients},
+    {fetchIngredientsAction}] = useIngredeints();
+  const ingredientsMap = useMemo(() => _.keyBy(ingredients, '_id'), [ingredients]);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
@@ -54,6 +64,20 @@ function Profile({
     };
     return descriptions[route] || '';
   };
+  useEffect(() => {
+    dispatch({type: WS_CONNECTION_USER_START});
+    if (ingredients.length === 0) {
+      dispatch(fetchIngredientsAction());
+    }
+    const pingPong = setInterval(() => {
+      dispatch({type: WS_SEND_PONG_MESSAGE})
+    }, 10000);
+    return () => {
+      clearInterval(pingPong);
+      dispatch({type: WS_CONNECTION_USER_END});
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     isUserUpdates ?
     <AppSpinner /> :    
@@ -129,12 +153,14 @@ function Profile({
         path={`${path}/orders`}>
           <div className={`${profileStyles.orderList} pr-1`}>
           {
-            orderList.map((order) => (
-              <OrderCard
-                changeLocation={({id}) => {                 
+            wsConnected && orders && orders.map((order) => (
+              ingredientsMap && <OrderCard
+                changeLocation={({number: id}) => {                 
                   history.push({pathname: `${path}/orders/${id}`, state: {background: location}});
                 }}
+                showStatus
                 key={uuidv4()}
+                ingredientsMap={ingredientsMap}
                 {...order}
               />
             ))

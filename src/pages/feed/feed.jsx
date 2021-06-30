@@ -1,79 +1,64 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useMemo} from 'react';
+import {useDispatch} from "react-redux";
 import {v4 as uuidv4} from 'uuid';
-import {subDays} from 'date-fns'
 import {useLocation} from 'react-router-dom';
 import feedStyles from './feed.module.css';
-import {OrderCard} from '../../components';
+import {AppSpinner, OrderCard} from '../../components';
 import {history} from '../../services';
-
-const ingredeintsData = require('../../utils/data.json').data;
-
-export const orderList = [
-  {
-    id: '034535',
-    orderDate: new Date(),
-    orderName: 'Death Star Starship Main бургер',
-    orderCost: 480,
-    orderIngredients: ingredeintsData.filter((item, i) => i < 5),
-    orderStatus: 'Выполнен'
-  },  
-  {
-    id: '034534',
-    orderDate: subDays(new Date(), 1),
-    orderName: 'Interstellar бургер',
-    orderCost: 560,
-    orderIngredients: ingredeintsData.filter((item, i) => i < 8),
-    orderStatus: 'Выполнен'
-  },  
-  {
-    id: '034533',
-    orderDate: subDays(new Date(), 8),
-    orderName: 'Black Hole Singularity острый бургер',
-    orderCost: 510,
-    orderIngredients: ingredeintsData.filter((item, i) => i < 5),
-    orderStatus: 'В обработке'
-  }
-];
-
-export const getOrderById = (id) => {
-  return orderList.filter(order => order.id === id)[0];
-}
-
-const readyOrders = [
-  {id: '034533'},
-  {id: '034532'},
-  {id: '034530'},
-  {id: '034527'},
-  {id: '034525'}
-];
-
-const currentOrders = [
-  {id: '034538'},
-  {id: '034541'},
-  {id: '034542'}  
-];
-
-const totalComletedOrders = 28752;
-const todayCompletedOrders = 138;
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_END,
+  WS_SEND_PONG_MESSAGE
+} from '../../services/websocket/action-types';
+import {useWebsocket, useIngredeints} from '../../services';
+const _ = require('lodash');
 
 export default function Feed() {
+  const dispatch = useDispatch();
   const formatAmount = new Intl.NumberFormat('ru-RU', {
     minimumFractionDigits: 0      
   }).format;
-  const location = useLocation();
+  const location = useLocation(); 
+  const [{ingredients},
+    {fetchIngredientsAction}] = useIngredeints();
+  const [{feedData, wsConnected = false}] = useWebsocket();
+  const {orders, total, totalToday} = feedData;
+  const ingredientsMap = useMemo(() => _.keyBy(ingredients, '_id'), [ingredients]);
+  const completedOrders = useMemo(() => {
+    return orders.filter(order => order.status === 'done');
+  }, [orders]);
+  const inProgressOrders = useMemo(() => {
+    return orders.filter(order => order.status === 'pending');
+  }, [orders]);
+
+  useEffect(() => {
+    dispatch({type: WS_CONNECTION_START});
+    if (ingredients.length === 0) {
+      dispatch(fetchIngredientsAction());
+    }
+    const pingPong = setInterval(() => {
+      dispatch({type: WS_SEND_PONG_MESSAGE})
+    }, 10000);
+    return () => {
+      clearInterval(pingPong);
+      dispatch({type: WS_CONNECTION_END});
+    };
+  }, []);
   return (
-    <div className={feedStyles.container}>
-      <div>
+    wsConnected ? <div className={feedStyles.container}>
+      <div className={feedStyles.feedContainer}>
         <div className="mb-4 text text_type_main-large">Лента заказов</div>
         <div className={`${feedStyles.feedList}`}>
           {
-            orderList.map((order) => (
-              <OrderCard
-                changeLocation={({id}) => {                  
+            orders.map((order) => (
+              ingredientsMap && <OrderCard
+                changeLocation={({number: id}) => {                
                   history.push({pathname: `/feed/${id}`, state: {background: location}});
                 }}
                 key={uuidv4()}
-                {...order} 
+                ingredientsMap={ingredientsMap}
+                {...order}
               />
             ))
           }
@@ -81,22 +66,24 @@ export default function Feed() {
       </div>
       <div className={`${feedStyles.stats} ml-5`}>
         <div className={`${feedStyles.table}`}>
-          <div className="mr-4">
-            <div className="text text_type_main-medium mt-3 mr-4">Готовы:</div>
+          <div className="pr-5">
+            <div className="text text_type_main-medium mt-3">Готовы:</div>
             <ul className={`${feedStyles.readyOrders}`}>
               {
-                readyOrders.map(({id}) => (
-                  <li key={uuidv4()} className="text text_type_digits-default mt-2">{id}</li>
+                completedOrders
+                .map(({number}) => (
+                  <li key={uuidv4()} className="text text_type_digits-default mb-2">{number}</li>
                 ))
               }
             </ul>
           </div>
-          <div className="ml-4">
+          <div>
             <div className="text text_type_main-medium mt-3">В работе:</div>
             <ul className={`${feedStyles.currentOrders}`}>
               {
-                currentOrders.map(({id}) => (
-                  <li key={uuidv4()} className="text text_type_digits-default mt-2">{id}</li>
+                inProgressOrders
+                .map(({number}) => (
+                  <li key={uuidv4()} className="text text_type_digits-default mb-2">{number}</li>
                 ))
               }
             </ul>
@@ -104,13 +91,13 @@ export default function Feed() {
         </div>
         <div className={`${feedStyles.tableNum}`}>
           <div className="text text_type_main-medium">Выполнено за все время:</div>
-          <div className={`text text_type_digits-large`}>{formatAmount(totalComletedOrders)}</div>
+          <div className={`text text_type_digits-large`}>{formatAmount(total)}</div>
         </div>
         <div className={`${feedStyles.tableNum}`}>
           <div className="text text_type_main-medium">Выполнено за сегодня:</div>
-          <div className={`text text_type_digits-large`}>{formatAmount(todayCompletedOrders)}</div>
+          <div className={`text text_type_digits-large`}>{formatAmount(totalToday)}</div>
         </div>
       </div>
-    </div>
+    </div> : <AppSpinner />
   )
 }

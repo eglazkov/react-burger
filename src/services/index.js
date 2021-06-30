@@ -6,6 +6,7 @@ export {useLoginForm} from './login-form';
 export {useForgotPasswordForm} from './forgot-password-form';
 export {useResetPasswordForm} from './reset-password-form';
 export {useAuth} from './user';
+export {useWebsocket} from './websocket';
 export {default as history} from './history';
 export {MainRouter} from './routes';
 
@@ -41,4 +42,12 @@ export function getCookie(name) {
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
-} 
+}
+
+export const getStatusName = (status) => {
+  return {
+    done: 'Выполнен',
+    pending: 'Готовится',
+    created: 'Создан'
+  }[status] || status;
+}

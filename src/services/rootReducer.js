@@ -8,6 +8,7 @@ import {loginFormReducer} from './login-form/reducer';
 import {forgotPasswordFormReducer} from './forgot-password-form/reducer';
 import {resetPasswordFormReducer} from './reset-password-form/reducer';
 import {userReducer} from './user/reducer';
+import {wsReducer} from './websocket/reducer';
 import history from './history';
 
 export const rootReducer = combineReducers({
@@ -19,5 +20,6 @@ export const rootReducer = combineReducers({
   loginFormReducer,
   forgotPasswordFormReducer,
   resetPasswordFormReducer,
-  userReducer
+  userReducer,
+  wsReducer
 });
