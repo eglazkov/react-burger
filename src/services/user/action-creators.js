@@ -122,9 +122,12 @@ export const fetchGetUserAction = () => dispatch => {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
   })
-    .then(res => {
-      if (!res.ok) {
-        dispatch(fetchUserRefreshTokenAction());
+    .then(async res => {
+      if (!res.ok && res.status !== 401) {
+        dispatch(fetchUserRefreshTokenAction())
+        .then((resp) => {
+          dispatch(fetchGetUserAction());
+        });
         return Promise.reject(res.status);
       } else {
         return res.json();
@@ -139,7 +142,7 @@ export const fetchGetUserAction = () => dispatch => {
 
 export const fetchUserRefreshTokenAction = () => dispatch => {
   dispatch({type: ActionTypes.USER_REFRESH_TOKEN_PENDING});
-  fetch(`${API_URL}/auth/token`, {
+  return fetch(`${API_URL}/auth/token`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

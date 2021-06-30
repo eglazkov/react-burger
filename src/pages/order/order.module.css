@@ -19,7 +19,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 24px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 .contains::-webkit-scrollbar {
 	width: 12px;

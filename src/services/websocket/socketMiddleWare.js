@@ -5,7 +5,8 @@ export const socketMiddleware = (wsUrl, wsActions, withAuth) => {
     return next => action => {
       const { dispatch, getState } = store;
       const { type, payload } = action;
-      const { wsInit, wsInitUser, wsSendMessage, onOpen, onClose, onError, onGetFeedOrders, onGetHistoryOrders } = wsActions;
+      const { wsInit, wsInitUser, wsSendMessage, onOpen, onClose,
+        onError, onGetFeedOrders, onGetHistoryOrders, wsEnd, wsEndUser } = wsActions;
       const { token } = getState().userReducer;
       if (type === wsInit && !withAuth) {
         socket = new WebSocket(`${wsUrl}`);
@@ -40,6 +41,9 @@ export const socketMiddleware = (wsUrl, wsActions, withAuth) => {
         if (type === wsSendMessage && token) {
           const message = { ...payload, token: token };
           socket.send(JSON.stringify(message));
+        }
+        if (type === wsEnd || type === wsEndUser) {
+          socket.close();
         }
       }
 

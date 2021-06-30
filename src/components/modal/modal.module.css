@@ -10,7 +10,7 @@
 }
 .modal {  
   width: 720px;
-  max-height: 718px;
+  min-height: 718px;
   height: max-content;
   background-color: #1C1C21;
   border: 2px solid #4C4CFF;
