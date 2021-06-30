@@ -6,7 +6,11 @@ import {useLocation} from 'react-router-dom';
 import feedStyles from './feed.module.css';
 import {AppSpinner, OrderCard} from '../../components';
 import {history} from '../../services';
-import {WS_CONNECTION_START, WS_CONNECTION_END} from '../../services/websocket/action-types';
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_END,
+  WS_SEND_PONG_MESSAGE
+} from '../../services/websocket/action-types';
 import {useWebsocket, useIngredeints} from '../../services';
 const _ = require('lodash');
 
@@ -33,7 +37,11 @@ export default function Feed() {
     if (ingredients.length === 0) {
       dispatch(fetchIngredientsAction());
     }
+    const pingPong = setInterval(() => {
+      dispatch({type: WS_SEND_PONG_MESSAGE})
+    }, 10000);
     return () => {
+      clearInterval(pingPong);
       dispatch({type: WS_CONNECTION_END});
     };
   }, []);

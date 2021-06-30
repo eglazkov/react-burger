@@ -6,7 +6,7 @@ export const socketMiddleware = (wsUrl, wsActions, withAuth) => {
       const { dispatch, getState } = store;
       const { type, payload } = action;
       const { wsInit, wsInitUser, wsSendMessage, onOpen, onClose,
-        onError, onGetFeedOrders, onGetHistoryOrders, wsEnd, wsEndUser } = wsActions;
+        onError, onGetFeedOrders, onGetHistoryOrders, wsEnd, wsEndUser, wsPing } = wsActions;
       const { token } = getState().userReducer;
       if (type === wsInit && !withAuth) {
         socket = new WebSocket(`${wsUrl}`);
@@ -44,6 +44,9 @@ export const socketMiddleware = (wsUrl, wsActions, withAuth) => {
         }
         if (type === wsEnd || type === wsEndUser) {
           socket.close();
+        }
+        if (type === wsPing) {          
+          socket.send('pong');
         }
       }
 

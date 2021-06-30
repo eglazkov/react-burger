@@ -14,7 +14,8 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_GET_FEED_ORDERS,
   WS_GET_HISTORY_ORDERS,
-  WS_SEND_MESSAGE
+  WS_SEND_MESSAGE,
+  WS_SEND_PONG_MESSAGE
 } from './websocket/action-types';
 import {socketMiddleware} from './websocket/socketMiddleWare';
 
@@ -31,7 +32,8 @@ const wsActions = {
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
   onGetFeedOrders: WS_GET_FEED_ORDERS,
-  onGetHistoryOrders: WS_GET_HISTORY_ORDERS
+  onGetHistoryOrders: WS_GET_HISTORY_ORDERS,
+  wsPing: WS_SEND_PONG_MESSAGE
 };
 
 const socketAllOrdersMiddlware = socketMiddleware(wsUrl, wsActions);

@@ -21,7 +21,11 @@ import {
 } from '../../components';
 import OrderPage from '../order/order';
 import {useAuth, useWebsocket, useIngredeints, history} from '../../services';
-import {WS_CONNECTION_USER_START, WS_CONNECTION_USER_END} from '../../services/websocket/action-types';
+import {
+  WS_CONNECTION_USER_START,
+  WS_CONNECTION_USER_END,
+  WS_SEND_PONG_MESSAGE
+} from '../../services/websocket/action-types';
 const _ = require('lodash');
 
 function Profile({
@@ -65,7 +69,11 @@ function Profile({
     if (ingredients.length === 0) {
       dispatch(fetchIngredientsAction());
     }
+    const pingPong = setInterval(() => {
+      dispatch({type: WS_SEND_PONG_MESSAGE})
+    }, 10000);
     return () => {
+      clearInterval(pingPong);
       dispatch({type: WS_CONNECTION_USER_END});
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps

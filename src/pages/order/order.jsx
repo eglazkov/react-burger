@@ -32,7 +32,6 @@ export default function Order() {
       dispatch(getOrderByIdAction(id));
     });
   }, []);
-  console.log({ingredientsMap});
   return (
     isOrderLoading || _.isEmpty(ingredientsMap, true) || !order?
     'loading...' :
