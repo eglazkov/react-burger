@@ -23,9 +23,9 @@ const OrderCard = ({
 }) => {
   const goToOrder = useCallback(
     () => {
-      changeLocation({_id});
+      changeLocation({number});
     },
-    [_id, changeLocation]
+    [changeLocation, number]
   );
   const totalCost = useMemo(() => {
     return ingredients.reduce((acc, cur) => {

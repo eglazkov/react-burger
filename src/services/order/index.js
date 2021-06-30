@@ -6,7 +6,8 @@ import {
   resetTotalCostAction,
   fetchDataOrderAction,
   showOrderDetailsAction,
-  closeOrderDetailsAction
+  closeOrderDetailsAction,
+  getOrderByIdAction
 } from './action-creators';
 
 export const useOrder = () => (
@@ -16,7 +17,9 @@ export const useOrder = () => (
       isSendingDataOrder: orderReducer.isSendingDataOrder,
       orderId: orderReducer.orderId,
       isShowOrderDetails: orderReducer.isShowOrderDetails,
-      errorMessage: orderReducer.errorMessage    
+      errorMessage: orderReducer.errorMessage,
+      order: orderReducer.order,
+      isOrderLoading: orderReducer.isOrderLoading      
     })),
     {
       increaseTotalCostAction,
@@ -24,7 +27,8 @@ export const useOrder = () => (
       resetTotalCostAction,
       fetchDataOrderAction,
       showOrderDetailsAction,
-      closeOrderDetailsAction
+      closeOrderDetailsAction,
+      getOrderByIdAction
     }
   ]
 );
