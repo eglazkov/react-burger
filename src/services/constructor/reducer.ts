@@ -6,13 +6,20 @@ import {
   HIDE_DROP_LOCATION,
   SHOW_DROP_LOCATION
 } from './action-types';
+import {TIngredient} from '../ingredients';
+import { TConstructorActions } from './types';
 
-const constructorInitialState = {
+export type TConstructorState = {
+  constructorIngredients: Array<TIngredient>;
+  showDropLocation: boolean;
+} 
+
+const constructorInitialState: TConstructorState = {
   constructorIngredients: [],
   showDropLocation: false
 };
 
-export const array_move = function(arr, old_index, new_index) {
+export const array_move = function(arr: any[], old_index: number, new_index: number) {
   if (new_index >= arr.length) {
       let k = new_index - arr.length + 1;
       while (k--) {
@@ -23,7 +30,7 @@ export const array_move = function(arr, old_index, new_index) {
   return arr;
 };
 
-export const constructorReducer = (state = constructorInitialState, action) => {
+export const constructorReducer = (state = constructorInitialState, action: TConstructorActions) => {
   const constructorIngredients = [...state.constructorIngredients];
   switch (action.type) {    
     case ADD_TO_CONSTRUCTOR:

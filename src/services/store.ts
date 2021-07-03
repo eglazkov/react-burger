@@ -1,4 +1,6 @@
-import {compose, createStore, applyMiddleware} from 'redux';
+
+import {ThunkAction} from 'redux-thunk';
+import {compose, createStore, applyMiddleware, Action, ActionCreator} from 'redux';
 import {routerMiddleware} from 'connected-react-router';
 import thunk from 'redux-thunk';
 import {rootReducer} from './rootReducer';
@@ -18,6 +20,15 @@ import {
 } from './websocket/action-types';
 import {socketMiddleware} from './websocket/socketMiddleWare';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import {TConstructorActions} from './constructor/types';
+import {TForgotPasswordActions} from './forgot-password-form/types';
+import {TIngredientsAction} from './ingredients/types';
+import {TLoginFormActions} from './login-form/types';
+import {TRegisterFormActions} from './register-form/types';
+import {TResetPasswordActions} from './reset-password-form/types';
+import {TOrderAction} from './order/types';
+import {TUserActions} from './user/types';
+
 const createLogger = require('redux-logger').createLogger;
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -61,3 +72,19 @@ const store = createStore(
 );
 
 export default store;
+
+type TApplicationActions =
+  TConstructorActions |
+  TForgotPasswordActions |
+  TIngredientsAction |
+  TLoginFormActions |
+  TRegisterFormActions |
+  TResetPasswordActions |
+  TOrderAction |
+  TUserActions
+;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type AppThunk<ReturnType = void> = ActionCreator<
+  ThunkAction<ReturnType, Action, RootState, TApplicationActions>
+>;

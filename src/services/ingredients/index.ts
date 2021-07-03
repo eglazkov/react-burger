@@ -22,7 +22,7 @@ export type TIngredient = {
   proteins: number,
   fat: number,
   carbohydrates: number,
-  constructorId?: number
+  constructorId?: string
   image?: string,
   count?: number
 };
