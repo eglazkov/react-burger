@@ -44,7 +44,7 @@
   position: relative;
 }
 .ingredientIconBorder:nth-child(6)::after {
-  content: attr(count);
+  content: attr(data-count);
   position: absolute;
   opacity: 1;
   width: 64px;

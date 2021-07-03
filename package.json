@@ -57,8 +57,14 @@
   },
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^1.6.0",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/react-router-hash-link": "^2.4.0",
+    "@types/redux-thunk": "^2.1.0",
+    "@types/uuid": "^8.3.0",
     "cypress": "^7.5.0",
     "eslint-plugin-cypress": "^2.11.3",
-    "fetch-mock": "^9.11.0"
+    "fetch-mock": "^9.11.0",
+    "redux-devtools-extension": "^2.13.9"
   }
 }

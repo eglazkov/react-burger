@@ -9,7 +9,7 @@
   min-height: calc(100vh - 300px);
   position: relative;
 }
-.container[ishover = true]:before {
+.container[data-ishover = true]:before {
   content: 'Перетащите сюда ингредиент!';
   position: absolute;
   width: 610px;
@@ -19,7 +19,7 @@
   line-height: calc(100vh - 160px);
   height: calc(100vh - 160px);
 }
-.container[ishover = true]:after {
+.container[data-ishover = true]:after {
   content: '';
   width: 610px;
   height: calc(100vh - 160px);
@@ -32,7 +32,7 @@
   -ms-border-radius: 30px;
   -o-border-radius: 30px;
 }
-.container[ishover = true] > div {
+.container[data-ishover = true] > div {
   opacity: .5;
 }
 .tableWrapper {

@@ -10,7 +10,9 @@ describe('order reducer', () => {
       isSendingDataOrder: false,
       orderId: null,
       isShowOrderDetails: false,
-      errorMessage: null
+      errorMessage: null,
+      order: null,
+      isOrderLoading: true
     });
   });
 
