@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {ConnectedRouter} from 'connected-react-router';
 import appStyles from './app.module.css';
 import {
@@ -8,7 +8,7 @@ import {
 } from '../components';
 import {useOrder, history, MainRouter} from '../services';
 
-const App = () => {
+const App: FC = () => {
   const [{isSendingDataOrder}] = useOrder();
   return (
     <>          

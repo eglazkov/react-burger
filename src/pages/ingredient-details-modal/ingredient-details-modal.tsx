@@ -1,9 +1,7 @@
 import React, {FC} from 'react';
-import ReactDOM from 'react-dom';
 import {Modal} from '../../components';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
-const modalRoot = document.getElementById("modals") as HTMLDivElement;
 
 interface IIngredientDetailsModal {
   caption: string,
@@ -12,12 +10,10 @@ interface IIngredientDetailsModal {
 
 const IngredientDetailsModal: FC<IIngredientDetailsModal> = ({caption, onClose}) => {
   
-  return ReactDOM.createPortal(
-    (
-      <Modal {...{caption, onClose}}>
-        <IngredientDetails />
-      </Modal>
-    ), modalRoot
+  return (
+    <Modal {...{caption, onClose}}>
+      <IngredientDetails />
+    </Modal>
   );
 }
  
