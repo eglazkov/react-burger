@@ -1,6 +1,5 @@
 import {useSelector} from 'react-redux';
 import {RootState} from '../rootReducer';
-
 import {
   fetchUserLoginAction,
   fetchUserRegisterAction,
@@ -10,20 +9,9 @@ import {
   fetchUserResetPasswordRequestAction,
   fetchUserResetPasswordAction
 } from './action-creators';
+import {TUserReducer} from './reducer';
 
-type TSelectors = {
-  user: {
-    email: string,
-    name: string
-  },
-  userActionPending: boolean,
-  accessToken: string,
-  refreshToken: string,
-  isUserLoaded: boolean,
-  isUserUpdates: boolean
-};
-
-export type TUseAuth = [TSelectors, any];
+export type TUseAuth = [TUserReducer, any];
 
 export const useAuth = (): TUseAuth => (
   [

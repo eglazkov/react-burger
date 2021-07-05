@@ -1,6 +1,5 @@
 import {useSelector} from 'react-redux';
 import {RootState} from '../rootReducer';
-import {TIngredient} from '../ingredients';
 
 import {
   addToConstructorAction,
@@ -9,13 +8,10 @@ import {
   resetConstructorAction,
   toggleDropLoactionAction
 } from './action-creators';
+import {TConstructorReducer} from './reducer';
 
-type TSelectors = {
-  constructorIngredients: TIngredient[],
-  showDropLocation: boolean
-};
 
-export type TUseConstructor = [TSelectors, any];
+export type TUseConstructor = [TConstructorReducer, any];
 
 export const useConstructor = (): TUseConstructor => (
   [

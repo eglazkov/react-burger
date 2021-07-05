@@ -25,6 +25,7 @@ import {
   WS_CONNECTION_USER_END,
   WS_SEND_PONG_MESSAGE
 } from '../../services/websocket/action-types';
+import {TOrder} from '../../services/websocket';
 const _ = require('lodash');
 
 interface IProfile {
@@ -45,7 +46,7 @@ const Profile: FC<IProfile> = ({
   const dispatch = useDispatch();
   const [{isUserUpdates}, {fetchUserUpdateAction}] = useAuth();
   const [{historyData, wsConnected}] = useWebsocket();
-  const {orders} = historyData;
+  const {orders}: {orders: TOrder[]} = historyData;
   const [{ingredients},
     {fetchIngredientsAction}] = useIngredeints();
   const ingredientsMap = useMemo(() => _.keyBy(ingredients, '_id'), [ingredients]);
@@ -165,7 +166,7 @@ const Profile: FC<IProfile> = ({
         path={`${path}/orders`}>
           <div className={`${profileStyles.orderList} pr-1`}>
           {
-            wsConnected && orders && orders.map((order) => (
+            wsConnected && orders && orders.map((order: TOrder) => (
               ingredientsMap && <OrderCard
                 changeLocation={({number: id}) => {                 
                   history.push({pathname: `${path}/orders/${id}`, state: {background: location}});

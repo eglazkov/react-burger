@@ -1,22 +1,13 @@
 import {useSelector} from 'react-redux';
 import {RootState} from '../rootReducer';
-
-import {
-  setRegisterFormValue
-} from './action-creators';
-
-
-type TSelectors = {
-  name: string,
-  email: string,
-  password: string
-};
+import {setRegisterFormValue} from './action-creators';
+import {TRegisterFormReducer} from './reducer';
 
 type TActions = {
   setRegisterFormValue: (field: string, value: string) => void,
 };
 
-export type TUseRegisterForm = [TSelectors, TActions];
+export type TUseRegisterForm = [TRegisterFormReducer, TActions];
 
 export const useRegisterForm = (): TUseRegisterForm => (
   [

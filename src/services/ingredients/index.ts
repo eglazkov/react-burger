@@ -9,6 +9,7 @@ import {
   closeDetailsAction,
   openDetailsAction
 } from './action-creators';
+import {TIngredientsReducer} from './reducer';
 
 export type TIngredient = {
   type: "bun" | "main" | "sauce",
@@ -29,15 +30,7 @@ export type TIngredient = {
 
 export type TIngredientDetails = Omit<TIngredient, 'type' | '_id' | 'price' | 'image_mobile'>;
 
-type TSelectors = {
-  ingredients: TIngredient[],
-  isIngredientsLoading: boolean,
-  errorMessage: string,
-  showIngredientDetails: boolean,
-  ingredientDetails: TIngredientDetails
-};
-
-export type TUseIngredients = [TSelectors, any];
+export type TUseIngredients = [TIngredientsReducer, any];
 
 export const useIngredeints = (): TUseIngredients => (
   [

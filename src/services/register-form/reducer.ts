@@ -13,10 +13,12 @@ const registerFormInitialState: TRegisterFormInitialState = {
   password: ''
 };
 
+export type TRegisterFormReducer = TRegisterFormInitialState;
+
 export const registerFormReducer = (
   state = registerFormInitialState,
   action: TRegisterFormActions
-) => {
+): TRegisterFormReducer => {
   switch(action.type) {
     case ActionTypes.REGISTER_FORM_SET_VALUE: {
         return {
