@@ -1,5 +1,7 @@
 # Учебный проект Яндекс.Практикума `Конструктор бургеров "Stellar Burger"`.
 
+[Live demo](https://eglazkov.github.io/react-burger).
+
 Проект реализован на основе [Create React App](https://github.com/facebook/create-react-app).
 
 ## Доступные скрипты

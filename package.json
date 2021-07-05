@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env PUBLIC_URL=/react-burger/ react-scripts build",
     "test": "react-scripts test",
     "cypress:open": "./node_modules/.bin/cypress open",
     "eject": "react-scripts eject",
@@ -64,6 +64,7 @@
     "@types/react-router-hash-link": "^2.4.0",
     "@types/redux-thunk": "^2.1.0",
     "@types/uuid": "^8.3.0",
+    "cross-env": "^7.0.3",
     "cypress": "^7.5.0",
     "eslint-plugin-cypress": "^2.11.3",
     "fetch-mock": "^9.11.0",
