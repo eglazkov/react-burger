@@ -1,3 +1,4 @@
+import {TOrder} from './index';
 import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_ERROR,
@@ -5,8 +6,23 @@ import {
   WS_GET_FEED_ORDERS,
   WS_GET_HISTORY_ORDERS
 } from './action-types';
+import {TWebsocketActions} from './types';
 
-const initialState = {
+export type TWsInitialState = {
+  wsConnected: boolean;
+  feedData: {
+    orders: TOrder[];
+    total: number;
+    totalToday: number;
+  },
+  historyData: {
+    orders: TOrder[];
+    total: number;
+    totalToday: number;
+  }  
+} | any;
+
+const initialState: TWsInitialState = {
   wsConnected: false,
   feedData: {
     orders: [],
@@ -20,7 +36,12 @@ const initialState = {
   } 
 };
 
-export const wsReducer = (state = initialState, action: any) => {
+export type TWsReducer = TWsInitialState;
+
+export const wsReducer = (
+  state = initialState,
+  action: TWebsocketActions
+): TWsReducer => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

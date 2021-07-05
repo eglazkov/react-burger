@@ -11,8 +11,19 @@ import {
   GET_ORDER_BY_ID_SUCCESS,
   GET_ORDER_BY_ID_FAIL
 } from './action-types';
+import {TOrderAction} from './types';
 
-const orderInitialState = {
+type TOrderInitialState = {
+  totalCost: number;
+  isSendingDataOrder: boolean;
+  orderId: number | null;
+  isShowOrderDetails: boolean;
+  errorMessage: string | null;
+  order: any;
+  isOrderLoading: boolean;
+};
+
+const orderInitialState: TOrderInitialState | any = {
   totalCost: 0,
   isSendingDataOrder: false,
   orderId: null,
@@ -22,7 +33,12 @@ const orderInitialState = {
   isOrderLoading: true
 };
 
-export const orderReducer = (state = orderInitialState, action) => {
+export type TOrderReducer = TOrderInitialState;
+
+export const orderReducer = (
+  state = orderInitialState,
+  action: TOrderAction
+): TOrderReducer => {
   switch (action.type) {    
     case INCREASE_TOTALCOST:
       return {

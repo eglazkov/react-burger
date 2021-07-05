@@ -1,13 +1,42 @@
 import * as ActionTypes from './action-types';
 import {API_URL} from '../../constants';
 // eslint-disable-next-line no-unused-vars
-import {setCookie, getCookie} from '../index';
+// import {setCookie, getCookie} from '../index';
+import {AppDispatch, AppThunk} from '../store';
+import {
+  IFetchUserLoginFailAction,
+  IFetchUserLoginPendingAction,
+  IFetchUserLoginSuccessAction,
+  IFetchUserRegisterFailAction,
+  IFetchUserRegisterPendingAction,
+  IFetchUserRegisterSuccessAction
+} from './types';
 
-export const fetchUserLoginAction = ({
+export const fetchUserLoginPendingAction = (): IFetchUserLoginPendingAction => ({
+  type: ActionTypes.USER_LOGIN_PENDING
+});
+
+export const fetchUserLoginSuccessAction = (data: {
+  [name: string]: any;
+  token: string;
+}): IFetchUserLoginSuccessAction => ({
+  type: ActionTypes.USER_LOGIN_SUCCESS,
+  payload: data
+});
+
+export const fetchUserLoginFailAction = (errorMessage: string): IFetchUserLoginFailAction => ({
+  type: ActionTypes.USER_LOGIN_FAIL,
+  payload: {errorMessage}
+});
+
+export const fetchUserLoginAction: AppThunk = ({
   email,
   password
-}) => async dispatch => {
-  dispatch({type: ActionTypes.USER_LOGIN_PENDING});
+}: {
+  email: string;
+  password: string;
+}) => async (dispatch: AppDispatch) => {
+  dispatch(fetchUserLoginPendingAction());
   fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {
@@ -27,10 +56,10 @@ export const fetchUserLoginAction = ({
       }
     })
     .then(resp => {
-      dispatch({type: ActionTypes.USER_LOGIN_SUCCESS, payload: {
+      dispatch(fetchUserLoginSuccessAction({
         ...resp,
         token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
-      }});
+      }));
       if (resp.accessToken) {
         // TODO: почему то в куках происходит дубликация данных, поэтому localStorage
         // setCookie('token', resp.accessToken.split('Bearer ')[1]);
@@ -39,16 +68,37 @@ export const fetchUserLoginAction = ({
         localStorage.setItem('refreshToken', resp.refreshToken);
       }
     }).catch(errorMessage => {
-      dispatch({type: ActionTypes.USER_LOGIN_FAIL, payload: {errorMessage}});
+      dispatch(fetchUserLoginFailAction(errorMessage));
     });
 };
 
-export const fetchUserRegisterAction = ({
+export const fetchUserRegisterPendingAction = (): IFetchUserRegisterPendingAction => ({
+  type: ActionTypes.USER_REGISTER_PENDING
+});
+
+export const fetchUserRegisterSuccessAction = (data: {
+  [name: string]: any;
+  token: string | null;
+}): IFetchUserRegisterSuccessAction => ({
+  type: ActionTypes.USER_REGISTER_SUCCESS,
+  payload: data
+});
+
+export const fetchUserRegisterFailAction = (errorMessage: string): IFetchUserRegisterFailAction => ({
+  type: ActionTypes.USER_REGISTER_FAIL,
+  payload: {errorMessage}
+});
+
+export const fetchUserRegisterAction: AppThunk = ({
   email,
   password,
   name
-}) => async (dispatch) => {
-  dispatch({type: ActionTypes.USER_REGISTER_PENDING});
+}: {
+  email: string;
+  password: string;
+  name: string;
+}) => async (dispatch: AppDispatch) => {
+  dispatch(fetchUserRegisterPendingAction());
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
@@ -64,26 +114,26 @@ export const fetchUserRegisterAction = ({
     });
     
     if (!response.ok) {      
-      throw new Error(response.status);
+      throw new Error(String(response.status));
     } else {
-      const resp = response.json();
-      dispatch({type: ActionTypes.USER_REGISTER_SUCCESS, payload: {
+      const resp:any = response.json();
+      dispatch(fetchUserRegisterSuccessAction({
         ...resp,
         token: resp.accessToken ? resp.accessToken.split('Bearer ')[1] : null
-      }});
+      }));
       return resp;      
     }
   } catch (error) {
-    dispatch({type: ActionTypes.USER_REGISTER_FAIL, payload: {errorMessage: error}});
+    dispatch(fetchUserRegisterFailAction(error));
     return {success: false, errorMessage: 'Пользователь с такими данными уже существует!'};
   }
 };
 
-export const fetchUserUpdateAction = ({
+export const fetchUserUpdateAction: AppThunk = ({
   email,
   password,
   name
-}) => dispatch => {
+}) => (dispatch: AppDispatch) => {
   dispatch({type: ActionTypes.USER_UPDATE_PENDING});
   fetch(`${API_URL}/auth/user`, {
     method: 'PATCH',
@@ -112,7 +162,7 @@ export const fetchUserUpdateAction = ({
     });
 };
 
-export const fetchGetUserAction = () => dispatch => {
+export const fetchGetUserAction: AppThunk | any = () => (dispatch: AppDispatch) => {
   dispatch({type: ActionTypes.GET_USER_PENDING});
   fetch(`${API_URL}/auth/user `, {
     method: 'GET',
@@ -125,7 +175,7 @@ export const fetchGetUserAction = () => dispatch => {
     .then(async res => {
       if (!res.ok && res.status !== 401) {
         dispatch(fetchUserRefreshTokenAction())
-        .then((resp) => {
+        .then(() => {
           dispatch(fetchGetUserAction());
         });
         return Promise.reject(res.status);
@@ -140,7 +190,7 @@ export const fetchGetUserAction = () => dispatch => {
     });
 };
 
-export const fetchUserRefreshTokenAction = () => dispatch => {
+export const fetchUserRefreshTokenAction: AppThunk | any = () => (dispatch: AppDispatch) => {
   dispatch({type: ActionTypes.USER_REFRESH_TOKEN_PENDING});
   return fetch(`${API_URL}/auth/token`, {
     method: 'POST',
@@ -171,7 +221,7 @@ export const fetchUserRefreshTokenAction = () => dispatch => {
     });
 };
 
-export const fetchUserLogoutAction = () => async dispatch => {
+export const fetchUserLogoutAction: AppThunk = () => async (dispatch: AppDispatch) => {
   dispatch({type: ActionTypes.USER_LOGOUT_PENDING});
   fetch(`${API_URL}/auth/logout`, {
     method: 'POST',
@@ -201,9 +251,9 @@ export const fetchUserLogoutAction = () => async dispatch => {
     });
 };
 
-export const fetchUserResetPasswordRequestAction = ({
+export const fetchUserResetPasswordRequestAction: AppThunk = ({
   email
-}) => async (dispatch) => {
+}) => async (dispatch: AppDispatch) => {
   dispatch({type: ActionTypes.USER_RESET_PASSWOD_REQUEST_PENDING});
   try {
     const response = await fetch(`${API_URL}/password-reset`, {
@@ -217,9 +267,9 @@ export const fetchUserResetPasswordRequestAction = ({
       })
     });
     if (!response.ok) {      
-      throw new Error(response.status);
+      throw new Error(String(response.status));
     } else {
-      const resp = response.json();
+      const resp: any = response.json();
       dispatch({type: ActionTypes.USER_RESET_PASSWOD_REQUEST_SUCCESS, payload: resp.data});
       return resp;      
     }
@@ -228,10 +278,10 @@ export const fetchUserResetPasswordRequestAction = ({
   }
 };
 
-export const fetchUserResetPasswordAction = ({
+export const fetchUserResetPasswordAction: AppThunk = ({
   password,
   token
-}) => async (dispatch) => {
+}) => async (dispatch: AppDispatch) => {
   dispatch({type: ActionTypes.USER_RESET_PASSWOD_PENDING});
   try {
     const response = await fetch(`${API_URL}/password-reset/reset`, {
@@ -246,9 +296,9 @@ export const fetchUserResetPasswordAction = ({
       })
     });
     if (!response.ok) {      
-      throw new Error(response.status);
+      throw new Error(String(response.status));
     } else {
-      const resp = response.json();
+      const resp: any = response.json();
       dispatch({type: ActionTypes.USER_RESET_PASSWOD_SUCCESS, payload: resp.data});
       return resp;      
     }

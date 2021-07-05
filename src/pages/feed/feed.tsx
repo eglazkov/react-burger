@@ -6,6 +6,7 @@ import {useLocation} from 'react-router-dom';
 import feedStyles from './feed.module.css';
 import {AppSpinner, OrderCard} from '../../components';
 import {history} from '../../services';
+import {TOrder} from '../../services/websocket';
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_END,
@@ -26,10 +27,10 @@ const Feed: FC = () => {
   const {orders, total, totalToday} = feedData;
   const ingredientsMap = useMemo(() => _.keyBy(ingredients, '_id'), [ingredients]);
   const completedOrders = useMemo(() => {
-    return orders.filter(order => order.status === 'done');
+    return orders.filter((order: TOrder) => order.status === 'done');
   }, [orders]);
   const inProgressOrders = useMemo(() => {
-    return orders.filter(order => order.status === 'pending');
+    return orders.filter((order: TOrder) => order.status === 'pending');
   }, [orders]);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const Feed: FC = () => {
         <div className="mb-4 text text_type_main-large">Лента заказов</div>
         <div className={`${feedStyles.feedList}`}>
           {
-            orders.map((order) => (
+            orders.map((order: TOrder) => (
               ingredientsMap && <OrderCard
                 changeLocation={({number: id}) => {                
                   history.push({pathname: `/feed/${id}`, state: {background: location}});
@@ -71,7 +72,7 @@ const Feed: FC = () => {
             <ul className={`${feedStyles.readyOrders}`}>
               {
                 completedOrders
-                .map(({number}) => (
+                .map(({number}: TOrder) => (
                   <li key={uuidv4()} className="text text_type_digits-default mb-2">{number}</li>
                 ))
               }
@@ -82,7 +83,7 @@ const Feed: FC = () => {
             <ul className={`${feedStyles.currentOrders}`}>
               {
                 inProgressOrders
-                .map(({number}) => (
+                .map(({number}: TOrder) => (
                   <li key={uuidv4()} className="text text_type_digits-default mb-2">{number}</li>
                 ))
               }

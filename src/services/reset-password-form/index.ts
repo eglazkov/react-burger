@@ -1,20 +1,13 @@
 import {useSelector} from 'react-redux';
 import {RootState} from '../rootReducer';
-
-import {
-  setResetPasswordFormValue
-} from './action-creators';
-
-type TSelectors = {
-  token: string,
-  password: string
-};
+import {setResetPasswordFormValue} from './action-creators';
+import {TResetPasswordFormReducer} from './reducer';
 
 type TActions = {
   setResetPasswordFormValue: (field: string, value: string) => void,
 };
 
-export type TUseResetPasswordForm = [TSelectors, TActions];
+export type TUseResetPasswordForm = [TResetPasswordFormReducer, TActions];
 
 export const useResetPasswordForm = (): TUseResetPasswordForm => (
   [

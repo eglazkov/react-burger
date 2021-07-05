@@ -1,3 +1,4 @@
+import {TIngredient} from '../ingredients';
 import {
   FETCH_INGREDIENTS_PENDING,
   FETCH_INGREDIENTS_SUCCESS,
@@ -8,8 +9,17 @@ import {
   OPEN_INGREDIENT_DETAILS,
   CLOSE_INGREDIENT_DETAILS
 } from './action-types';
+import {TIngredientsAction} from './types';
 
-const ingredientsInitialState = {
+export type TIngredientsInitialState = {
+  ingredients: Array<TIngredient>;
+  isIngredientsLoading: boolean;
+  errorMessage: string | null;
+  showIngredientDetails: boolean;
+  ingredientDetails: TIngredient | object
+};
+
+const ingredientsInitialState: TIngredientsInitialState = {
   ingredients: [],
   isIngredientsLoading: false,
   errorMessage: null,
@@ -17,7 +27,12 @@ const ingredientsInitialState = {
   ingredientDetails: {}
 };
 
-export const ingredientsReducer = (state = ingredientsInitialState, action) => {
+export type TIngredientsReducer = TIngredientsInitialState;
+
+export const ingredientsReducer = (
+  state = ingredientsInitialState,
+  action: TIngredientsAction
+): TIngredientsReducer => {
   switch (action.type) {
     case FETCH_INGREDIENTS_PENDING:
       return {

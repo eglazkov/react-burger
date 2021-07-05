@@ -1,4 +1,4 @@
-import {ingredientsReducer} from './reducer';
+import {ingredientsReducer, TIngredientsInitialState} from './reducer';
 import * as ActionTypes from './action-types';
 
 const successResult = {
@@ -7,6 +7,29 @@ const successResult = {
   errorMessage: null,
   ingredientDetails: {},
   showIngredientDetails: false
+};
+
+const initialState: TIngredientsInitialState = {
+  ingredients: [{
+    constructorId: '0',
+    _id: 'de3gr5hbr5e4h45',
+    calories: 122,
+    carbohydrates: 55,
+    description: 'description',
+    fat: 7,
+    image_large: '',
+    image_mobile: '',
+    name: 'name',
+    price: 213,
+    proteins: 45,
+    type: 'main',
+    count: 1,
+    image: ''
+  }],
+  isIngredientsLoading: false,
+  errorMessage: null,
+  showIngredientDetails: false,
+  ingredientDetails: {}
 };
 
 describe('ingredients reducer', () => {
@@ -72,66 +95,92 @@ describe('ingredients reducer', () => {
 
   it(`should increase by one "count" property in ingredients
       array by id from payload`, () => {
-    const intitialState = {
-      ingredients: [
-        {count:0, _id: 0},
-        {count: 4, _id: 1},
-        {_id: 2},
-        {count: 2, _id: 3}
-      ]
-    };
-    expect(ingredientsReducer(intitialState, {
+    expect(ingredientsReducer(initialState, {
       type: ActionTypes.INCREASE_INGREDIENT_COUNT,
       payload: {
-        id: 1
+        id: 'de3gr5hbr5e4h45'
       }
     })).toEqual({
-      ingredients: [
-        {count:0, _id: 0},
-        {count: 5, _id: 1},
-        {_id: 2},
-        {count: 2, _id: 3}
-      ]
+      ingredients: [{
+        constructorId: '0',
+        _id: 'de3gr5hbr5e4h45',
+        calories: 122,
+        carbohydrates: 55,
+        description: 'description',
+        fat: 7,
+        image_large: '',
+        image_mobile: '',
+        name: 'name',
+        price: 213,
+        proteins: 45,
+        type: 'main',
+        count: 2,
+        image: ''
+      }],
+      isIngredientsLoading: false,
+      errorMessage: null,
+      showIngredientDetails: false,
+      ingredientDetails: {}
     });
   });
 
   it(`should decrease by one "count" property in ingredients
       array by id from payload`, () => {
-    const intitialState = {
-      ingredients: [
-        {count:0, _id: 0},
-        {count: 4, _id: 1},
-        {_id: 2},
-        {count: 2, _id: 3}
-      ]
-    };
-    expect(ingredientsReducer(intitialState, {
+    expect(ingredientsReducer(initialState, {
       type: ActionTypes.DECREASE_INGREDIENT_COUNT,
       payload: {
-        id: 3
+        id: 'de3gr5hbr5e4h45'
       }
     })).toEqual({
-      ingredients: [
-        {count:0, _id: 0},
-        {count: 4, _id: 1},
-        {_id: 2},
-        {count: 1, _id: 3}
-      ]
+      ingredients: [{
+        constructorId: '0',
+        _id: 'de3gr5hbr5e4h45',
+        calories: 122,
+        carbohydrates: 55,
+        description: 'description',
+        fat: 7,
+        image_large: '',
+        image_mobile: '',
+        name: 'name',
+        price: 213,
+        proteins: 45,
+        type: 'main',
+        count: 1,
+        image: ''
+      }],
+      isIngredientsLoading: false,
+      errorMessage: null,
+      showIngredientDetails: false,
+      ingredientDetails: {}
     });
   });
 
   it(`should toggle showIngredientDetails flag to true and
       return ingredientDetails from payload details`, () => {
-    const initialState = {
-      showIngredientDetails: false,
-      ingredientDetails: {}
-    };
     expect(ingredientsReducer(initialState, {
       type: ActionTypes.OPEN_INGREDIENT_DETAILS,
       payload: {
         details: {foo: 'bar'}
       }
     })).toEqual({
+      ingredients: [{
+        constructorId: '0',
+        _id: 'de3gr5hbr5e4h45',
+        calories: 122,
+        carbohydrates: 55,
+        description: 'description',
+        fat: 7,
+        image_large: '',
+        image_mobile: '',
+        name: 'name',
+        price: 213,
+        proteins: 45,
+        type: 'main',
+        count: 1,
+        image: ''
+      }],
+      isIngredientsLoading: false,
+      errorMessage: null,
       showIngredientDetails: true,
       ingredientDetails: {foo: 'bar'}
     });
@@ -139,13 +188,48 @@ describe('ingredients reducer', () => {
 
   it(`should toggle showIngredientDetails flag to false and
       change ingredientDetails to empty object`, () => {
-    const initialState = {
+    expect(ingredientsReducer({
+      ingredients: [{
+        constructorId: '0',
+        _id: 'de3gr5hbr5e4h45',
+        calories: 122,
+        carbohydrates: 55,
+        description: 'description',
+        fat: 7,
+        image_large: '',
+        image_mobile: '',
+        name: 'name',
+        price: 213,
+        proteins: 45,
+        type: 'main',
+        count: 1,
+        image: ''
+      }],
+      isIngredientsLoading: false,
+      errorMessage: null,
       showIngredientDetails: true,
       ingredientDetails: {foo: 'bar'}
-    };
-    expect(ingredientsReducer(initialState, {
+    }, {
       type: ActionTypes.CLOSE_INGREDIENT_DETAILS
     })).toEqual({
+      ingredients: [{
+        constructorId: '0',
+        _id: 'de3gr5hbr5e4h45',
+        calories: 122,
+        carbohydrates: 55,
+        description: 'description',
+        fat: 7,
+        image_large: '',
+        image_mobile: '',
+        name: 'name',
+        price: 213,
+        proteins: 45,
+        type: 'main',
+        count: 1,
+        image: ''
+      }],
+      isIngredientsLoading: false,
+      errorMessage: null,
       showIngredientDetails: false,
       ingredientDetails: {}
     });

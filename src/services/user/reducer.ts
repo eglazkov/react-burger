@@ -1,6 +1,19 @@
 import * as ActionTypes from './action-types';
+import {TUserActions} from './types';
 
-const userInitialState = {
+export type TUserInitialState = {
+  accessToken: string | null;
+  refreshToken: string | null;
+  user: {
+    email: string;
+    name: string;
+  } | null;
+  userActionPending: boolean;
+  isUserLoaded: boolean;
+  isUserUpdates: boolean;
+} | any;
+
+const userInitialState: TUserInitialState = {
   accessToken: null,
   refreshToken: null,
   user: null,
@@ -9,7 +22,12 @@ const userInitialState = {
   isUserUpdates: false
 };
 
-export const userReducer = (state = userInitialState, action) => {
+export type TUserReducer = TUserInitialState;
+
+export const userReducer = (
+  state = userInitialState,
+  action: TUserActions
+): TUserReducer => {
   switch (action.type) {    
     case ActionTypes.USER_LOGIN_PENDING:
     case ActionTypes.USER_REGISTER_PENDING:

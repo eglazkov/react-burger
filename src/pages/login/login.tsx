@@ -11,6 +11,7 @@ import {
   Spinner
 } from '../../components';
 import {useLoginForm, useAuth} from "../../services";
+import { fetchUserLoginAction } from '../../services/user/action-creators';
 
 const Login: FC = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,7 @@ const Login: FC = () => {
     {setLoginFormValue},
   ] = useLoginForm();
   const [
-    {userActionPending},
-    {fetchUserLoginAction}
+    {userActionPending}
   ] = useAuth();
 
   const onFormChange = (e: ChangeEvent) => {

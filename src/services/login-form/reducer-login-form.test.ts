@@ -22,7 +22,8 @@ describe('login reducer', () => {
 
   it('should change state and return with previous added value', () => {
     expect(loginFormReducer({
-      email: 'test@ya.ru'
+      email: 'test@ya.ru',
+      password: ''
     }, {
       type: ActionTypes.LOGIN_FORM_SET_VALUE,
       field: 'password',

@@ -1,5 +1,6 @@
 import {useSelector} from 'react-redux';
 import {RootState} from '../rootReducer';
+import {TWsReducer} from './reducer';
 
 export type TOrder = {
   ingredients: string[],
@@ -27,21 +28,7 @@ const getTotalForToday = (orders: TOrder[]) => {
   }, 0);
 }
 
-type TSelectors = {
-  wsConnected: boolean,
-  feedData: {
-    [name: string]: any,
-    orders: TOrder[],
-    totalToday: number
-  },
-  historyData: {
-    [name: string]: any,
-    orders: TOrder[],
-    totalToday: number
-  }
-};
-
-export type TUseWebsocket = [TSelectors];
+export type TUseWebsocket = [TWsReducer];
 
 export const useWebsocket = (): TUseWebsocket => (
   [
