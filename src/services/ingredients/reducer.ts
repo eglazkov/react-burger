@@ -27,7 +27,12 @@ const ingredientsInitialState: TIngredientsInitialState = {
   ingredientDetails: {}
 };
 
-export const ingredientsReducer = (state = ingredientsInitialState, action: TIngredientsAction) => {
+export type TIngredientsReducer = TIngredientsInitialState;
+
+export const ingredientsReducer = (
+  state = ingredientsInitialState,
+  action: TIngredientsAction
+): TIngredientsReducer => {
   switch (action.type) {
     case FETCH_INGREDIENTS_PENDING:
       return {

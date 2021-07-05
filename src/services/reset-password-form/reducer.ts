@@ -11,10 +11,12 @@ const resetPasswordFormInitialState: TResetPasswordFormInitialState = {
   token: ''
 };
 
+export type TResetPasswordFormReducer = TResetPasswordFormInitialState;
+
 export const resetPasswordFormReducer = (
   state = resetPasswordFormInitialState,
   action: TResetPasswordActions
-) => {
+): TResetPasswordFormReducer => {
   switch(action.type) {
     case ActionTypes.RESET_PASSWORD_FORM_SET_VALUE: {
         return {

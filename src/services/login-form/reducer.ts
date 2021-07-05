@@ -11,7 +11,12 @@ const loginFormInitialState: TLoginFormInitialState = {
   password: ''
 };
 
-export const loginFormReducer = (state = loginFormInitialState, action: TLoginFormActions) => {
+export type TLoginFormReducer = TLoginFormInitialState;
+
+export const loginFormReducer = (
+  state = loginFormInitialState,
+  action: TLoginFormActions
+):TLoginFormReducer => {
   switch(action.type) {
     case ActionTypes.LOGIN_FORM_SET_VALUE: {
         return {

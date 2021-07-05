@@ -33,7 +33,12 @@ const orderInitialState: TOrderInitialState | any = {
   isOrderLoading: true
 };
 
-export const orderReducer = (state = orderInitialState, action: TOrderAction) => {
+export type TOrderReducer = TOrderInitialState;
+
+export const orderReducer = (
+  state = orderInitialState,
+  action: TOrderAction
+): TOrderReducer => {
   switch (action.type) {    
     case INCREASE_TOTALCOST:
       return {

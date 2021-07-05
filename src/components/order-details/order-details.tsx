@@ -5,7 +5,7 @@ import done from '../../images/done.svg';
 
 interface IOrderDetails {
   onClose: () => void,
-  orderId: number
+  orderId: number | null
 };
  
 const OrderDetails: FC<IOrderDetails> = ({onClose, orderId}) => {

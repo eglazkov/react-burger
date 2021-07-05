@@ -28,6 +28,7 @@ import {TRegisterFormActions} from './register-form/types';
 import {TResetPasswordActions} from './reset-password-form/types';
 import {TOrderAction} from './order/types';
 import {TUserActions} from './user/types';
+import {TWebsocketActions} from './websocket/types';
 
 const createLogger = require('redux-logger').createLogger;
 
@@ -81,7 +82,8 @@ type TApplicationActions =
   TRegisterFormActions |
   TResetPasswordActions |
   TOrderAction |
-  TUserActions
+  TUserActions |
+  TWebsocketActions
 ;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

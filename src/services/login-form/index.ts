@@ -1,20 +1,13 @@
 import {useSelector} from 'react-redux';
 import {RootState} from '../rootReducer';
-
-import {
-  setLoginFormValue
-} from './action-creators';
-
-type TSelectors = {
-  email: string,
-  password: string
-};
+import {setLoginFormValue} from './action-creators';
+import {TLoginFormReducer} from './reducer';
 
 type TActions = {
   setLoginFormValue: (field: string, value: string) => void,
 };
 
-export type TUseLoginForm = [TSelectors, TActions];
+export type TUseLoginForm = [TLoginFormReducer, TActions];
 
 export const useLoginForm = (): TUseLoginForm => (
   [

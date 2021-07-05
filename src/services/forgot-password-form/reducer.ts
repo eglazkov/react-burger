@@ -9,10 +9,12 @@ const forgotPasswordFormInitialState: TForgotPasswordFormState = {
   email: ''
 };
 
+export type TForgotPasswordFormReducer = TForgotPasswordFormState;
+
 export const forgotPasswordFormReducer = (
   state = forgotPasswordFormInitialState,
   action: TForgotPasswordActions
-) => {
+): TForgotPasswordFormReducer => {
   switch(action.type) {
     case ActionTypes.FORGOT_PASSWORD_FORM_SET_VALUE: {
         return {

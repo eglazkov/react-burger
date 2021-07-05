@@ -22,7 +22,12 @@ const userInitialState: TUserInitialState = {
   isUserUpdates: false
 };
 
-export const userReducer = (state = userInitialState, action: TUserActions) => {
+export type TUserReducer = TUserInitialState;
+
+export const userReducer = (
+  state = userInitialState,
+  action: TUserActions
+): TUserReducer => {
   switch (action.type) {    
     case ActionTypes.USER_LOGIN_PENDING:
     case ActionTypes.USER_REGISTER_PENDING:

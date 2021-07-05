@@ -10,16 +10,7 @@ import {
   closeOrderDetailsAction,
   getOrderByIdAction
 } from './action-creators';
-
-type TSelectors = {
-  totalCost: number,
-  isSendingDataOrder: boolean,
-  orderId: number,
-  isShowOrderDetails: boolean,
-  errorMessage: string,
-  order: any,
-  isOrderLoading: boolean
-};
+import {TOrderReducer} from './reducer';
 
 type TActions = {
   increaseTotalCostAction: (amount: number) => void,
@@ -31,7 +22,7 @@ type TActions = {
   getOrderByIdAction: (id: string) => void
 };
 
-export type TUseOrder = [TSelectors, TActions];
+export type TUseOrder = [TOrderReducer, TActions];
 
 export const useOrder = (): TUseOrder => (
   [

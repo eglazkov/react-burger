@@ -30,7 +30,12 @@ export const array_move = function(arr: any[], old_index: number, new_index: num
   return arr;
 };
 
-export const constructorReducer = (state = constructorInitialState, action: TConstructorActions) => {
+export type TConstructorReducer = TConstructorState;
+
+export const constructorReducer = (
+  state = constructorInitialState,
+  action: TConstructorActions
+): TConstructorReducer => {
   const constructorIngredients = [...state.constructorIngredients];
   switch (action.type) {    
     case ADD_TO_CONSTRUCTOR:
